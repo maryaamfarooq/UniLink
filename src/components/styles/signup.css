@@ -1,0 +1,22 @@
+.name-div {
+    display: flex;
+}
+
+.fn-inp {
+    margin-right: 1rem;
+}
+
+.dp-div {
+    margin-top: 1rem;
+}
+
+.back-btn {
+    border: none;
+    background-color: var(--clr-primary-dark);
+    padding: 1rem;
+    border-radius: 50rem;
+    font-size: 1.2rem;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}

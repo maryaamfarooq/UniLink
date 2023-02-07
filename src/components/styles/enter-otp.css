@@ -1,0 +1,49 @@
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.form p {
+    margin-bottom: 2rem;
+}
+
+.otp-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+}
+
+.otp-div input {
+    border: none;
+    padding: 1.5rem 0;
+    background-color: #E6E6E6;
+    margin-right: 0.5rem;
+    width: 25%;
+    font-size: 3.5rem;
+    text-align: center;
+    border-radius: 1.5rem;
+}
+
+.otp-div input:focus {
+    outline: none;
+}
+
+.resend-div {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.resend-div button {
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    letter-spacing: var(--spacing1);
+    font-weight: bold;
+    font-size: 1rem;
+    color: var(--clr-primary-dark);
+}

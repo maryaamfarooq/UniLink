@@ -1,0 +1,123 @@
+
+.body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--ff-primary);
+    height: 100vh;
+    width: 100vw;
+}
+
+.login-container {
+    display: flex;
+    width: 100%;;
+    height: 100%;
+}
+
+.left-div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+}
+
+.left-div h1 {
+    font-weight: 600;
+    letter-spacing: var(--spacing1);
+    font-size: 3rem;
+}
+
+.right-div {
+    width: 50%;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+    font-family: var(--ff-secondary);
+    font-weight: bold;
+    letter-spacing: var(--spacing1);
+    box-shadow: 0 0px 20px rgba(0, 0, 0, 0.25);
+    background-color:hsla(162,67%,71%,1);
+    background-image:
+        radial-gradient(at 26% 7%, hsla(212,80%,62%,1) 0px, transparent 50%),
+        radial-gradient(at 91% 13%, hsla(212,65%,61%,1) 0px, transparent 50%),
+        radial-gradient(at 13% 45%, hsla(162,64%,52%,1) 0px, transparent 50%),
+        radial-gradient(at 9% 90%, hsla(215,79%,62%,1) 0px, transparent 50%),
+        radial-gradient(at 76% 49%, hsla(162,67%,71%,1) 0px, transparent 50%),
+        radial-gradient(at 86% 83%, hsla(190,80%,62%,1) 0px, transparent 50%);
+    background-size: 200%;
+    transition: all 1s linear;
+}
+
+.right-h {
+    transition: all 1s linear;
+    position: relative;
+    font-size: 2.75rem;
+}
+
+.right-div:hover {
+    background-position: right;
+}
+
+.right-div:hover .right-h {
+    text-shadow: 0 0px 30px rgba(0, 0, 0, 0.178);
+}
+
+.right-h-dot, .right-h-dot2 {
+    position: absolute;
+    color: white;
+    font-family: var(--ff-secondary);
+    font-weight: bold;
+    font-size: 2.75rem;
+    font-size: 5rem;
+    z-index: 100;
+    top: -3rem;
+}
+
+.right-h-dot {
+    left: 8.4rem;
+    transition: all 0.1s linear;
+}
+
+.right-h-dot2 {
+    left: 13.4rem;
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0rem);
+    }
+    15% {
+        transform: translateY(-1.6rem);
+    }
+    30% {
+        transform: translateY(0rem);
+    }
+    45% {
+        transform: translateY(-1.4rem);
+    }
+    60% {
+        transform: translateY(0rem);
+    }
+    85% {
+        transform: translateY(-0.5rem);
+    }
+    95% {
+        transform: translateY(0rem);
+    }
+    100% {
+        transform: translateY(0rem);
+    }
+}
+
+.right-div:hover .right-h-dot {
+    animation: bounce 1.5s;
+}
+
+.right-div:hover .right-h-dot2 {
+    animation: bounce 1.5s 0.1s;
+}

@@ -1,0 +1,99 @@
+.form-div {
+    width: 100%;
+}
+
+.form {
+    padding: 0 7rem;
+}
+
+.email-div, .pass-div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.email-label, .pass-label {
+    font-weight: 400;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.email-inp, .pass-inp {
+    border: #E3E3E3 solid 0.15rem;
+    padding: 0.7rem;
+    font-size: 1rem;
+    transition: all 0.15s;
+    margin-bottom: 0.5rem;
+    border-radius: var(--radius1);
+}
+
+.email-inp {
+    margin-bottom: 2rem;
+}
+
+.email-inp:hover, .pass-inp:hover, .email-inp:active, .pass-inp:active, .email-inp:focus, .pass-inp:focus {
+    outline: none;
+    border: var(--clr-primary) solid 0.15rem;
+}
+
+.email-inp:focus, .pass-inp:focus {
+    box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.1);
+}
+
+.form-btm-div {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    width: 100%;
+}
+
+.form-btm-div div {
+    display: flex;
+    align-items: center;
+}
+
+.form-btm-div div input {
+    margin-right: 0.4rem;
+}
+
+.sign-in-btn {
+    cursor: pointer;
+    width: 100%;
+    background-image: linear-gradient(to right, var(--clr-primary), var(--clr-secondary), var(--clr-primary));
+    background-size: 200%;
+    color: white;
+    border: none;
+    font-size: 1.75rem;
+    padding: 0.75rem 0;
+    margin-top: 2rem;
+    font-family: var(--ff-primary);
+    font-weight: 600;
+    letter-spacing: var(--spacing);
+    box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius1);
+    transition: all 0.3s linear;
+    text-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.1);
+}
+
+.sign-in-btn:hover {
+    background-position: right;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+}
+
+.btm-sign-up {
+    font-size: 0.8rem;
+    position: absolute;
+    bottom: 2.5%;
+    font-weight: 600;
+    width: 50%;
+    text-align: center;
+}
+
+.btm-sign-up button {
+    font-weight: 600;
+    color: var(--clr-primary-dark);
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
