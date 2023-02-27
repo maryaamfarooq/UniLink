@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@300;400;600;700&display=swap');
+
+:root {
+    --ff-primary: 'Inter', sans-serif;
+    --ff-secondary: 'Montserrat', sans-serif;
+    --spacing1: 0.03rem;
+    --clr-primary: #84E7CA;
+    --clr-primary-light: #6CDDC2;
+    --clr-primary-dark: #7FD8BE;
+    --clr-secondary: #5299EC;
+    --clr-grey-1: #D9D9D9;
+    --radius1: 0.5rem;
+    --border1: 0.1rem #D9D9D9 solid;
+}
+
+body {
+    font-family: var(--ff-primary);
+}

@@ -1,0 +1,24 @@
+.rightbar-container {
+    flex: 2;
+    height: 100vh;
+    position: sticky;
+    top: 4rem;
+    border-left: var(--border1);
+}
+
+.rightbar-heading-container {
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: var(--spacing1);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: var(--border1);
+    padding: 1.25rem 0;
+}
+
+.messages-wrapper {
+    flex-grow: 0;
+    flex-shrink: 0;
+}

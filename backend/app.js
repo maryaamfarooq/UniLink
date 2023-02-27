@@ -28,13 +28,17 @@ app.get('/', (req, res) => {
   res.send('<h1>Connected to the backend</h1>');
 });
 
+//database
+const connectDB = require('./db/connect');
+const mongoose = require("mongoose");
+
 app.use('/api/v1/auth', authRouter);
 
 const port = process.env.PORT || 8080;
 
 const start = async () => {
   try {
-    //await connectDB('mongodb+srv://ajwadmasood:Mongodb-1@cluster0.qvm7utq.mongodb.net/UniLink?retryWrites=true&w=majority');
+    await connectDB('mongodb+srv://ajwadmasood:Mongodb-1@cluster0.qvm7utq.mongodb.net/UniLink?retryWrites=true&w=majority');
     app.listen(port, () =>
       console.log(`Server is listening on port ${port}...`)
     );

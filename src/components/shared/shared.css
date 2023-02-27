@@ -1,13 +1,10 @@
 .shared {
-    width: 100%;
-    height: 170px;
-    border-radius: 10px;
-    -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
-    box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
-  }
-  
-  .shareWrapper {
-    padding: 10px;
+    /* width: 100%; */
+    /* background-color: red; */
+    display: flex;
+    flex-direction: column;
+    border-bottom: var(--border1);
+    padding: 1.25rem;
   }
   
   .shareTop {
@@ -16,61 +13,57 @@
   }
   
   .shareProfileImg {
-    width: 50px;
-    height: 50px;
+    width: 4rem;
+    height: 3.5rem;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 10px;
+    margin-right: 1rem;
   }
   
   .shareInput {
     border: none;
-    width: 80%;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    border-radius: 4rem;
+    background-color: var(--clr-grey-5);
+  }
+
+  .shareInput::placeholder {
+    color: var(--clr-grey-3);
+    letter-spacing: var(--spacing1);
+    font-size: 0.9rem;
   }
   
   .shareInput:focus {
     outline: none;
   }
-  
-  .shareHr {
-    margin: 20px;
-  }
-  
+
   .shareBottom {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-  }
-  
-  .shareOptions{
-      display: flex;
-      margin-left: 20px;
-  }
-  
-  .shareOption{
-      display: flex;
-      align-items: center;
-      margin-right: 15px;
-      cursor: pointer;
+    justify-content: end;
+    margin-top: 0.7rem;
   }
   
   .shareIcon{
-      font-size: 18px;
-      margin-right: 3px;
-  }
-  
-  .shareOptionText{
-      font-size: 14px;
-      font-weight: 500;
+      background-color: var(--clr-primary-dark);
+      border-radius: 50%;
+      padding: 0.3rem;
+      padding-bottom: 0.08rem;
+      margin-right: 0.6rem;
+      cursor: pointer;
   }
   
   .shareButton{
       border: none;
-      padding: 7px;
-      border-radius: 5px;
-      background-color: #84E7CA;
       font-weight: 500;
-      margin-right: 20px;
       cursor: pointer;
       color: white;
+      font-weight: 600;
+      letter-spacing: var(--spacing1);
+      font-size: 1rem;
+      background-color: var(--clr-primary-dark);
+      padding: 0.4rem 2rem;
+      border-radius: var(--radius1);
   }

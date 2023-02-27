@@ -8,9 +8,10 @@ import SignUp from './SignUp';
 import ChooseAuth from './ChooseAuth';
 import ConfirmEmail from './AuthEmail/ConfirmEmail';
 import EnterOTP from './AuthEmail/EnterOTP';
-import UserProfile from './Profile/UserProfile';
+import UserProfile from './UserProfile/UserProfile';
 import Newsfeed from './Newsfeed';
 import Homepage from './homepage/Homepage';
+import Profile from './profile/Profile';
 
 export default function StartPage(props) {
 
@@ -32,6 +33,11 @@ export default function StartPage(props) {
     setIsLoggedIn(false);
   }
 
+  function goToProfile() {
+    setCurrComponent("profile");
+    console.log("profile");
+  }
+
   return (
     <>
     {!isLoggedIn && <div className="body">
@@ -49,8 +55,9 @@ export default function StartPage(props) {
             </div>
         </div>
     </div>}
-    {/* {currComponent === "newsfeed" && isLoggedIn && <Newsfeed onHandleLogin={goToLogin}></Newsfeed>} */}
-    {currComponent === "newsfeed" && isLoggedIn && <Homepage onHandleLogin={goToLogin}></Homepage>}
+    {currComponent === "newsfeed" && isLoggedIn && <Homepage onHandleLogin={goToLogin} onHandleProfile={goToProfile} currComponent={currComponent}></Homepage>}
+    {currComponent === "profile" && isLoggedIn && <Profile onHandleNewsFeed={goToNewsfeed}></Profile>}
+    {/* <Homepage /> */}
     </>
   )
 }

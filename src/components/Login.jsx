@@ -2,18 +2,40 @@ import React, { useState } from 'react';
 import { redirect } from "react-router-dom";
 import './styles/global.css';
 import "./styles/login.css";
-import UserProfile from './Profile/UserProfile';
-
+import UserProfile from './UserProfile/UserProfile';
+import axios from 'axios'; 
 
 export default function Login(props) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState('');
+    const [loginFail, setLoginFail] = useState(false);
 
-    function verifyLogin(e) {
+    async function loginUser(credentials) {
+        try {
+            console.log(credentials);
+            const {token} = await axios.post('http://localhost:8080/api/v1/auth/login', credentials);
+            // if(data.token) {
+            //     setLoginFail(false);
+            //     return true;
+            // }
+            // setLoginFail(true);
+            // console.log("bhbnj"+data);
+            return false;
+        } catch (error) {
+            console.error(error.response.data);
+        }
+    }
+
+    async function verifyLogin(e) {
         e.preventDefault();
-        props.onHandleNewsFeed();
+        var res = await loginUser({
+            email,
+            password
+        });
+        console.log("res: " + res);
+        if(res) props.onHandleNewsFeed();
     }
 
   return (
@@ -36,6 +58,7 @@ export default function Login(props) {
                     </div>
                     <a href="">Forgot Password?</a>
                 </div>
+                {loginFail && <h4>Invalid login details</h4>}
                 <button type="submit" onClick={verifyLogin} className="sign-in-btn">Sign in</button>
             </form>
         </div>

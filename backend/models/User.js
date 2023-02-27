@@ -4,20 +4,26 @@ const jwt = require('jsonwebtoken')
 
 const UserSchema = new mongoose.Schema(
   {
-    name: {
+    firstName: {
       type: String,
-      required: [true, 'Please provide name'],
+      required: [true, 'Please provide first name'],
+      min: 3,
+      max: 50,
+    },
+    lastName: {
+      type: String,
+      required: [true, 'Please provide last name'],
       min: 3,
       max: 50,
     },
     email: {
           type: String,
           required: [true, 'Please provide email'],
-          match: [
-            //^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(student\.nust\.edu\.pk)|(seecs\.edu\.pk)$/,
-            'Please enter a valid email provided by NUST',
-          ],
+          // match: [
+          //   //^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+          //   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(student\.nust\.edu\.pk)|(seecs\.edu\.pk)$/,
+          //   'Please enter a valid email provided by NUST',
+          // ],
           unique: true,
         },
     password: {
@@ -69,12 +75,13 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.pre('save', async function () {
   const salt = await bcrypt.genSalt(10)
+  console.log("frsaf");
   this.password = await bcrypt.hash(this.password, salt)
 })
 
 UserSchema.methods.createJWT = function () {
   return jwt.sign(
-    { userId: this._id, name: this.username },
+    { userId: this._id, email: this.email },
     process.env.JWT_SECRET,
     {
       expiresIn: process.env.JWT_LIFETIME,

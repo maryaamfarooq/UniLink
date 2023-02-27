@@ -6,13 +6,13 @@ export default function Rightbar({ profile }) {
   const HomeRightbar = () => {
     return (
       <>
-        <div className="birthdayContainer">
+        {/* <div className="birthdayContainer">
           <img className="birthdayImg" src="assets/gift.png" alt="" />
           <span className="birthdayText">
             <b>Pola Foster</b> and <b>3 other friends</b> have a birhday today.
           </span>
-        </div>
-        <img className="rightbarAd" src="assets/ad.png" alt="" />
+        </div> */}
+        {/* <img className="rightbarAd" src="assets/ad.png" alt="" /> */}
         <h4 className="rightbarTitle">Messages</h4>
         <ul className="rightbarFriendList">
           {Users.map((u) => (
@@ -30,11 +30,11 @@ export default function Rightbar({ profile }) {
         <div className="rightbarInfo">
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">City:</span>
-            <span className="rightbarInfoValue">New York</span>
+            <span className="rightbarInfoValue">Islamabad</span>
           </div>
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">From:</span>
-            <span className="rightbarInfoValue">Madrid</span>
+            <span className="rightbarInfoValue">Lahore</span>
           </div>
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Relationship:</span>
@@ -49,7 +49,7 @@ export default function Rightbar({ profile }) {
               alt=""
               className="rightbarFollowingImg"
             />
-            <span className="rightbarFollowingName">John Carter</span>
+            <span className="rightbarFollowingName">Hassan Ali</span>
           </div>
           <div className="rightbarFollowing">
             <img
@@ -57,7 +57,7 @@ export default function Rightbar({ profile }) {
               alt=""
               className="rightbarFollowingImg"
             />
-            <span className="rightbarFollowingName">John Carter</span>
+            <span className="rightbarFollowingName">Ali Tahir</span>
           </div>
           <div className="rightbarFollowing">
             <img
@@ -65,7 +65,7 @@ export default function Rightbar({ profile }) {
               alt=""
               className="rightbarFollowingImg"
             />
-            <span className="rightbarFollowingName">John Carter</span>
+            <span className="rightbarFollowingName">Maryam Farooq</span>
           </div>
           <div className="rightbarFollowing">
             <img
@@ -73,7 +73,7 @@ export default function Rightbar({ profile }) {
               alt=""
               className="rightbarFollowingImg"
             />
-            <span className="rightbarFollowingName">John Carter</span>
+            <span className="rightbarFollowingName">Ajwad Masood</span>
           </div>
           <div className="rightbarFollowing">
             <img
@@ -81,7 +81,7 @@ export default function Rightbar({ profile }) {
               alt=""
               className="rightbarFollowingImg"
             />
-            <span className="rightbarFollowingName">John Carter</span>
+            <span className="rightbarFollowingName">Mashal Zia</span>
           </div>
           <div className="rightbarFollowing">
             <img
@@ -89,7 +89,7 @@ export default function Rightbar({ profile }) {
               alt=""
               className="rightbarFollowingImg"
             />
-            <span className="rightbarFollowingName">John Carter</span>
+            <span className="rightbarFollowingName">Ali Tahir</span>
           </div>
         </div>
       </>

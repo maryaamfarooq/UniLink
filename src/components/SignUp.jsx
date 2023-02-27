@@ -9,9 +9,14 @@ import EnterOTP from './AuthEmail/EnterOTP';
 async function signUpUser(credentials) {
     try {
         console.log(credentials);
-        return await axios.post('http://localhost:8080/api/v1/auth/register', credentials);
+        const {data} = await axios.post('http://localhost:8080/api/v1/auth/register', credentials);
+        //return await axios.post('http://localhost:8080/api/v1/auth/register', credentials);
+        localStorage.setItem('token', data.token)
+        //console.log(localStorage.getItem('token'));
+        console.log("bhbnj"+data.email);
     } catch (error) {
-        console.error(error);
+        // console.error(error.response.data);
+        console.log("errorrrrr");
     }
 }
 
@@ -27,8 +32,11 @@ export default function SignUp(props) {
     const [department, setDepartment] = useState("");
     const [batch, setBatch] = useState("");
 
+    const [disFirstName, setDisFirstName] = useState("");
+    const [disLastName, setDisLastName] = useState("");
+
     var batchArr = Array.from(Array().keys())
-    var departmentArr = ["SEECS", "SMME", "SADA"];
+    var departmentArr = ["SEECS (School of Electrical Engineering and Computer Science)", "SMME", "SADA"];
     var newDepartmentArr = departmentArr.map(dep => <option key={dep} value={dep}>{dep}</option>);
 
     async function handleSubmit(event) {
@@ -41,7 +49,10 @@ export default function SignUp(props) {
             department,
             batch
         });
-        console.log("token: " + JSON.stringify(res.data));
+        //console.log("token: " + JSON.stringify(res.data));
+        // console.log(res);
+        // setDisFirstName(res.firstName);
+        // setDisLastName(res.lastName);
         props.onHandleNewsFeed();
     }
 
@@ -88,6 +99,7 @@ export default function SignUp(props) {
                         <label htmlFor="department" className="email-label">Department</label>
                         {/* <input onChange={(e) => setDepartment(e.target.value)} value={department} type="text" className="pass-inp" name="department"></input> */}
                         <select onChange={(e) => setDepartment(e.target.value)} className="pass-inp">
+                            <option selected>Select Department</option>
                             {newDepartmentArr};
                         </select>
                     </div>

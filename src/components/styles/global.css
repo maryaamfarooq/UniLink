@@ -8,5 +8,11 @@
     --clr-primary-light: #6CDDC2;
     --clr-primary-dark: #7FD8BE;
     --clr-secondary: #5299EC;
+    --clr-grey-1: #D9D9D9;
+    --clr-grey-2: #bbbbbb;
+    --clr-grey-3: #717171;
+    --clr-grey-4: #F1F1F1;
+    --clr-grey-5: #F3F3F3;
     --radius1: 0.5rem;
+    --border1: 0.1rem #D9D9D9 solid;
 }
