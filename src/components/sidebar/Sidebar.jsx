@@ -45,7 +45,7 @@ export default function Sidebar(props) {
           </ul>
         </div>
         <div className="sidebarTrendsWrapper">
-          <h4 class="trendsHeading">Trends</h4>
+          <h4 className="trendsHeading">Trends</h4>
           <ul className="sidebarTrendsList">
             {trendsArr.map(trend => <li key={trend}>{trend}</li>)}
           </ul>

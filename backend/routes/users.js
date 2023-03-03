@@ -12,7 +12,7 @@ const {
 
 
 router.route("/:id").put(updateUser).delete(deleteUser)
-router.get('/', getUser)
+router.get('/:id', getUser)
 router.get("/friends/:userId", getFriends)
 router.put("/:id/follow", followUser)
 router.put("/:id/unfollow", unfollowUser)

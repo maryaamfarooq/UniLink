@@ -15,12 +15,12 @@ export default function Login(props) {
     async function loginUser(credentials) {
         try {
             console.log(credentials);
-            const {token} = await axios.post('http://localhost:8080/api/v1/auth/login', credentials);
-            // if(data.token) {
-            //     setLoginFail(false);
-            //     return true;
-            // }
-            // setLoginFail(true);
+            const {data} = await axios.post('http://localhost:8080/api/v1/auth/login', credentials);
+            if(data.token) {
+                setLoginFail(false);
+                return true;
+            }
+            setLoginFail(true);
             // console.log("bhbnj"+data);
             return false;
         } catch (error) {

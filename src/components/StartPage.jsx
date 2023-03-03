@@ -12,6 +12,10 @@ import UserProfile from './UserProfile/UserProfile';
 import Newsfeed from './Newsfeed';
 import Homepage from './homepage/Homepage';
 import Profile from './profile/Profile';
+import Topbar from './topbar1/Topbar';
+import Sidebar from './sidebar/Sidebar';
+import Rightbar from './rightbar/Rightbar';
+import Messages from './messages/Messages';
 
 export default function StartPage(props) {
 
@@ -40,7 +44,7 @@ export default function StartPage(props) {
 
   return (
     <>
-    {!isLoggedIn && <div className="body">
+    {/* {!isLoggedIn && <div className="body">
         <div className="login-container">
             <div className="left-div">
                 {currComponent === "login" && <Login onHandleNewsFeed={goToNewsfeed} onHandleSignUp={goToSignUp}></Login>}
@@ -56,8 +60,15 @@ export default function StartPage(props) {
         </div>
     </div>}
     {currComponent === "newsfeed" && isLoggedIn && <Homepage onHandleLogin={goToLogin} onHandleProfile={goToProfile} currComponent={currComponent}></Homepage>}
-    {currComponent === "profile" && isLoggedIn && <Profile onHandleNewsFeed={goToNewsfeed}></Profile>}
+    {currComponent === "profile" && isLoggedIn && <Profile onHandleNewsFeed={goToNewsfeed}></Profile>} */}
     {/* <Homepage /> */}
+    <Topbar />
+    <div className="cont">
+      <Sidebar />
+      <UserProfile />
+      <Messages />
+    </div>
+
     </>
   )
 }

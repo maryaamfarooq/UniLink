@@ -19,17 +19,26 @@ const UserSchema = new mongoose.Schema(
     email: {
           type: String,
           required: [true, 'Please provide email'],
-          // match: [
-          //   //^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-          //   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(student\.nust\.edu\.pk)|(seecs\.edu\.pk)$/,
-          //   'Please enter a valid email provided by NUST',
-          // ],
+          match: [
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            // /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(student\.nust\.edu\.pk)|(seecs\.edu\.pk)$/,
+            'Please enter a valid email provided by NUST',
+          ],
           unique: true,
         },
     password: {
       type: String,
       required: [true, 'Please provide password'],
       min: 6,
+    },
+    department:{
+      type: String,
+      required: [true, 'Please provide department'],
+      enum: ['SEECS (School of Electrical Engineering and Computer Science)', 'SMME (School of Mechanical and Manufacturing Engineering)', 'NICE (Nust Institute of Civil Engineering', 'SADA (School of Art Design and Architecture', 'S3H (School of Social Sciences and Humanities)', 'SCME (School of Chemical and Materials Engineering)', 'NBS (Nust Business School)', 'ASAB (Atta Ur Rehman School of Applied Biosciences)', 'NSTP (National Science and Technology Park)', 'RIMMS (Research Institute for Microwave and Milimeter-Wave Studies)', 'IAEC', 'SNS (School of Natural Sciences)', 'IGIS (Institue of Geographical Information Systems)'],
+    },
+    batch:{
+      type: Number,
+      enum: [1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026,2027],
     },
     profilePicture: {
       type: String,
@@ -75,13 +84,12 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.pre('save', async function () {
   const salt = await bcrypt.genSalt(10)
-  console.log("frsaf");
   this.password = await bcrypt.hash(this.password, salt)
 })
 
 UserSchema.methods.createJWT = function () {
   return jwt.sign(
-    { userId: this._id, email: this.email },
+    { userId: this._id, name: this.username },
     process.env.JWT_SECRET,
     {
       expiresIn: process.env.JWT_LIFETIME,
