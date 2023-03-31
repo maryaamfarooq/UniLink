@@ -1,0 +1,32 @@
+export const Jobs = [
+    {
+        img: "assets/person/1.jpeg",
+        jobTitle: "Product Designer",
+        companyName: "OpenPhone",
+        salary: "10k-20k",
+        keywords: ["part-time", "remote"],
+        city: "lahore",
+        country: "pakistan",
+        time: "1d ago",
+    },
+    {
+        img: "assets/person/1.jpeg",
+        jobTitle: "Product Designer",
+        companyName: "OpenPhone",
+        salary: "10k-20k",
+        keywords: ["part-time", "remote"],
+        city: "lahore",
+        country: "pakistan",
+        time: "1d ago",
+    },
+    {
+        img: "assets/person/1.jpeg",
+        jobTitle: "Product Designer",
+        companyName: "OpenPhone",
+        salary: "10k-20k",
+        keywords: ["part-time", "remote"],
+        city: "lahore",
+        country: "pakistan",
+        time: "1d ago",
+    },
+  ];

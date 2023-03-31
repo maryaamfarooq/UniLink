@@ -8,6 +8,7 @@ const { StatusCodes } = require('http-status-codes');
 const createPost =  async (req, res) => {
   req.body.createdBy = req.user.userId
   const newPost = await Post.create(req.body);
+  console.log("done");
   res.status(StatusCodes.CREATED).json({ newPost });
 };
 //update a post

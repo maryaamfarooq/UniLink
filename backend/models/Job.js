@@ -15,20 +15,20 @@ const JobSchema = new mongoose.Schema(
         type: String,
         required: true,
     },
-    salaryRange: {
+    salary: {
         type: String,
     },
     keywords: {
         type: Array,
         default: [],
     },
-    locationCity: {
+    city: {
         type: String,
     },
-    locationCountry: {
+    country: {
         type: String,
     },
-    desc: {
+    jobDesc: {
       type: String,
       max: 1000,
     },
@@ -37,11 +37,11 @@ const JobSchema = new mongoose.Schema(
     //   enum: ['email', 'phone number', 'link', 'other'],
     //   required: true,
     // },
-    contactInfo: {
+    contact: {
       type: Array,
       required: true,
     },
-    img: {
+    image: {
       type: String,
     },
     // likes: {

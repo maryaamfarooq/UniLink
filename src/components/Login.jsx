@@ -3,7 +3,8 @@ import { redirect } from "react-router-dom";
 import './styles/global.css';
 import "./styles/login.css";
 import UserProfile from './UserProfile/UserProfile';
-import axios from 'axios'; 
+import axios from 'axios';
+var jwt = require("jsonwebtoken");
 
 export default function Login(props) {
 
@@ -17,6 +18,12 @@ export default function Login(props) {
             console.log(credentials);
             const {data} = await axios.post('http://localhost:8080/api/v1/auth/login', credentials);
             if(data.token) {
+                localStorage.setItem('token', data.token)
+                const decodedToken = jwt.decode(data.token);
+                props.setUsername(`${decodedToken.firstName} ${decodedToken.lastName}`);
+                // console.log(decodedToken);
+                // console.log(decodedToken.userId);
+                // console.log(decodedToken.name);
                 setLoginFail(false);
                 return true;
             }
@@ -34,8 +41,10 @@ export default function Login(props) {
             email,
             password
         });
-        console.log("res: " + res);
-        if(res) props.onHandleNewsFeed();
+        if(res) {
+            props.onHandleNewsFeed();
+        } 
+        // props.onHandleNewsFeed();
     }
 
   return (

@@ -1,3 +1,4 @@
+import React from 'react'
 import "./profile.css";
 import Topbar from "../../components/topbar/Topbar";
 import Sidebar from "../../components/sidebar/Sidebar";
@@ -25,7 +26,7 @@ export default function Profile(props) {
               />
             </div>
             <div className="profileInfo">
-                <h4 className="profileInfoName">Kalsoom Waseem</h4>
+                <h4 className="profileInfoName">{props.username}</h4>
                 <span className="profileInfoDesc">Hello my friends!</span>
             </div>
           </div>

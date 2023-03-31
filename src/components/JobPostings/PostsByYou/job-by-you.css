@@ -1,0 +1,55 @@
+.job-u-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+    padding: 1rem 0;
+    font-family: var(--ff-primary);
+    transition: all 0.15s linear;
+}
+
+.job-u-container:hover {
+    background-color: var(--clr-grey-4);
+}
+
+.job-u-img {
+    width: 4rem;
+    height: 4.4rem;
+    object-fit:cover;
+    border-radius: 50%;
+}
+
+.job-u-title {
+    font-weight: 600;
+}
+
+.job-u-comp {
+    font-size: 0.9rem;
+}
+
+.job-u-app {
+    color: var(--clr-primary-dark);
+    font-weight: 600;
+}
+
+.job-city {
+    font-weight: 600;
+}
+
+.job-u-country {
+    font-size: 0.9rem;
+}
+
+.job-u-apply {
+    padding: 0.5rem 2rem;
+    border: none;
+    background-color: var(--clr-primary-dark);
+    font-weight: bold;
+    color:white;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.job-u-apply:hover {
+    box-shadow: 0 0 2rem #a2f5e1;
+}

@@ -53,7 +53,7 @@ app.use('/api/v1/user', userRouter);
 app.use('/api/v1/post', authenticateUser, postRouter);
 app.use('/api/v1/job', authenticateUser, jobRouter);
 //process.env.PORT
-const port = 8088;
+const port = 8080;
   
 const start = async () => {
   try {

@@ -1,0 +1,54 @@
+.jobPostings {
+    flex: 6;
+}
+
+.jobs-topbar {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: var(--border1);
+    padding: 1.3rem 0;
+}
+
+.jobs-search {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0;
+}
+
+.jobs-search-input {
+    border: 0.15rem solid var(--clr-primary-dark);
+    padding: 0.5rem 1rem;
+    width: 70%;
+    border-radius: 10rem 0 0 10rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+}
+
+.jobs-search-input:focus {
+    outline: none;
+}
+
+.jobs-search-input::placeholder {
+    color: var(--clr-grey-2);
+    font-size: 0.9rem;
+}
+
+.jobs-search-btn {
+    border: none;
+    background-color: var(--clr-primary-dark);
+    padding: 0.5rem 1.7rem 0.5rem 1.5rem;
+    border-radius: 0 10rem 10rem 0;
+    cursor: pointer;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+}
+
+.jobs-topbar-div, .jobs-topbar-div2 {
+    cursor: pointer;
+}
+
+.jobs-topbar-div:hover {
+    color: var(--clr-primary-dark);
+}
+
+.jobs-topbar-div2:hover {
+    color: var(--clr-primary-dark);
+}

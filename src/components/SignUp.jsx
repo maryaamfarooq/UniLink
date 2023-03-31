@@ -5,15 +5,16 @@ import "./styles/login.css";
 import "./styles/signup.css";
 import axios from 'axios'; 
 import EnterOTP from './AuthEmail/EnterOTP';
+var jwt = require("jsonwebtoken");
 
 async function signUpUser(credentials) {
     try {
         console.log(credentials);
         const {data} = await axios.post('http://localhost:8080/api/v1/auth/register', credentials);
-        //return await axios.post('http://localhost:8080/api/v1/auth/register', credentials);
         localStorage.setItem('token', data.token)
-        //console.log(localStorage.getItem('token'));
-        console.log("bhbnj"+data.email);
+
+        const decodedToken = jwt.decode(data.token);
+        console.log(decodedToken);
     } catch (error) {
         // console.error(error.response.data);
         console.log("errorrrrr");

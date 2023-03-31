@@ -1,3 +1,4 @@
+import React from 'react';
 import "./post.css";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -32,7 +33,7 @@ export default function Post(props) {
             </div>
             <div className="post-top-info">
               <span className="postUsername">
-                {Users.filter((u) => u.id === props.post?.userId)[0].username}
+                {Users.filter((u) => u.id === props.post.userId)[0].username}
               </span>
               <span className="postDate">{props.post.date}</span>
             </div>
@@ -42,7 +43,7 @@ export default function Post(props) {
           </div>
         </div>
         <div className="postCenter">
-          <div className="postText">{props.post?.desc}</div>
+          <div className="postText">{props.post.desc}</div>
           <img className="postImg" src={props.post.photo} alt="" />
         </div>
         <div className="postBottom">

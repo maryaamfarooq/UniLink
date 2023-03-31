@@ -16,11 +16,14 @@ import Topbar from './topbar1/Topbar';
 import Sidebar from './sidebar/Sidebar';
 import Rightbar from './rightbar/Rightbar';
 import Messages from './messages/Messages';
+import JobPostings from './JobPostings/JobPostings';
 
 export default function StartPage(props) {
 
   const [currComponent, setCurrComponent] = useState("login");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const [username, setUsername] = useState("");
 
   function goToNewsfeed() {
     setCurrComponent("newsfeed");
@@ -39,15 +42,18 @@ export default function StartPage(props) {
 
   function goToProfile() {
     setCurrComponent("profile");
-    console.log("profile");
+  }
+
+  function goToJobs() {
+    setCurrComponent("jobs");
   }
 
   return (
     <>
-    {/* {!isLoggedIn && <div className="body">
+    {!isLoggedIn && <div className="body">
         <div className="login-container">
             <div className="left-div">
-                {currComponent === "login" && <Login onHandleNewsFeed={goToNewsfeed} onHandleSignUp={goToSignUp}></Login>}
+                {currComponent === "login" && <Login setUsername={setUsername} onHandleNewsFeed={goToNewsfeed} onHandleSignUp={goToSignUp}></Login>}
                 {currComponent === "signUp" && <SignUp onHandleNewsFeed={goToNewsfeed} onHandleLogin={goToLogin}></SignUp>}
             </div>
             <div className="right-div">
@@ -59,15 +65,22 @@ export default function StartPage(props) {
             </div>
         </div>
     </div>}
-    {currComponent === "newsfeed" && isLoggedIn && <Homepage onHandleLogin={goToLogin} onHandleProfile={goToProfile} currComponent={currComponent}></Homepage>}
-    {currComponent === "profile" && isLoggedIn && <Profile onHandleNewsFeed={goToNewsfeed}></Profile>} */}
-    {/* <Homepage /> */}
-    <Topbar />
-    <div className="cont">
-      <Sidebar />
-      <UserProfile />
-      <Messages />
-    </div>
+
+    {isLoggedIn && <><Topbar onHandleProfile={goToProfile} /><div className="cont">
+        <Sidebar onHandleNewsFeed={goToNewsfeed} onHandleJobs={goToJobs} onHandleLogin={goToLogin} />
+        {currComponent === "newsfeed" && <Homepage currComponent={currComponent}></Homepage>}
+        {currComponent === "profile" && <UserProfile username={username}></UserProfile>}
+        {currComponent === "jobs" && <JobPostings></JobPostings>}
+        <Messages />
+      </div></>}
+
+{/* {true && <><Topbar onHandleProfile={goToProfile} /><div className="cont">
+        <Sidebar onHandleNewsFeed={goToNewsfeed} onHandleJobs={goToJobs} onHandleLogin={goToLogin} />
+        {currComponent === "newsfeed" && <Homepage currComponent={currComponent}></Homepage>}
+        {currComponent === "profile" && <UserProfile username={username}></UserProfile>}
+        {currComponent === "jobs" && <JobPostings></JobPostings>}
+        <Messages />
+      </div></>} */}
 
     </>
   )

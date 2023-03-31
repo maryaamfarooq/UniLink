@@ -1,3 +1,4 @@
+import React from 'react'
 import "./sidebar.css";
 import HomeIcon from '@mui/icons-material/Home';
 import RssFeedIcon from '@mui/icons-material/RssFeed';
@@ -16,10 +17,14 @@ import CloseFriend from "../trends/Trends";
 
 export default function Sidebar(props) {
 
-  function clickk() {
-    console.log("here");
+  function goToNewsfeed() {
     props.onHandleNewsFeed();
   }
+
+  function goToJobs() {
+    props.onHandleJobs();
+  }
+
   const trendsArr = ["#trend1", "#trend2","#trend3","#trend4","#trend5"];
   return (
     <div className="sidebar">
@@ -28,11 +33,11 @@ export default function Sidebar(props) {
           <ul className="sidebarList">
             <li className="sidebarListItem">
               <HomeIcon className="sidebarIcon" />
-              <span className="sidebarListItemText" onClick={clickk}>Home</span>
+              <span className="sidebarListItemText" onClick={goToNewsfeed}>Home</span>
             </li>
             <li className="sidebarListItem">
               <WorkOutlineIcon className="sidebarIcon" />
-              <span className="sidebarListItemText">Job Postings</span>
+              <span className="sidebarListItemText" onClick={goToJobs}>Job Postings</span>
             </li>
             <li className="sidebarListItem">
               <EventIcon className="sidebarIcon" />

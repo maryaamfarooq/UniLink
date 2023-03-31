@@ -15,4 +15,5 @@
     --clr-grey-5: #F3F3F3;
     --radius1: 0.5rem;
     --border1: 0.1rem #D9D9D9 solid;
+    --border2: 0.1rem solid var(--clr-primary);
 }
