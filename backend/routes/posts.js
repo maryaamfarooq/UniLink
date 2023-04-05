@@ -7,18 +7,18 @@ const {
     deletePost, 
     likePost, 
     getPost, 
-    getTimeline 
+    getTimeline, 
+    getUserPosts
     } = require('../controllers/posts')
 
 const { 
     uploadProductImage 
     } = require('../controllers/uploadsController');
-
-router.route('/uploads').post(uploadProductImage);
     
-router.post('/', createPost)
+router.route('/').post(createPost).get(getUserPosts)
 router.route("/:id").get(getPost).put(updatePost).delete(deletePost)
 router.put('/:id/like', likePost)
+router.post('/uploads', uploadProductImage)
 router.get('/timeline/all', getTimeline)
 
 module.exports = router

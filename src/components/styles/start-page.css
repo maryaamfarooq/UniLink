@@ -86,12 +86,12 @@
 }
 
 .right-h-dot {
-    left: 8.4rem;
+    left: 7.6rem;
     transition: all 0.1s linear;
 }
 
 .right-h-dot2 {
-    left: 13.4rem;
+    left: 12.3rem;
 }
 
 @keyframes bounce {

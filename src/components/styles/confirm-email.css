@@ -1,5 +1,14 @@
 .email-inp1 {
     margin-top: 1rem;
+    border: 0.15rem solid #E3E3E3;
+    margin-bottom: 1.3rem;
+    padding: 1rem;
+    border-radius: 10rem;
+}
+
+.email-inp1:hover, .email-inp1:focus, .email-inp1:active {
+    border: 0.15rem solid var(--clr-primary);
+    outline:none;
 }
 
 .btn-div {

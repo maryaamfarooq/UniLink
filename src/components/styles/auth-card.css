@@ -1,0 +1,17 @@
+.back-arrow-div{
+display: flex;
+padding: 0 7rem;
+justify-content: left;
+margin-bottom: 3rem;
+cursor: pointer;
+}
+
+.back-arrow-div2 {
+    border-radius: 50%;
+    padding: 0.5rem 0.5rem 0.2rem 0.5rem;
+    transition: all 0.15s linear;
+}
+
+.back-arrow-div2:hover {
+    background-color: var(--clr-primary-lighter);
+}

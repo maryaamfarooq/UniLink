@@ -6,6 +6,7 @@ import axios from 'axios';
 export default function AllJobPostings(props) {
 
   const [allJobs, setAllJobs] = useState([]);
+  var i = 0;
 
   async function getAllJobs() {
     try {
@@ -23,7 +24,9 @@ export default function AllJobPostings(props) {
   }
 
   useEffect(() => {
-    getAllJobs();
+    console.log("displayed all jobs");
+    i++;
+    if (i <= 1) getAllJobs();
   }, [])
 
   return (

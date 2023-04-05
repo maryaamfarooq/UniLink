@@ -6,6 +6,10 @@
     padding: 0 7rem;
 }
 
+.form h1 {
+    margin-bottom: 1rem;
+}
+
 .email-div, .pass-div {
     display: flex;
     flex-direction: column;

@@ -82,8 +82,46 @@
     width: 2.5rem;
     height: 2.5rem;
     margin-left: 1rem;
+    position: relative;
 }
 
 .topbar-profile-img:hover {
     outline: 0.1rem solid var(--clr-primary-light);
+}
+
+.topbar-profile-dropdown {
+    position: fixed;
+    right: 0;
+    background-color: white;
+    padding: 0.2rem 0;
+    border-radius: 1rem;
+    box-shadow: 0 1px 2rem rgba(0, 0, 0, 0.121);
+}
+
+.topbar-dropdown-div{
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem;
+    border-radius: 0.8rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.15s linear;
+}
+
+.topbar-dropdown-div:hover {
+    background-color: #7fd8bd48;
+}
+
+.topbar-dropdown-img {    
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.topbar-dropdown-icon {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 1rem;
 }

@@ -1,10 +1,20 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import "./topbar.css";
 
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
+import SettingsIcon from '@mui/icons-material/Settings';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 export default function Topbar(props) {
+
+    const [showProfileDropdown, setShowProfileDropdown] = useState(false)
+
+    const handleShowProfileDropdown = () => {
+        setShowProfileDropdown(prev => !prev);
+    }
+
   return (
     <div className="topbar-container">
         <div className="topbar-logo">
@@ -21,13 +31,31 @@ export default function Topbar(props) {
                 <NotificationsIcon sx={{ color: "white"}} />
             </div>
             <div className="topbar-profile">
-                <img onClick={props.onHandleProfile}
+                <img onClick={handleShowProfileDropdown}
                     src={
                         "assets/person/1.jpeg"
                     }
                     alt=""
                     className="topbar-profile-img"
                 />
+                {showProfileDropdown && <div className='topbar-profile-dropdown'>
+                    <div onClick={props.onHandleProfile} className='topbar-dropdown-div'>
+                        <img className="topbar-dropdown-img" src={"assets/person/1.jpeg"} />
+                        Profile
+                    </div>
+                    <div className='topbar-dropdown-div'>
+                        <HelpRoundedIcon style={{ color: '#7FD8BE' }} className="topbar-dropdown-icon"/>
+                        Help
+                    </div>
+                    <div className='topbar-dropdown-div'>
+                        <SettingsIcon style={{ color: '#7FD8BE' }} className="topbar-dropdown-icon"/>
+                        Settings
+                    </div>
+                    <div onClick={props.onHandleLogin} className='topbar-dropdown-div'>
+                        <LogoutIcon style={{ color: '#7FD8BE' }} className="topbar-dropdown-icon"/>
+                        Log out
+                    </div>
+                </div>}
             </div>
         </div>
     </div>

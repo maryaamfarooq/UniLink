@@ -67,3 +67,25 @@
       padding: 0.4rem 2rem;
       border-radius: var(--radius1);
   }
+
+  .share-preview-img-div {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem;
+    background-color: #7fd8bd48;
+    border-radius: 2rem;
+  }
+
+  .share-preview-img {
+    height: 15rem;
+    width: auto;
+    object-fit: contain;
+    position: relative;
+  }
+
+  .share-cancel-img {
+    position: absolute;
+    z-index: 9999;
+    cursor: pointer;
+  }

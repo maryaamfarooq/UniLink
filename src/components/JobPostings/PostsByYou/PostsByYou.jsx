@@ -10,6 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import JobByYou from './JobByYou';
 import axios from 'axios'; 
+import Upload from '../../FileUpload';
 
 export default function PostsByYou() {
 
@@ -25,6 +26,7 @@ export default function PostsByYou() {
     const [contact, setContact] = useState([]);
 
     const [allJobs, setAllJobs] = useState([]);
+    var i  = 0;
 
     const handleClickOpen = () => {
       setOpen(true);
@@ -69,20 +71,22 @@ export default function PostsByYou() {
     async function getAllJobs() {
       try {
         const token = localStorage.getItem("token");
-        const {data} = await axios.get('http://localhost:8080/api/v1/job/', {
+        const {data} = await axios.get('http://localhost:8080/api/v1/job/getUserJobs/', {
           headers:{
             authorization: `Bearer ${token}`
           }
         });
-        const jobsArray = data.jobs;
+        const jobsArray = data.userJobs;
         setAllJobs(prevJobs => [...prevJobs, ...jobsArray]);
+        console.log(JSON.stringify(jobsArray));
       } catch (error) {
           console.error(error.response.data);
       }
     }
   
     useEffect(() => {
-      getAllJobs();
+      i++;
+      if (i <= 1) getAllJobs();
     }, [])
 
   return (
@@ -98,7 +102,7 @@ export default function PostsByYou() {
         <DialogTitle>Post Job</DialogTitle>
         <DialogContent>
           <div className="post-job-form">
-          <TextField
+          {/* <TextField
             autoFocus
             margin="dense"
             id="img"
@@ -106,8 +110,8 @@ export default function PostsByYou() {
             fullWidth
             variant="standard"
             onChange={event => setImage(event.target.value)} 
-            // value= {image}
-          />
+          /> */}
+          <Upload setImg={setImage} />
             <div className="post-job-form-row">
           <TextField
             autoFocus
@@ -117,8 +121,10 @@ export default function PostsByYou() {
             fullWidth
             variant="standard"
             onChange={event => setJobTitle(event.target.value)} 
+            required
             // value= {jobTitle}
           />
+          <div className="gap"></div>
           <TextField
            autoFocus
            margin="dense"
@@ -127,6 +133,7 @@ export default function PostsByYou() {
            fullWidth
            variant="standard"
            onChange={event => setCompanyName(event.target.value)} 
+           required
           //  value= {companyName}
          />
           </div>
@@ -138,10 +145,13 @@ export default function PostsByYou() {
            fullWidth
            variant="standard"
            onChange={event => setJobDesc(event.target.value)} 
+           required
+           multiline
           //  value= {jobDesc}
          />
          <div className="post-job-form-row">
          <TextField
+          className='margin-right'
           autoFocus
           margin="dense"
           id="keywords"
@@ -152,6 +162,7 @@ export default function PostsByYou() {
           onChange={event => setKeywords(event.target.value)} 
           // value= {keywords}
         />
+        <div className="gap"></div>
         <TextField
          autoFocus
          margin="dense"
@@ -165,6 +176,7 @@ export default function PostsByYou() {
        </div>
        <div className="post-job-form-row">
        <TextField
+          className='margin-right'
         autoFocus
         margin="dense"
         id="city"
@@ -174,6 +186,7 @@ export default function PostsByYou() {
         onChange={event => setCity(event.target.value)} 
         // value= {city}
       />
+      <div className="gap"></div>
       <TextField
        autoFocus
        margin="dense"

@@ -14,7 +14,14 @@ const getAllJobs = async (req, res) => {
   res.status(StatusCodes.OK).json({ jobs })
 }
 
+const getUserJobs = async (req, res) => {
+  const currentUser = req.user.userId;
+  const userJobs = await Job.find({ createdBy: currentUser }).sort('createdAt');
+  res.status(StatusCodes.CREATED).json({ userJobs });
+};
+
  module.exports = {
   createJob,
-  getAllJobs
+  getAllJobs,
+  getUserJobs
 }

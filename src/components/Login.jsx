@@ -31,7 +31,7 @@ export default function Login(props) {
             // console.log("bhbnj"+data);
             return false;
         } catch (error) {
-            console.error(error.response.data);
+            // console.error(error.response.data);
         }
     }
 
@@ -71,7 +71,7 @@ export default function Login(props) {
                 <button type="submit" onClick={verifyLogin} className="sign-in-btn">Sign in</button>
             </form>
         </div>
-        <span className="btm-sign-up">Don't have an account?<button onClick={props.onHandleSignUp}>Sign up</button></span>
+        <span className="btm-sign-up">Don't have an account? <button onClick={props.onHandleChooseAuth}>Sign up</button></span>
     </div>
   )
 }

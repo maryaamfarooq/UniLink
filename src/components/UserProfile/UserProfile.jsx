@@ -21,7 +21,7 @@ export default function UserProfile(props) {
           />
           <div  className="profileDetails">
           <span className="profileName"><h4 className="profileInfoName">{props.username}</h4><span className="profileSeperator">&middot;</span><span className="userType">Alumni</span></span>
-          <span class="profileBatch"><span>SEECS</span><span className="profileSeperator">&middot;</span><span>2022</span></span>
+          <span className="profileBatch"><span>SEECS</span><span className="profileSeperator">&middot;</span><span>2022</span></span>
           <span className="profileInfoDesc">Hello my friends!</span>
           </div>
       </div>

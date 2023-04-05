@@ -3,7 +3,9 @@ import './styles/global.css';
 import "./styles/login.css";
 import "./styles/choose-auth.css";
 
-export default function ChooseAuth() {
+export default function ChooseAuth(props) {
+
+
   return (
     <div>
         <div className="form-div">
@@ -11,8 +13,8 @@ export default function ChooseAuth() {
                 <h1>Welcome!</h1>
                 <p>Please select an authorization method:</p>
                 <div className="btn-div">
-                    <button className="auth-btn">NUST issued email address</button>
-                    <button className="auth-btn">NUST issued identification card</button>
+                    <button onClick={props.onHandleAuthEmail} className="auth-btn">NUST issued email address</button>
+                    <button onClick={props.onHandleAuthCard} className="auth-btn">NUST issued identification card</button>
                 </div>
                 <div>
 

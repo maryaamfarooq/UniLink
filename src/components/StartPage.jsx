@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './styles/global.css';
 import "./styles/start-page.css";
@@ -6,15 +6,13 @@ import "./styles/start-page.css";
 import Login from './Login';
 import SignUp from './SignUp';
 import ChooseAuth from './ChooseAuth';
+import AuthCard from './AuthCard';
 import ConfirmEmail from './AuthEmail/ConfirmEmail';
 import EnterOTP from './AuthEmail/EnterOTP';
 import UserProfile from './UserProfile/UserProfile';
-import Newsfeed from './Newsfeed';
 import Homepage from './homepage/Homepage';
-import Profile from './profile/Profile';
 import Topbar from './topbar1/Topbar';
 import Sidebar from './sidebar/Sidebar';
-import Rightbar from './rightbar/Rightbar';
 import Messages from './messages/Messages';
 import JobPostings from './JobPostings/JobPostings';
 
@@ -25,12 +23,17 @@ export default function StartPage(props) {
 
   const [username, setUsername] = useState("");
 
+  useEffect(() => {
+    if(localStorage.getItem("token")) goToNewsfeed();
+  }, [])
+
   function goToNewsfeed() {
-    setCurrComponent("newsfeed");
     setIsLoggedIn(true);
+    setCurrComponent("newsfeed");
   }
 
   function goToLogin() {
+    localStorage.setItem("token", "");
     setCurrComponent("login");
     setIsLoggedIn(false);
   }
@@ -48,12 +51,32 @@ export default function StartPage(props) {
     setCurrComponent("jobs");
   }
 
+  function goToChooseAuth() {
+    setCurrComponent("chooseAuth");
+  }
+
+  function goToAuthCard() {
+    setCurrComponent("authCard");
+  }
+
+  function goToAuthEmail() {
+    setCurrComponent("authEmail");
+  }
+
+  function goToEnterOTP() {
+    setCurrComponent("enterOTP");
+  }
+
   return (
     <>
     {!isLoggedIn && <div className="body">
         <div className="login-container">
             <div className="left-div">
-                {currComponent === "login" && <Login setUsername={setUsername} onHandleNewsFeed={goToNewsfeed} onHandleSignUp={goToSignUp}></Login>}
+                {currComponent === "login" && <Login setUsername={setUsername} onHandleNewsFeed={goToNewsfeed} onHandleChooseAuth={goToChooseAuth}></Login>}
+                {currComponent === "chooseAuth" && <ChooseAuth onHandleAuthCard={goToAuthCard} onHandleAuthEmail={goToAuthEmail}></ChooseAuth>}
+                {currComponent === "authEmail" && <ConfirmEmail onHandleLogin={goToLogin} onHandleEnterOTP={goToEnterOTP}></ConfirmEmail>}
+                {currComponent === "authCard" && <AuthCard onHandleChooseAuth={goToChooseAuth} onHandleLogin={goToLogin}></AuthCard>}
+                {currComponent === "enterOTP" && <EnterOTP></EnterOTP>}
                 {currComponent === "signUp" && <SignUp onHandleNewsFeed={goToNewsfeed} onHandleLogin={goToLogin}></SignUp>}
             </div>
             <div className="right-div">
@@ -66,7 +89,7 @@ export default function StartPage(props) {
         </div>
     </div>}
 
-    {isLoggedIn && <><Topbar onHandleProfile={goToProfile} /><div className="cont">
+    {isLoggedIn && <><Topbar onHandleLogin={goToLogin} onHandleProfile={goToProfile} /><div className="cont">
         <Sidebar onHandleNewsFeed={goToNewsfeed} onHandleJobs={goToJobs} onHandleLogin={goToLogin} />
         {currComponent === "newsfeed" && <Homepage currComponent={currComponent}></Homepage>}
         {currComponent === "profile" && <UserProfile username={username}></UserProfile>}

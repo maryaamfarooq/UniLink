@@ -81,6 +81,12 @@ const getTimeline = async (req, res) => {
   }
 };
 
+const getUserPosts = async (req, res) => {
+  const currentUser = req.user.userId;
+  const userPosts = await Post.find({ createdBy: currentUser });
+  res.status(StatusCodes.OK).json({ userPosts })
+}
+
 module.exports = 
   { 
     createPost, 
@@ -88,5 +94,6 @@ module.exports =
     deletePost, 
     likePost, 
     getPost, 
-    getTimeline 
+    getTimeline,
+    getUserPosts
   }

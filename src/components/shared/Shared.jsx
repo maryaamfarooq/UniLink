@@ -1,45 +1,44 @@
 import React, { useState } from 'react'
 import "./shared.css";
 import axios from 'axios'; 
+import Upload from '../FileUpload';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import CancelIcon from '@mui/icons-material/Cancel';
 import PublicIcon from '@mui/icons-material/Public';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 var jwt = require("jsonwebtoken");
 
 export default function Shared(props) {
 
   const [desc, setDesc] = useState("");
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState();
   const [hashtags, setHashtags] = useState([]);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   async function sendPost(postDetails) {
     try {
-      // console.log(postDetails);
       const token = localStorage.getItem("token");
-      //console.log(postDetails);
-      // console.log(token);
       const {data} = await axios.post('http://localhost:8080/api/v1/post', postDetails, {
         headers:{
           authorization: `Bearer ${token}`
         }
       });
-      // console.log(data);
-      // console.log("data.desc: "+ data.newPost.desc.toString());
-      // props.setPostDetails(data);
-      // props.setPostDetails({
-      //   createdAt: data.newPost.createdAt.toString(),
-      //   createdBy: data.newPost.createdBy.toString(),
-      //   desc: data.newPost.desc.toString(),
-      //   hashtags: data.newPost.hashtags,
-      //   likes: data.newPost.likes,
-      //   _id: data.newPost._id
-      // })
-
-      // props.setPosts((prev, props) => ({
-      //   posts: prev.posts.add(data.newPost)
-      // }))
-      // console.log("postdetails: "+props.postDetails2);
+ 
   } catch (error) {
-      // console.error(error.response.data);
+      console.error(error.response.data);
   }
   }
 
@@ -47,11 +46,17 @@ export default function Shared(props) {
     e.preventDefault();
     // console.log(desc);
     var res = await sendPost({
-      desc
+      desc,
+      img,
     });
   }
 
+  function removeImg() {
+    setImg(null);
+  }
+
   return (
+    <>
     <div className="shared">
       <div className="shareTop">
         <img className="shareProfileImg" src="assets/person/1.jpeg" alt="" />
@@ -63,13 +68,26 @@ export default function Shared(props) {
           value= {desc}
         />
       </div>
-
+      {img && <div className="share-preview-img-div"><div className="share-preview-img-div2">
+        <CancelIcon onClick={removeImg} style={{ color: 'white' }} className="share-cancel-img" />
+        <img className="share-preview-img" src={img} />
+        </div></div>}
       <div className="shareBottom">
         <div className="shareIcon"><PublicIcon htmlColor="white"/></div>
-        <div className="shareIcon"><AttachFileIcon htmlColor="white"/></div>
+        <div onClick={handleClickOpen} className="shareIcon"><AttachFileIcon htmlColor="white"/></div>
         <button type="submit" className="shareButton" onClick={createPost}>Post</button>
       </div>
     </div>
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>Add Image</DialogTitle>
+      <DialogContent>
+        <div>
+          {/* <input /> */}
+          <Upload open={open} setOpen={handleClose} setImg={setImg}/>
+        </div>
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }
 

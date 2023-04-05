@@ -1,0 +1,29 @@
+.file-upload-img-preview {
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    object-position: center;
+}
+
+.file-upload-btn {
+    border: 0.15rem solid var(--clr-primary-dark);
+    color: var(--clr-primary-dark);
+    padding: 0.2rem 0.5rem;
+    font-weight: 600;
+    border-radius: 1rem;
+    cursor: pointer;
+    background-color: white;
+    transition: all 0.15s linear;
+}
+
+.file-upload-btn:hover {
+    background-color: var(--clr-primary-dark);
+    color: white;
+}
+
+.file-upload-btn:disabled {
+    border: 0.15rem solid var(--clr-grey-2);
+    color: var(--clr-grey-2);
+    background-color: white;
+    cursor: not-allowed;
+}
