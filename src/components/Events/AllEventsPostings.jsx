@@ -7,6 +7,7 @@ import './all-events.css'
 export default function AllEventsPostings(props) {
   const [allEvents, setAllEvents] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  var i = 0;
 
   const handleAddClick = () => {
     setShowForm(true);
@@ -34,7 +35,8 @@ export default function AllEventsPostings(props) {
   };
   
   useEffect(() => {
-    getAllEvents();
+    i++;
+    if (i <= 1) getAllEvents();
   }, []);
 
   useEffect(() => {
@@ -43,11 +45,11 @@ export default function AllEventsPostings(props) {
 
   return (
     <div className="all-events-container">
-      Events
+      <div className="events-heading">Events</div>
       {allEvents && allEvents.map((e) => (
         <Event key={e._id} event={e} />
       ))}
-      <button className='event-add' onClick={handleAddClick}>Add Event</button>
+      {/* <button className='event-add' onClick={handleAddClick}>Add Event</button> */}
       {showForm && <AddEventForm onClose={handleFormClose} />}
     </div>
   );

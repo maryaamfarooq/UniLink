@@ -1,15 +1,15 @@
 import React, {useState} from 'react'
-import Message from './message/Message';
+import Messagee from './Messagee';
 import { messagesInfo } from '../../messages'
 import AddIcon from '@mui/icons-material/Add';
 import Dialog from '@mui/material/Dialog';
 import Connection from './Connection';
 import axios from 'axios'; 
-import "./messages.css"
+import "./messages.css";
 
 export default function Messages() {
 
-    const messageArr = messagesInfo.map(m => <Message key={m.id} data={m}/>);
+    const messageArr = messagesInfo.map(m => <Messagee key={m.id} data={m}/>);
     const [open, setOpen] = useState(false);
     const [allConnections, setAllConnections] = useState([]);
 

@@ -16,6 +16,7 @@ import Sidebar from './sidebar/Sidebar';
 import Messages from './messages/Messages';
 import JobPostings from './JobPostings/JobPostings';
 import AllEventsPostings from './Events/AllEventsPostings';
+import Messenger from './messages/Messenger';
 var jwt = require("jsonwebtoken");
 
 export default function StartPage(props) {
@@ -86,7 +87,7 @@ export default function StartPage(props) {
 
   return (
     <>
-    {!isLoggedIn && <div className="body">
+    {/* {!isLoggedIn && <div className="body">
         <div className="login-container">
             <div className="left-div">
                 {currComponent === "login" && <Login setUsername={setUsername} onHandleNewsFeed={goToNewsfeed} onHandleChooseAuth={goToChooseAuth}></Login>}
@@ -113,7 +114,7 @@ export default function StartPage(props) {
         {currComponent === "jobs" && <JobPostings></JobPostings>}
         {currComponent === "events" && <AllEventsPostings />}
         <Messages />
-      </div></>}
+      </div></>} */}
 
 {/* {true && <><Topbar onHandleProfile={goToProfile} /><div className="cont">
         <Sidebar onHandleNewsFeed={goToNewsfeed} onHandleJobs={goToJobs} onHandleLogin={goToLogin} />
@@ -122,6 +123,8 @@ export default function StartPage(props) {
         {currComponent === "jobs" && <JobPostings></JobPostings>}
         <Messages />
       </div></>} */}
+
+<Messenger userId={userId} />
 
     </>
   )

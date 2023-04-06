@@ -58,3 +58,8 @@
     box-shadow: 0 0 2rem #a2f5e1;
     /* outline: 0.3rem solid #b5f1e3; */
 }
+
+.job-div1 .job-div2 .job-div3 .job-div4 .job-div5 {
+    flex: 1;
+    background-color: aqua !important;
+} 

@@ -1,3 +1,10 @@
 .all-events-container {
     flex: 6;
 }
+
+.events-heading {
+    font-size: var(--ff-primary);
+    font-size: 2rem;
+    margin: 1rem;
+    font-weight: 600;
+}
