@@ -15,6 +15,10 @@ export default function Topbar(props) {
         setShowProfileDropdown(prev => !prev);
     }
 
+    useEffect(() => {
+        console.log("pp topbar:"+props.profilePicture)
+    }, [props.profilePicture])
+
   return (
     <div className="topbar-container">
         <div className="topbar-logo">
@@ -33,14 +37,14 @@ export default function Topbar(props) {
             <div className="topbar-profile">
                 <img onClick={handleShowProfileDropdown}
                     src={
-                        "assets/person/1.jpeg"
+                        props.profilePicture
                     }
                     alt=""
                     className="topbar-profile-img"
                 />
                 {showProfileDropdown && <div className='topbar-profile-dropdown'>
                     <div onClick={props.onHandleProfile} className='topbar-dropdown-div'>
-                        <img className="topbar-dropdown-img" src={"assets/person/1.jpeg"} />
+                        <img className="topbar-dropdown-img" src={props.profilePicture} />
                         Profile
                     </div>
                     <div className='topbar-dropdown-div'>

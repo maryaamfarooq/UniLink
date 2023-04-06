@@ -47,3 +47,41 @@ input::-webkit-inner-spin-button {
     font-size: 1rem;
     color: var(--clr-primary-dark);
 }
+
+
+.otp-btn-div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.otp-next-btn {
+    cursor: pointer;
+    border: none;
+    background-color: var(--clr-primary);
+    color: white;
+    font-family: var(--ff-primary);
+    font-weight: bold;
+    font-size: 1.3rem;
+    width: 60%;
+    padding: 0.5rem 0.6rem 0.5rem 1.4rem;
+    border-radius: 10rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    letter-spacing: var(--spacing1);
+    transition: all 0.3s linear;
+}
+
+.otp-gt {
+    border-radius: 50rem;
+    background-color: var(--clr-primary-dark);
+    padding: 0.5rem 0.8rem;
+    transition: all 0.3s linear;
+}
+
+.otp-next-btn:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.12);
+}

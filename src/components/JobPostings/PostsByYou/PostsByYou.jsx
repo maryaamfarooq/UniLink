@@ -40,8 +40,7 @@ export default function PostsByYou() {
       try {
         const token = localStorage.getItem("token");
         //console.log(postDetails);
-        // console.log(token);
-        // console.log(jobDetails);
+        console.log(jobDetails);
         const {data} = await axios.post('http://localhost:8080/api/v1/job/', jobDetails, {
           headers:{
             authorization: `Bearer ${token}`

@@ -20,8 +20,8 @@ const UserSchema = new mongoose.Schema(
           type: String,
           required: [true, 'Please provide email'],
           match: [
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            // /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(student\.nust\.edu\.pk)|(seecs\.edu\.pk)$/,
+            // /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(student\.nust\.edu\.pk)|(seecs\.edu\.pk)$/,
             'Please enter a valid email provided by NUST',
           ],
           unique: true,
@@ -42,11 +42,11 @@ const UserSchema = new mongoose.Schema(
     },
     profilePicture: {
       type: String,
-      default: "",
+      default: "https://res.cloudinary.com/diyzgufu3/image/upload/v1680721429/defaultPic_gtn6nk.jpg",
     },
     coverPicture: {
       type: String,
-      default: "",
+      default: "https://res.cloudinary.com/diyzgufu3/image/upload/v1680721429/defaultPic_gtn6nk.jpg",
     },
     friends: {
       type: Array,
@@ -89,7 +89,7 @@ UserSchema.pre('save', async function () {
 
 UserSchema.methods.createJWT = function () {
   return jwt.sign(
-    { userId: this._id, firstName: this.firstName, lastName: this.lastName },
+    { userId: this._id, firstName: this.firstName, lastName: this.lastName, profilePicture: this.profilePicture },
     // { userId: this._id, username: "maryam" },
     process.env.JWT_SECRET,
     {

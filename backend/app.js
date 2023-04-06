@@ -33,6 +33,10 @@ const authRouter = require('./routes/auth');
 const userRouter = require('./routes/users');
 const postRouter = require('./routes/posts');
 const jobRouter = require('./routes/jobs');
+const trendRouter = require('./routes/trends');
+const eventRouter = require('./routes/events');
+const conversationRouter = require('./routes/conversations');
+const messageRouter = require('./routes/messages');
 
 app.use(fileUpload({ useTempFiles: true }));
 
@@ -52,6 +56,11 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/post', authenticateUser, postRouter);
 app.use('/api/v1/job', authenticateUser, jobRouter);
+app.use('/api/v1/trend', authenticateUser, trendRouter);
+app.use('/api/v1/event', authenticateUser, eventRouter);
+app.use('/api/v1/conv', authenticateUser, conversationRouter);
+app.use('/api/v1/message', authenticateUser, messageRouter);
+
 //process.env.PORT
 const port = 8080;
   

@@ -4,7 +4,7 @@ import '../styles/enter-otp.css';
 
 var resend = "RESEND";
 
-export default function EnterOTP() {
+export default function EnterOTP(props) {
   const [otp1, setOtp1] = useState('');
   const [otp2, setOtp2] = useState('');
   const [otp3, setOtp3] = useState('');
@@ -47,9 +47,12 @@ export default function EnterOTP() {
                 <div className="resend-div">
                     <button>{resend}</button>
                 </div>
+                <div className="otp-btn-div">
+                    <button onClick={props.onHandleSignUp} className="otp-next-btn"><span className="otp-next">Next</span><span className="otp-gt">&gt;</span></button>
+                </div>
             </form>
         </div>
-        <span className="btm-sign-up">Already have an account? <a href="">Sign in</a></span>
+        <span className="btm-sign-up">Already have an account? <a onClick={props.onHandleLogin}>Sign in</a></span>
     </div>
   )
 }

@@ -17,6 +17,7 @@ const {
     
 router.route('/').post(createPost).get(getUserPosts)
 router.route("/:id").get(getPost).put(updatePost).delete(deletePost)
+router.get('/', getUserPosts)
 router.put('/:id/like', likePost)
 router.post('/uploads', uploadProductImage)
 router.get('/timeline/all', getTimeline)

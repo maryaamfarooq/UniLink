@@ -5,6 +5,7 @@ import "./styles/login.css";
 import "./styles/signup.css";
 import axios from 'axios'; 
 import EnterOTP from './AuthEmail/EnterOTP';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 var jwt = require("jsonwebtoken");
 
 async function signUpUser(credentials) {
@@ -71,7 +72,8 @@ export default function SignUp(props) {
     <div>
         <div className="form-div">
             <form onSubmit={handleSubmit} className="form">
-                {!firstPart && <button className="back-btn" onClick={back}>Back</button>}
+                {/* {!firstPart && <button className="back-btn" onClick={back}>Back</button>} */}
+                {!firstPart && <div className="signup-back-arrow-div"><div onClick={back} className="signup-back-arrow-div2"><ArrowBackIcon htmlColor="#7FD8BE" /></div></div>}
                 <h1>{componentHeading}</h1>
                 {firstPart && <>
                 <div className="email-div">
@@ -113,7 +115,7 @@ export default function SignUp(props) {
                 }
             </form>
         </div>
-        <span className="btm-sign-up">Already have an account?<button onClick={props.onHandleLogin}>Sign in</button></span>
+        <span className="btm-sign-up">Already have an account? <button onClick={props.onHandleLogin}>Sign in</button></span>
     </div>
   )
 }

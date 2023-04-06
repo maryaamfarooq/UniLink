@@ -10,7 +10,7 @@ import { useState } from "react";
 
 export default function Post(props) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-  const [like,setLike] = useState(props.post.like)
+  const [like,setLike] = useState(props.post.likes.length)
   const [isLiked,setIsLiked] = useState(false)
 
   const likeHandler =()=>{
@@ -23,9 +23,9 @@ export default function Post(props) {
         <div className="postTop">
           <div className="postTopLeft">
             <div className="post-profile-pic">
-                <img onClick={props.onHandleProfile}
+                <img
                     src={
-                        "assets/person/1.jpeg"
+                        props.user.profilePicture
                     }
                     alt=""
                     className="post-profile-img"
@@ -33,9 +33,9 @@ export default function Post(props) {
             </div>
             <div className="post-top-info">
               <span className="postUsername">
-                {Users.filter((u) => u.id === props.post.userId)[0].username}
+                {props.user.firstName}
               </span>
-              <span className="postDate">{props.post.date}</span>
+              <span className="postDate">{props.post.createdAt}</span>
             </div>
           </div>
           <div className="postTopRight">
@@ -44,7 +44,7 @@ export default function Post(props) {
         </div>
         <div className="postCenter">
           <div className="postText">{props.post.desc}</div>
-          <img className="postImg" src={props.post.photo} alt="" />
+          {props.post.img && <img className="postImg" src={props.post.img} alt="" />}
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">

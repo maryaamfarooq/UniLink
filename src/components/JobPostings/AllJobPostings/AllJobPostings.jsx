@@ -30,7 +30,7 @@ export default function AllJobPostings(props) {
   }, [])
 
   return (
-    <div>
+    <div className="job-postings-container">
       {allJobs && allJobs.map((j) => (
           <Job job={j} />
         ))}

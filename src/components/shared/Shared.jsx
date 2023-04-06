@@ -45,9 +45,13 @@ export default function Shared(props) {
   async function createPost(e) {
     e.preventDefault();
     // console.log(desc);
+    const username = props.username;
+    const profilePicture = props.profilePicture;
     var res = await sendPost({
       desc,
       img,
+      username,
+      profilePicture,
     });
   }
 
@@ -59,7 +63,7 @@ export default function Shared(props) {
     <>
     <div className="shared">
       <div className="shareTop">
-        <img className="shareProfileImg" src="assets/person/1.jpeg" alt="" />
+        <img className="shareProfileImg" src={props.profilePicture} alt="" />
         <input
           placeholder="Create a post"
           className="shareInput"

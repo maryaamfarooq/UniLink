@@ -20,3 +20,21 @@
     font-weight: bold;
     cursor: pointer;
 }
+
+.signup-back-arrow-div{
+    display: flex;
+    /* padding: 0 15rem; */
+    justify-content: start;
+    margin-bottom: 1rem;
+}
+    
+.signup-back-arrow-div2 {
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 0.5rem 0.5rem 0.2rem 0.5rem;
+    transition: all 0.15s linear;
+}
+
+.signup-back-arrow-div2:hover {
+    background-color: var(--clr-primary-lighter);
+}

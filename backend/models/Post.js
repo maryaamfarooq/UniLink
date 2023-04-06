@@ -11,13 +11,13 @@ const PostSchema = new mongoose.Schema(
       type: String,
       max: 500,
     },
-    firstName:{
+    username:{
       type: String,
-      max: 50,
+      max: 100,
     },
-    lastName:{
+    profilePicture: {
       type: String,
-      max: 50,
+      max: 500,
     },
     img: {
       type: String,

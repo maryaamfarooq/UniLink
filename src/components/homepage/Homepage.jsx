@@ -11,12 +11,14 @@ export default function Homepage(props) {
   return (
     <>
       {/* <Topbar onHandleProfile={props.onHandleProfile}/>
-      <div className="homeContainer">
+      
         <Sidebar onHandleLogin={props.onHandleLogin}/>
         <Feed currComponent={props.currComponent}/>
         <Messages/>
-      </div> */}
-      <Feed currComponent={props.currComponent}/>
+       */}
+      <div className="homeContainer">
+      <Feed username={props.username} profilePicture={props.profilePicture} currComponent={props.currComponent}/>
+      </div>
     </>
   );
 }

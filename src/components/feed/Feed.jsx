@@ -1,52 +1,52 @@
-import React, {useState} from 'react'
-import Post from "../post/Post";
+import React, {useEffect, useState} from 'react'
+import TimelinePost from "../timelinePost/TimelinePost";
 import Shared from "../shared/Shared";
 import "./feed.css";
 import { Posts } from "../../dummyData";
+import axios from 'axios'; 
 var jwt = require("jsonwebtoken");
 
 export default function Feed(props) {
 
-  const token = localStorage.getItem("token");
-  const decodedToken = jwt.decode(token);
-  console.log(decodedToken);
+  const [allPosts, setAllPosts] = useState([]);
+  var i = 0;
 
-  // const [postDetails, setPostDetails] = useState({
-  //   firstName: "",
-  //   lastName: "",
-  //   description: "",
-  //   createdAt: "",
-  //   likes: [],
-  //   comments: [],
-  // })
-  // setPostDetails({
-  //   firstName: decodedToken.firstName,
-  //   lastName: decodedToken.lastName
-  // })
-  // postDetails.firstName = decodedToken.firstName;
-  // postDetails.lastName = decodedToken.lastName;
+  async function getAllPosts() {
+    try {
+      const token = localStorage.getItem("token");
+      const {data} = await axios.get('http://localhost:8080/api/v1/post/timeline/all', {
+        headers:{
+          authorization: `Bearer ${token}`
+        }
+      });
+      const postsArray = data.friendPosts;
+      return postsArray;
+    } catch (error) {
+        console.error(error.response.data);
+    }
+  }
 
-  // const [postDetails, setPostDetails] = useState({
-  //   createdAt: "",
-  //   createdBy: "",
-  //   desc: "",
-  //   hashtags: [],
-  //   likes: [],
-  //   _id: 0
-  // })
+  useEffect(() => {
+    i++;
+    if (i <= 1) {
+      async function fetchPosts() {
+        const res = await getAllPosts();
+        await setAllPosts(prevPosts => [...prevPosts, ...res]);
+      }
+      fetchPosts()
+    }
+  }, [])
 
-  // const [posts, setPosts] = useState([])
+  useEffect(() => {
+    console.log("allPostsssss"+JSON.stringify(allPosts));
+  }, [allPosts])
 
   return (
     <div className="feed">
-      <div className="feedWrapper">
-        {/* {props.currComponent === "newsfeed" && <Shared />} */}
-        {/* <Shared token={props.token} setPostDetails={setPostDetails} setPosts={setPosts}/> */}
-        <Shared/>
-        {/* {Posts.map((p) => (
-          <Post key={p.id} post={p} />
-        ))} */}
-        {/* <div className="temp">POST DEETSSSSSSSSSSS{postDetails.desc}</div> */}
+      <div className="feedWrapper"><Shared username={props.username} profilePicture={props.profilePicture}/>
+        {allPosts && allPosts.map((p) => (
+          <TimelinePost post={p} />
+        ))}
       </div>
     </div>
   );

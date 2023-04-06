@@ -7,8 +7,9 @@ const { StatusCodes } = require('http-status-codes');
 
 const createPost =  async (req, res) => {
   req.body.createdBy = req.user.userId
+  console.log(req.body);
   const newPost = await Post.create(req.body);
-  console.log("done");
+  console.log(newPost);
   res.status(StatusCodes.CREATED).json({ newPost });
 };
 //update a post
@@ -67,18 +68,16 @@ const getPost = async (req, res) => {
 //get timeline posts
 
 const getTimeline = async (req, res) => {
-  try {
-    const currentUser = await User.findById(req.body.userId);
-    const userPosts = await Post.find({ userId: currentUser._id });
-    const friendPosts = await Promise.all(
-      currentUser.followings.map((friendId) => {
-        return Post.find({ userId: friendId });
-      })
-    );
-    res.json(userPosts.concat(...friendPosts))
-  } catch (err) {
-    res.status(500).json(err);
-  }
+  const currentUserId = req.user.userId;
+  const currentUser = await User.find({ _id: currentUserId});
+
+  const unsortedFriendPosts = await Promise.all(
+    currentUser[0].friends.map((friendId) => {
+      return Post.find({ createdBy: friendId });
+    })
+  );
+  const friendPosts = unsortedFriendPosts.flat().sort((a, b) => b.createdAt - a.createdAt);
+    res.status(StatusCodes.CREATED).json({ friendPosts });
 };
 
 const getUserPosts = async (req, res) => {

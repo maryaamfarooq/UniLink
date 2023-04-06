@@ -15,6 +15,8 @@ import Topbar from './topbar1/Topbar';
 import Sidebar from './sidebar/Sidebar';
 import Messages from './messages/Messages';
 import JobPostings from './JobPostings/JobPostings';
+import AllEventsPostings from './Events/AllEventsPostings';
+var jwt = require("jsonwebtoken");
 
 export default function StartPage(props) {
 
@@ -22,12 +24,23 @@ export default function StartPage(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [username, setUsername] = useState("");
+  const [userId, setUserId] = useState();
+  const [profilePicture, setProfilePicture] = useState("");
 
   useEffect(() => {
     if(localStorage.getItem("token")) goToNewsfeed();
   }, [])
 
+  useEffect(() => {
+    console.log("pp: "+ profilePicture);
+  }, [profilePicture])
+
   function goToNewsfeed() {
+    const token = localStorage.getItem('token')
+    const decodedToken = jwt.decode(token);
+    setUsername(`${decodedToken.firstName} ${decodedToken.lastName}`);
+    setUserId(`${decodedToken.userId}`);
+    setProfilePicture(`${decodedToken.profilePicture}`);
     setIsLoggedIn(true);
     setCurrComponent("newsfeed");
   }
@@ -67,6 +80,10 @@ export default function StartPage(props) {
     setCurrComponent("enterOTP");
   }
 
+  function goToEvents() {
+    setCurrComponent("events");
+  }
+
   return (
     <>
     {!isLoggedIn && <div className="body">
@@ -76,7 +93,7 @@ export default function StartPage(props) {
                 {currComponent === "chooseAuth" && <ChooseAuth onHandleAuthCard={goToAuthCard} onHandleAuthEmail={goToAuthEmail}></ChooseAuth>}
                 {currComponent === "authEmail" && <ConfirmEmail onHandleLogin={goToLogin} onHandleEnterOTP={goToEnterOTP}></ConfirmEmail>}
                 {currComponent === "authCard" && <AuthCard onHandleChooseAuth={goToChooseAuth} onHandleLogin={goToLogin}></AuthCard>}
-                {currComponent === "enterOTP" && <EnterOTP></EnterOTP>}
+                {currComponent === "enterOTP" && <EnterOTP onHandleLogin={goToLogin} onHandleSignUp={goToSignUp}></EnterOTP>}
                 {currComponent === "signUp" && <SignUp onHandleNewsFeed={goToNewsfeed} onHandleLogin={goToLogin}></SignUp>}
             </div>
             <div className="right-div">
@@ -89,11 +106,12 @@ export default function StartPage(props) {
         </div>
     </div>}
 
-    {isLoggedIn && <><Topbar onHandleLogin={goToLogin} onHandleProfile={goToProfile} /><div className="cont">
-        <Sidebar onHandleNewsFeed={goToNewsfeed} onHandleJobs={goToJobs} onHandleLogin={goToLogin} />
-        {currComponent === "newsfeed" && <Homepage currComponent={currComponent}></Homepage>}
-        {currComponent === "profile" && <UserProfile username={username}></UserProfile>}
+    {isLoggedIn && <><Topbar profilePicture={profilePicture} onHandleLogin={goToLogin} onHandleProfile={goToProfile} /><div className="cont">
+        <Sidebar onHandleNewsFeed={goToNewsfeed} onHandleJobs={goToJobs} onHandleLogin={goToLogin} onHandleEvents={goToEvents} />
+        {currComponent === "newsfeed" && <Homepage username={username} profilePicture={profilePicture} currComponent={currComponent}></Homepage>}
+        {currComponent === "profile" && <UserProfile userId={userId} username={username}></UserProfile>}
         {currComponent === "jobs" && <JobPostings></JobPostings>}
+        {currComponent === "events" && <AllEventsPostings />}
         <Messages />
       </div></>}
 

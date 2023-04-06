@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "./sidebar.css";
 import HomeIcon from '@mui/icons-material/Home';
 import RssFeedIcon from '@mui/icons-material/RssFeed';
@@ -11,11 +11,14 @@ import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
 import EventIcon from '@mui/icons-material/Event';
 import SchoolIcon from '@mui/icons-material/School';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import axios from 'axios'; 
 
 import { Users } from "../../dummyData";
 import CloseFriend from "../trends/Trends";
 
 export default function Sidebar(props) {
+
+  const [trends, setTrends] = useState(["#trend1", "#trend2","#trend3","#trend4","#trend5"]);
 
   function goToNewsfeed() {
     props.onHandleNewsFeed();
@@ -25,7 +28,32 @@ export default function Sidebar(props) {
     props.onHandleJobs();
   }
 
-  const trendsArr = ["#trend1", "#trend2","#trend3","#trend4","#trend5"];
+  function goToEvents() {
+    props.onHandleEvents();
+  }
+
+  async function getTrends() {    
+    try {
+      const token = localStorage.getItem("token");
+      const {data} = await axios.get("http://localhost:8080/api/v1/trend", {
+        headers:{
+          authorization: `Bearer ${token}`
+        }
+      });
+      const trendsObj = data.hashtags;
+      setTrends(trendsObj);
+    } catch (error) {
+      console.error(error.response.data);
+    }
+  }
+
+  useEffect(() => {
+    async function fetchTrends() {
+      await getTrends();
+    }
+    fetchTrends();
+  }, [])
+
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
@@ -41,7 +69,7 @@ export default function Sidebar(props) {
             </li>
             <li className="sidebarListItem">
               <EventIcon className="sidebarIcon" />
-              <span className="sidebarListItemText">Events</span>
+              <span className="sidebarListItemText" onClick={goToEvents}>Events</span>
             </li>
             <li className="sidebarListItem">
               <MoreHorizIcon className="sidebarIcon" />
@@ -52,7 +80,7 @@ export default function Sidebar(props) {
         <div className="sidebarTrendsWrapper">
           <h4 className="trendsHeading">Trends</h4>
           <ul className="sidebarTrendsList">
-            {trendsArr.map(trend => <li key={trend}>{trend}</li>)}
+            {trends.map(trend => <li key={trend}>#{trend}</li>)}
           </ul>
         </div>
       </div>

@@ -10,15 +10,32 @@
     font-size: 1.1rem;
     font-weight: 500;
     letter-spacing: var(--spacing1);
-    text-align: center;
+    /* text-align: center; */
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     border-bottom: var(--border1);
-    padding: 1.25rem 0;
+    padding: 0.5rem 1rem;
 }
 
 .messages-wrapper {
     flex-grow: 0;
     flex-shrink: 0;
+}
+
+.message-back-arrow-div{
+    display: flex;
+    /* padding: 0 15rem; */
+    justify-content: start;
+}
+    
+.message-back-arrow-div2 {
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 0.5rem 0.5rem 0.2rem 0.5rem;
+    transition: all 0.15s linear;
+}
+
+.message-back-arrow-div2:hover {
+    background-color: var(--clr-primary-lighter);
 }

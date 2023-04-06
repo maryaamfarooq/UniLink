@@ -7,8 +7,6 @@ import Rightbar from "../../components/rightbar/Rightbar";
 
 export default function Profile(props) {
 
-  
-
   return (
     <>
       <Topbar />

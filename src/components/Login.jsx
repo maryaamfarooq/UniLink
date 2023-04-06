@@ -19,8 +19,8 @@ export default function Login(props) {
             const {data} = await axios.post('http://localhost:8080/api/v1/auth/login', credentials);
             if(data.token) {
                 localStorage.setItem('token', data.token)
-                const decodedToken = jwt.decode(data.token);
-                props.setUsername(`${decodedToken.firstName} ${decodedToken.lastName}`);
+                // const decodedToken = jwt.decode(data.token);
+                // props.setUsername(`${decodedToken.firstName} ${decodedToken.lastName}`);
                 // console.log(decodedToken);
                 // console.log(decodedToken.userId);
                 // console.log(decodedToken.name);

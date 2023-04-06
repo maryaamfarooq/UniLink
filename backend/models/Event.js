@@ -26,6 +26,7 @@ const EventSchema = new mongoose.Schema(
     },
     img: {
       type: String,
+      default: "",
     },
     hashtags: {
       type: Array,
