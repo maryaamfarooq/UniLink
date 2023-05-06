@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const { Schema } = mongoose
 
 const UserSchema = new mongoose.Schema(
   {
@@ -52,6 +53,7 @@ const UserSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    friendRequests: [{ type: Schema.Types.ObjectId, ref: "User" }],
     isAdmin: {
       type: Boolean,
       default: false,
@@ -76,6 +78,10 @@ const UserSchema = new mongoose.Schema(
     //   type: Number,
     //   enum: [1, 2, 3],
     // },
+    category: {
+      type: String,
+      enum: ['Alumni','Student','Faculty']
+    },
   },
   { timestamps: true }
 );

@@ -1,0 +1,15 @@
+
+.connect-div {
+    cursor: pointer;
+    transition: all 0.15s linear;
+}
+
+.connect-div:hover {
+    background-color: var(--clr-grey-2);
+}
+
+.connect-img {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+}

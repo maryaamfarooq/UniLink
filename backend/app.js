@@ -53,7 +53,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/user', userRouter);
+app.use('/api/v1/user', authenticateUser, userRouter);
 app.use('/api/v1/post', authenticateUser, postRouter);
 app.use('/api/v1/job', authenticateUser, jobRouter);
 app.use('/api/v1/trend', authenticateUser, trendRouter);

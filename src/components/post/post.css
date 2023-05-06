@@ -94,3 +94,8 @@
 .postText {
   margin-bottom: 0.5rem;
 }
+
+.postImgDiv {
+  display: flex;
+  justify-content: center;
+}

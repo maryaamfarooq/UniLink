@@ -36,7 +36,8 @@ export default function Shared(props) {
           authorization: `Bearer ${token}`
         }
       });
- 
+      setDesc("");
+      setImg(null);
   } catch (error) {
       console.error(error.response.data);
   }
@@ -74,7 +75,7 @@ export default function Shared(props) {
       </div>
       {img && <div className="share-preview-img-div"><div className="share-preview-img-div2">
         <CancelIcon onClick={removeImg} style={{ color: 'white' }} className="share-cancel-img" />
-        <img className="share-preview-img" src={img} />
+        <img value={img} className="share-preview-img" src={img} />
         </div></div>}
       <div className="shareBottom">
         <div className="shareIcon"><PublicIcon htmlColor="white"/></div>

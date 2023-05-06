@@ -82,9 +82,24 @@ const getTimeline = async (req, res) => {
 
 const getUserPosts = async (req, res) => {
   const currentUser = req.user.userId;
-  const userPosts = await Post.find({ createdBy: currentUser });
+  // const userPosts = await Post.find({ createdBy: currentUser });
+  const unsortedUserPosts = await Post.find({ createdBy: currentUser });
+
+  const userPosts = unsortedUserPosts.flat().sort((a, b) => b.createdAt - a.createdAt);
   res.status(StatusCodes.OK).json({ userPosts })
 }
+
+const getOtherUserPosts = async (req, res) => {
+  const otherUser = req.params.id;
+
+  const unsortedUserPosts = await Post.find({ createdBy: otherUser });
+
+  const userPosts = unsortedUserPosts
+    .flat()
+    .sort((a, b) => b.createdAt - a.createdAt);
+
+  res.status(StatusCodes.OK).json({ userPosts });
+};
 
 module.exports = 
   { 
@@ -94,5 +109,6 @@ module.exports =
     likePost, 
     getPost, 
     getTimeline,
-    getUserPosts
+    getUserPosts,
+    getOtherUserPosts
   }

@@ -15,7 +15,7 @@ export default function Login(props) {
 
     async function loginUser(credentials) {
         try {
-            console.log(credentials);
+            // console.log(credentials);
             const {data} = await axios.post('http://localhost:8080/api/v1/auth/login', credentials);
             if(data.token) {
                 localStorage.setItem('token', data.token)

@@ -54,23 +54,20 @@ const updateUser = async (req, res) => {
   }
 
   const getFriends = async (req, res) => {
-    try {
-        const user = await User.findById(req.params.userId);
-        const friends = await Promise.all(
-          user.followings.map((friendId) => {
-            return User.findById(friendId);
-          })
-        );
-        let friendList = [];
-        friends.map((friend) => {
-          const { _id, username, profilePicture } = friend;
-          friendList.push({ _id, username, profilePicture });
-        });
-        res.status(200).json(friendList)
-      } catch (err) {
-        res.status(500).json(err);
-      }
-  }
+    const user = await User.findById(req.params.id);
+    const friends = await Promise.all(
+      user.friends.map((friendId) => {
+        return User.findById(friendId);
+      })
+    );
+    //console.log(friends)
+    let friendList = [];
+    friends.map((friend) => {
+      const { _id, firstName, lastName, profilePicture } = friend;
+      friendList.push({ _id, firstName, lastName, profilePicture });
+    });
+    res.status(200).json(friendList)
+}
 
   const followUser = async (req, res) => {
     if (req.body.userId !== req.params.id) {
@@ -112,13 +109,236 @@ const updateUser = async (req, res) => {
       }
   }
 
+  // const searchUsers = async (req, res) => {
+  //   console.log("working");
+  //   const currUser = req.user.userId;
+  
+  //   const { firstName } = req.query;
+  
+  //   const queryObject = {
+  //     firstName: { $regex: `^${firstName}`, $options: "i" },
+  //   };
+  
+  //   // if (search) {
+  //   // }
+  
+  //   console.log(queryObject);
+  
+  //   let result = await User.find(queryObject);
+  
+  //   result = result.map((user) => ({
+  //     ...user.toObject(),
+  //     isFriend: user.friends.includes(currUser),
+  //   }));
+  
+  //   res.status(StatusCodes.OK).json({ result });
+  // };
+
+  const searchUsers = async (req, res) => {
+    //console.log("working");
+    const currUserId = req.user.userId;
+    const currUser = await User.findById(req.user.userId);
+  
+    const { firstName, department, batch, category, location, employment } = req.query;
+  
+    const queryObject = {};
+  
+    if (firstName) {
+      queryObject.firstName = { $regex: `^${firstName}`, $options: "i" };
+    }
+  
+    if (department) {
+      queryObject.department = department;
+    }
+  
+    if (batch) {
+      queryObject.batch = batch;
+    }
+  
+    if (category) {
+      queryObject.category = category;
+    }
+  
+    if (location) {
+      queryObject.location = { $regex: `^${location}`, $options: "i" };
+    }
+  
+    if (employment) {
+      queryObject.employment = { $regex: `^${employment}`, $options: "i" };
+    }
+  
+    //console.log(queryObject);
+  
+    let result = await User.find(queryObject);
+  
+    // 0 = not friend
+    // 1 = friend
+    // 2 = pending
+    // 3 = respond to request
+  
+    result = result.map((user) => {
+      let mutualFriendsCount = 0;
+      const isFriend = user.friends.includes(currUserId);
+      let isFriendNum = 0;
+  
+      if (isFriend) {
+        isFriendNum = 1;
+        user.friends.forEach((friend) => {
+          //console.log()
+          if (friend !== currUserId && currUser.friends.includes(friend)) {
+            mutualFriendsCount++;
+          }
+        });
+      } 
+  
+      if (user.friendRequests.includes(currUserId)) {
+        isFriendNum = 2;
+      } 
+
+      if (currUser.friendRequests.includes(user._id)) {
+        isFriendNum = 3;
+      }
+  
+      return {
+        ...user.toObject(),
+        isFriendNum,
+        mutualFriendsCount,
+      };
+    });
+  
+    res.status(StatusCodes.OK).json({ result });
+  };
+
+  const respondToFriendRequest = async (req, res) =>{
+    const {type} = req.body;
+    const otherUserId = req.params.id;
+    const currUserId = req.user.userId;
+    var num = -1;
+  
+    const currUser = await User.findById(currUserId);
+    const otherUser = await User.findById(otherUserId);
+    console.log("cancel1");
+  
+    if(type == 'accept'){
+      num = 1
+      await User.findOneAndUpdate(
+        { _id: currUserId },
+        { $pull: { friendRequests: otherUserId }, $push: { friends: otherUserId } }
+      );
+    
+      await User.findOneAndUpdate(
+        { _id: otherUserId },
+        { $push: { friends: currUserId } }
+      );
+    }
+  
+    if(type == 'reject'){
+      num = 0;
+      await User.findOneAndUpdate(
+        { _id: currUserId },
+        { $pull: { friendRequests: otherUserId } }
+      );
+    }
+
+    if (type == 'cancel') {
+      console.log("cancel");
+      num = 0;
+      await User.findOneAndUpdate(
+        { _id: otherUserId },
+        { $pull: { friendRequests: currUserId } }
+      );
+    }
+  
+    res.status(200).send({requestStatus: num});
+  }
+
+  const removeFriend = async (req, res) => {
+    const otherUserId = req.params.id;
+    const currUserId = req.user.userId;
+  
+    await User.findOneAndUpdate(
+      { _id: currUserId },
+      { $pull: { friends: otherUserId } }
+    );
+  
+    await User.findOneAndUpdate(
+      { _id: otherUserId },
+      { $pull: { friends: currUserId } }
+    );
+  
+    res.status(StatusCodes.OK).json({ requestStatus: 0 });
+  };
+
+  // const sendFriendRequest = async (req, res) => {
+  //   const otherUserId = req.params.id;
+  //   const currUserId = req.user.userId;
+  
+  //   const otherUser = await User.findById(otherUserId);
+  
+  //   // Check if the friend request is already sent
+  //   // if (otherUser.friends.includes(currUserId)) {
+  //   //   return res.status(StatusCodes.BAD_REQUEST).json({ requestStatus: 1 });
+  //   // }
+  
+  //   // if (otherUser.friendRequests.includes(currUserId)) {
+  //   //   return res.status(StatusCodes.BAD_REQUEST).json({ requestStatus: 2 });
+  //   // }
+  
+  //   otherUser.friendRequests.push(currUserId);
+  //   // await otherUser.save();
+    
+  
+  //   res.status(StatusCodes.OK).json({ requestStatus: 2 });
+  //   // 1 = friend (cannot send)
+  //   // 2 = pending
+  //   // 3 = sent now
+  // };
+
+  const sendFriendRequest = async (req, res) => {
+    const otherUserId = req.params.id;
+    const currUserId = req.user.userId;
+  
+    const result = await User.findByIdAndUpdate(otherUserId, {
+      $addToSet: { friendRequests: currUserId },
+    });
+  
+    res.status(StatusCodes.OK).json({ requestStatus: 2 });
+    // 1 = friend (cannot sent)
+    // 2 = pending
+    // 3 = sent now
+  };
+
+  const showRequests = async (req, res) => {
+    const currUserId = req.user.userId;
+  
+    const currUser = await User.findById(currUserId);
+  
+    const friendRequests = await Promise.all(
+      currUser.friendRequests.map(async (userId) => {
+        const otherUser = await User.findById(userId);
+        return {
+          firstName: otherUser.firstName,
+          lastName: otherUser.lastName,
+          profilePicture: otherUser.profilePicture,
+        };
+      })
+    );
+  
+    res.send({ friendRequests });
+  };
+  
   module.exports = {
   updateUser,
   deleteUser,
   getUser,
   getFriends,
   followUser,
-  unfollowUser
+  unfollowUser,
+  searchUsers,
+  sendFriendRequest,
+  respondToFriendRequest,
+  removeFriend,
+  showRequests
   }
 
 

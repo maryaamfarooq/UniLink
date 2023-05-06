@@ -16,7 +16,9 @@ import Sidebar from './sidebar/Sidebar';
 import Messages from './messages/Messages';
 import JobPostings from './JobPostings/JobPostings';
 import AllEventsPostings from './Events/AllEventsPostings';
-import Messenger from './messages/Messenger';
+import Conversation from './messages/Conversation';
+import Search from './Search/Search';
+import ViewUserProfile from './ViewUserProfile/ViewUserProfile';
 var jwt = require("jsonwebtoken");
 
 export default function StartPage(props) {
@@ -27,6 +29,9 @@ export default function StartPage(props) {
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState();
   const [profilePicture, setProfilePicture] = useState("");
+  const [conversationFriend, setConversationFriend] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [viewUserProfileId, setViewUserProfileId] = useState("");
 
   useEffect(() => {
     if(localStorage.getItem("token")) goToNewsfeed();
@@ -35,6 +40,10 @@ export default function StartPage(props) {
   useEffect(() => {
     console.log("pp: "+ profilePicture);
   }, [profilePicture])
+
+  useEffect(() => {
+    console.log("conversationFriend: "+ conversationFriend);
+  }, [conversationFriend])
 
   function goToNewsfeed() {
     const token = localStorage.getItem('token')
@@ -85,9 +94,22 @@ export default function StartPage(props) {
     setCurrComponent("events");
   }
 
+  function goToConversation() {
+    setCurrComponent("conversation");
+  }
+
+  function goToSearch() {
+    setCurrComponent("search");
+  }
+
+  function goToViewUserProfile(userInfo) {
+    setViewUserProfileId(userInfo);
+    setCurrComponent("viewUserProfile");
+  }
+
   return (
     <>
-    {/* {!isLoggedIn && <div className="body">
+    {!isLoggedIn && <div className="body">
         <div className="login-container">
             <div className="left-div">
                 {currComponent === "login" && <Login setUsername={setUsername} onHandleNewsFeed={goToNewsfeed} onHandleChooseAuth={goToChooseAuth}></Login>}
@@ -107,14 +129,17 @@ export default function StartPage(props) {
         </div>
     </div>}
 
-    {isLoggedIn && <><Topbar profilePicture={profilePicture} onHandleLogin={goToLogin} onHandleProfile={goToProfile} /><div className="cont">
+    {isLoggedIn && <><Topbar setSearchQuery={setSearchQuery} profilePicture={profilePicture} onHandleSearch={goToSearch} onHandleLogin={goToLogin} onHandleProfile={goToProfile} onHandleNewsFeed={goToNewsfeed}/><div className="cont">
         <Sidebar onHandleNewsFeed={goToNewsfeed} onHandleJobs={goToJobs} onHandleLogin={goToLogin} onHandleEvents={goToEvents} />
         {currComponent === "newsfeed" && <Homepage username={username} profilePicture={profilePicture} currComponent={currComponent}></Homepage>}
         {currComponent === "profile" && <UserProfile userId={userId} username={username}></UserProfile>}
         {currComponent === "jobs" && <JobPostings></JobPostings>}
         {currComponent === "events" && <AllEventsPostings />}
-        <Messages />
-      </div></>} */}
+        {currComponent === "conversation" && <Conversation conversationFriend={conversationFriend} />}
+        {currComponent === "search" && <Search searchQuery={searchQuery} onHandleViewUserProfile={goToViewUserProfile} />}
+        {currComponent === "viewUserProfile" && <ViewUserProfile userInfo={viewUserProfileId}/>}
+        <Messages userId={userId} onHandleConversation={goToConversation} setConversationFriend={setConversationFriend}/>
+      </div></>}
 
 {/* {true && <><Topbar onHandleProfile={goToProfile} /><div className="cont">
         <Sidebar onHandleNewsFeed={goToNewsfeed} onHandleJobs={goToJobs} onHandleLogin={goToLogin} />
@@ -124,7 +149,7 @@ export default function StartPage(props) {
         <Messages />
       </div></>} */}
 
-<Messenger userId={userId} />
+{/* <Messenger userId={userId} /> */}
 
     </>
   )

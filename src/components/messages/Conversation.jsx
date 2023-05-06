@@ -1,35 +1,46 @@
-import React from "react";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import "./conversation.css";
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'; 
+import './conversation.css'
 
-export default function Conversation({ conversation, currentUser }) {
-  const [user, setUser] = useState(null);
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+export default function Conversation(props) {
 
-  useEffect(() => {
-    const friendId = conversation.members.find((m) => m !== currentUser._id); // here the conversations object has memebers array in which one is sender and other is receiver. we will get the id of the receiver
+    const [friend, setFriend] = useState();
 
-    const getUser = async () => {
-      try {
-        const res = await axios("/users?userId=" + friendId); // here we are getting the user id of the variable frienid
-        setUser(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getUser();
-  }, [currentUser, conversation]);
+    useEffect(() => {
+        console.log("props.conversationFriend" + props.conversationFriend);
+        async function getUser() {    
+            try {
+              const token = localStorage.getItem("token");
+              const {data} = await axios.get(`http://localhost:8080/api/v1/user/${props.conversationFriend}`);
+              const userObj = data;
+              setFriend(userObj);
+              console.log("FRIEND: "+JSON.stringify(friend));
+            } catch (error) {
+              console.error(error.response.data);
+            }
+          }
+          getUser()
+    }, [])
+
+    useEffect(() => {
+        console.log("props.conversationFriend" + props.conversationFriend);
+        async function getUser() {    
+            try {
+              const token = localStorage.getItem("token");
+              const {data} = await axios.get(`http://localhost:8080/api/v1/user/${props.conversationFriend}`);
+              const userObj = data;
+              setFriend(userObj);
+              console.log("FRIEND: "+JSON.stringify(friend));
+            } catch (error) {
+              console.error(error.response.data);
+            }
+          }
+          getUser()
+    }, [])
 
   return (
-    <div className="conversation">
-      <img
-        className="conversationImg"
-        src={user && user.profilePicture ? PF + user.profilePicture : PF + "person/noAvatar.png"}
-        alt=""
-      />
-      <span className="conversationName">{user && user.username}</span>  
+    <div className="conversation-div">
+      {friend && friend.firstName}
     </div>
-    // here in conversationanem we are using the friendid user as conversation name
-  );
+  )
 }

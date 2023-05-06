@@ -53,3 +53,9 @@
 .form p {
     margin: 1rem 0;
 }
+
+.error-msg {
+    color:red;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}

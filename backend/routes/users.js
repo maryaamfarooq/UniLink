@@ -7,14 +7,24 @@ const {
   getUser,
   getFriends,
   followUser,
-  unfollowUser
+  unfollowUser,
+  searchUsers,
+  sendFriendRequest,
+  respondToFriendRequest,
+  removeFriend,
+  showRequests
 } = require('../controllers/users')
-
 
 router.route("/:id").put(updateUser).delete(deleteUser)
 router.get('/:id', getUser)
 router.get("/friends/:userId", getFriends)
 router.put("/:id/follow", followUser)
 router.put("/:id/unfollow", unfollowUser)
+router.get("/:id/getFriends", getFriends)
+router.get("/", searchUsers)
+router.put("/:id/sendRequest", sendFriendRequest);
+router.put("/:id/respondRequest", respondToFriendRequest);
+router.put("/:id/removeFriend", removeFriend);
+router.get("/showRequests/all", showRequests);
 
 module.exports = router

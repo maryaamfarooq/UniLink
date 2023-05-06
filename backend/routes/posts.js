@@ -8,7 +8,8 @@ const {
     likePost, 
     getPost, 
     getTimeline, 
-    getUserPosts
+    getUserPosts,
+    getOtherUserPosts,
     } = require('../controllers/posts')
 
 const { 
@@ -21,5 +22,6 @@ router.get('/', getUserPosts)
 router.put('/:id/like', likePost)
 router.post('/uploads', uploadProductImage)
 router.get('/timeline/all', getTimeline)
+router.get('/:id/otherUser', getOtherUserPosts)
 
 module.exports = router

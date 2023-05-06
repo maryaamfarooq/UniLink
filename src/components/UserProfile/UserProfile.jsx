@@ -13,7 +13,11 @@ export default function UserProfile(props) {
   async function getUser() {    
     try {
       const token = localStorage.getItem("token");
-      const {data} = await axios.get(`http://localhost:8080/api/v1/user/${props.userId}`);
+      const {data} = await axios.get(`http://localhost:8080/api/v1/user/${props.userId}`, {
+        headers:{
+          authorization: `Bearer ${token}`
+        }
+      });
       const userObj = data;
       setUserInfo(userObj);
       // console.log("user: "+JSON.stringify(userInfo));

@@ -47,7 +47,7 @@ const Event = ({event}) => {
 
       <div className="event-div3" onClick={handleInterested}>
         {/* {event.interestedCount} */}
-        521 interested
+        3 interested
         {!isInterested && <StarBorderIcon className="event-div3-star" size="large" htmlColor="#7FD8BE" />}
         {isInterested && <StarIcon className="event-div3-star" size="small" htmlColor="#7FD8BE" />}
       </div>

@@ -44,7 +44,7 @@ export default function Post(props) {
         </div>
         <div className="postCenter">
           <div className="postText">{props.post.desc}</div>
-          {props.post.img && <img className="postImg" src={props.post.img} alt="" />}
+          {props.post.img && <div className="postImgDiv"><img className="postImg" src={props.post.img} alt="" /></div>}
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">

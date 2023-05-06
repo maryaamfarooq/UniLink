@@ -1,0 +1,79 @@
+.view-user-add {
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
+.view-user-friend {
+    padding: 0.5rem 0.5rem 0.3rem 0.5rem;
+    border-radius: 50%;
+    background-color: var(--clr-primary);
+}
+
+.view-user-not-friend {
+    padding: 0.5rem 0.5rem 0.3rem 0.5rem;
+    border-radius: 50%;
+    background-color: var(--clr-grey-2);
+}
+
+.view-user-grey {
+    color: var(--clr-grey-3);
+}
+
+.view-user-pending, .view-user-pending2 {
+    padding: 0.4rem;
+    border-radius: 0.5rem;
+    transition: all 0.15s;
+}
+
+.view-user-pending:hover, .view-user-pending2 {
+    background-color: rgb(229, 229, 229)
+}
+
+.view-user-repond-to-request {
+    color: gray;
+    transition: all 0.15s;
+}
+
+.view-user-repond-to-request:hover, .view-user-repond-to-request2 {
+    border-radius: 1rem;
+    padding: 0.5rem;
+    background-color: rgb(245, 245, 245)
+}
+
+.view-user-respond-div{
+    background-color: white;
+    position: absolute;
+    width: 10rem;
+    padding: 0.5rem;
+    border-radius: 0.7rem;
+    box-shadow: 0 1px 0.5rem rgba(0, 0, 0, 0.278);
+}
+
+.view-user-respond-div-accept, .view-user-respond-div-reject{
+    padding: 0.4rem;
+    border-radius: 0.5rem;
+    transition: all 0.15s;
+}
+
+.view-user-respond-div-accept:hover, .view-user-respond-div-reject:hover {
+    background-color: rgb(229, 229, 229)
+}
+
+.view-user-cancel-div {
+    background-color: white;
+    position: absolute;
+    width: 10rem;
+    padding: 0.5rem;
+    border-radius: 0.7rem;
+    box-shadow: 0 1px 0.5rem rgba(0, 0, 0, 0.278);
+}
+
+.view-user-cancel {
+    padding: 0.4rem;
+    border-radius: 0.5rem;
+    transition: all 0.15s;
+}
+
+.view-user-cancel:hover {
+    background-color: rgb(229, 229, 229)
+}

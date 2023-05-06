@@ -1,32 +1,36 @@
 import React, {useState} from 'react'
-import Messagee from './Messagee';
+import Message from './message/Message'
 import { messagesInfo } from '../../messages'
 import AddIcon from '@mui/icons-material/Add';
 import Dialog from '@mui/material/Dialog';
 import Connection from './Connection';
 import axios from 'axios'; 
 import "./messages.css";
+import { DialogContent } from '@mui/material';
 
-export default function Messages() {
+export default function Messages(props) {
 
-    const messageArr = messagesInfo.map(m => <Messagee key={m.id} data={m}/>);
+    const messageArr = messagesInfo.map(m => <Message key={m.id} data={m}/>);
     const [open, setOpen] = useState(false);
     const [allConnections, setAllConnections] = useState([]);
 
     async function addChat() {
+      handleClickOpen();
       try {
         const token = localStorage.getItem("token");
-        const {data} = await axios.get('http://localhost:8080/api/v1/job/getUserJobs/', {
-          headers:{
-            authorization: `Bearer ${token}`
-          }
-        });
-        const connectionsArray = data.userConnections;
-        setAllConnections(prevConnections => [...prevConnections, ...connectionsArray]);
+        const {data} = await axios.get(`http://localhost:8080/api/v1/user/${props.userId}/getFriends`);
+        const connectionsArray = data;
+        console.log("connectionsArray: "+JSON.stringify(data));
+        setAllConnections(prevConnections => [...connectionsArray]);
         // console.log(JSON.stringify(jobsArray));
       } catch (error) {
-          console.error(error.response.data);
+          console.error(error);
       }
+    }
+
+    async function createNewConversation(connection) {
+      props.setConversationFriend(connection);
+      props.onHandleConversation();
     }
 
     const handleClickOpen = () => {
@@ -48,12 +52,14 @@ export default function Messages() {
     </div>
 
     <Dialog open={open} onClose={handleClose}>
+      <DialogContent>
       <div>      
-        {/* {allConnections && allConnections.map((c) => (
-          <Connection connection={c} />
-        ))} */}
-        {!allConnections && <div>No connections</div>}
+        {allConnections && allConnections.map((c) => (
+          <Connection key={c._id} connection={c} createNewConversation={createNewConversation} />
+        ))}
+        {allConnections.length == 0 && <div>No connections</div>}
       </div>
+      </DialogContent>
     </Dialog>
   </>
   )
