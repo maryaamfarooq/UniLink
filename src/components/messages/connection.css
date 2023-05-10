@@ -2,14 +2,30 @@
 .connect-div {
     cursor: pointer;
     transition: all 0.15s linear;
+    display: flex;
+    padding: 0.7rem;
 }
 
 .connect-div:hover {
-    background-color: var(--clr-grey-2);
+    background-color: #7fd8bd48;
 }
 
 .connect-img {
-    width: 3rem;
-    height: 3rem;
+    width: 3.4rem;
+    height: 3.4rem;
     border-radius: 50%;
+    object-fit: cover;
+    margin-right: 0.5rem;
+}
+
+.connect-info {
+    display:flex;
+    flex-direction: column;
+    justify-content: center
+}
+
+.connect-email {
+    font-size: 0.7rem;
+    color: gray;
+    margin-top: 0.1rem
 }

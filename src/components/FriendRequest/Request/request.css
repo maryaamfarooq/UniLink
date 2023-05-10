@@ -1,0 +1,49 @@
+.request-result-wrapper {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(239,239,239);
+    border-radius: 1.5rem;
+    padding: 1rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.request-result-img {
+    width: 3.4rem;
+    height: 3.4rem;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.request-result-info {
+    flex: 2;
+    justify-self: start;
+    padding-left: 1rem;
+}
+
+.request-result-add {
+    cursor: pointer;
+}
+
+.request-result-friend {
+    padding: 1rem 1rem 0.8rem 1rem;
+    border-radius: 50%;
+    background-color: var(--clr-primary);
+}
+
+.request-result-not-friend {
+    padding: 1rem 1rem 0.8rem 1rem;
+    border-radius: 50%;
+    background-color: var(--clr-grey-2);
+}
+
+.request-result-name {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.request-result-grey {
+    color: var(--clr-grey-3);
+    font-size: 0.9rem;
+}

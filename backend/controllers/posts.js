@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Post = require("../models/Post");
+const Comment = require("../models/Comment");
 const User = require("../models/User");
 const { StatusCodes } = require('http-status-codes');
 
@@ -41,19 +42,36 @@ const deletePost =  async (req, res) => {
 //like / dislike a post
 
 const likePost = async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    if (!post.likes.includes(req.body.userId)) {
-      await post.updateOne({ $push: { likes: req.body.userId } });
-      res.status(200).json("The post has been liked");
-    } else {
-      await post.updateOne({ $pull: { likes: req.body.userId } });
-      res.status(200).json("The post has been disliked");
-    }
-  } catch (err) {
-    res.status(500).json(err);
+  const currUserId = req.user.userId;
+  const currUserFN = req.user.firstName;
+  const currUserLN = req.user.lastName;
+  const postId = req.params.id
+  const post = await Post.findById(postId);
+  const user = await User.findById(post.createdBy);
+  var numLikes = post.likes.length;
+  if (!post.likes.includes(currUserId)) {
+    await user.updateOne({
+      $push: {
+        allNotifications: { postId, userId: currUserId },
+        newNotifications: { postId, userId: currUserId },
+      },
+    });
+    await post.updateOne({ $push: { likes: currUserId } });
+    numLikes+=1;
+    res.status(200).json({ numLikes, isLiked: true });
+  } else {
+    await user.updateOne({
+      $pull: {
+        allNotifications: { postId, userId: currUserId },
+        newNotifications: { postId, userId: currUserId },
+      },
+    });
+    await post.updateOne({ $pull: { likes: currUserId } });
+    numLikes-=1;
+    res.status(200).json({ numLikes, isLiked: false });
   }
 };
+
 //get a post
 
 const getPost = async (req, res) => {
@@ -68,26 +86,67 @@ const getPost = async (req, res) => {
 //get timeline posts
 
 const getTimeline = async (req, res) => {
-  const currentUserId = req.user.userId;
-  const currentUser = await User.find({ _id: currentUserId});
+  //console.log("hello");
+  try {
+    const currentUserId = req.user.userId;
+    const currentUser = await User.findById(currentUserId);
 
-  const unsortedFriendPosts = await Promise.all(
-    currentUser[0].friends.map((friendId) => {
-      return Post.find({ createdBy: friendId });
-    })
-  );
-  const friendPosts = unsortedFriendPosts.flat().sort((a, b) => b.createdAt - a.createdAt);
-    res.status(StatusCodes.CREATED).json({ friendPosts });
+    const unsortedFriendPosts = await Promise.all(
+      currentUser.friends.map((friendId) => {
+        return Post.find({ createdBy: friendId }).lean();
+      })
+    );
+
+    const friendPostIds = unsortedFriendPosts.flat().map((post) => post._id);
+
+    const comments = await Comment.find({ postId: { $in: friendPostIds } });
+
+    const friendPosts = unsortedFriendPosts
+      .flat()
+      .map((post) => {
+        const postComments = comments.filter(
+          (comment) => comment.postId.toString() === post._id.toString()
+        );
+        return { ...post, comments: postComments };
+      })
+      .sort((a, b) => b.createdAt - a.createdAt);
+
+    res.status(StatusCodes.OK).json({ friendPosts });
+  } catch (error) {
+    console.error("Error retrieving timeline posts:", error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal Server Error" });
+  }
 };
 
 const getUserPosts = async (req, res) => {
-  const currentUser = req.user.userId;
-  // const userPosts = await Post.find({ createdBy: currentUser });
-  const unsortedUserPosts = await Post.find({ createdBy: currentUser });
+  //console.log('hello')
+  try {
+    const currentUser = req.user.userId;
+    const unsortedUserPosts = await Post.find({
+      createdBy: currentUser,
+    }).lean();
 
-  const userPosts = unsortedUserPosts.flat().sort((a, b) => b.createdAt - a.createdAt);
-  res.status(StatusCodes.OK).json({ userPosts })
-}
+    const postIds = unsortedUserPosts.map((post) => post._id);
+
+    const comments = await Comment.find({ postId: { $in: postIds } });
+
+    const userPosts = unsortedUserPosts.map((post) => {
+      const postComments = comments.filter(
+        (comment) => comment.postId.toString() === post._id.toString()
+      );
+      return { ...post, comments: postComments };
+    });
+
+    res.status(StatusCodes.OK).json({ userPosts });
+  } catch (error) {
+    console.error("Error retrieving user posts:", error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal Server Error" });
+  }
+};
 
 const getOtherUserPosts = async (req, res) => {
   const otherUser = req.params.id;
@@ -100,6 +159,8 @@ const getOtherUserPosts = async (req, res) => {
 
   res.status(StatusCodes.OK).json({ userPosts });
 };
+
+
 
 module.exports = 
   { 

@@ -12,7 +12,8 @@ const {
   sendFriendRequest,
   respondToFriendRequest,
   removeFriend,
-  showRequests
+  showRequests,
+  showNotifications
 } = require('../controllers/users')
 
 router.route("/:id").put(updateUser).delete(deleteUser)
@@ -26,5 +27,6 @@ router.put("/:id/sendRequest", sendFriendRequest);
 router.put("/:id/respondRequest", respondToFriendRequest);
 router.put("/:id/removeFriend", removeFriend);
 router.get("/showRequests/all", showRequests);
+router.get("/showNotifications/all", showNotifications);
 
 module.exports = router

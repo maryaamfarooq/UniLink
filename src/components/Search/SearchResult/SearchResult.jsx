@@ -15,10 +15,10 @@ export default function SearchResult({onClick, result}) {
         <div className="search-result-grey">{result.mutualFriendsCount} mutuals</div>
       </div>
       <div className="search-result-add">
-        {result.isFriendNum == 0 && <div className="search-result-not-friend search-result-grey"><AddIcon sx={{ color: "white"}} /></div>}
-        {result.isFriendNum == 1 && <div className="search-result-friend search-result-grey"><DoneIcon sx={{ color: "white"}} /></div>}
-        {result.isFriendNum == 2 && <div className="search-result-pending search-result-grey">Pending</div>}
-        {result.isFriendNum == 3 && <div className="search-result-respond search-result-grey">Respond to request</div>}
+        {result.isFriendNum === 0 && <div className="search-result-not-friend search-result-grey"><AddIcon sx={{ color: "white"}} /></div>}
+        {result.isFriendNum === 1 && <div className="search-result-friend search-result-grey"><DoneIcon sx={{ color: "white"}} /></div>}
+        {result.isFriendNum === 2 && <div className="search-result-pending search-result-grey">Pending</div>}
+        {result.isFriendNum === 3 && <div className="search-result-respond search-result-grey">Respond to request</div>}
       </div>
     </div>
   )

@@ -15,7 +15,7 @@ var jwt = require("jsonwebtoken");
 export default function Shared(props) {
 
   const [desc, setDesc] = useState("");
-  const [img, setImg] = useState();
+  const [img, setImg] = useState("");
   const [hashtags, setHashtags] = useState([]);
 
   const [open, setOpen] = useState(false);
@@ -48,12 +48,13 @@ export default function Shared(props) {
     // console.log(desc);
     const username = props.username;
     const profilePicture = props.profilePicture;
+    if(desc.length > 0 || img.length > 0) {
     var res = await sendPost({
       desc,
       img,
       username,
       profilePicture,
-    });
+    });}
   }
 
   function removeImg() {

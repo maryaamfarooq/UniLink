@@ -1,97 +1,142 @@
-/* .topbarContainer {
-    padding: 0.5rem;
-    width: 100vw;
-    background-color: #7FD8BE;
+*{
+    /* border:1px solid red; */
+}
+
+.topbar-container {
+    /* width: 100vw; */
+    background-color: var(--clr-primary);
     display: flex;
     align-items: center;
-    justify-content: space-between;
     position: sticky;
     top: 0;
-    z-index: 999;
-  }
-  
-  .topbarLeft {
-    flex: 3;
-  }
-  
-  .logo {
-    font-size: 24px;
-    margin-left: 20px;
+    z-index: 99999;
+    padding: 0.7rem 1.5rem;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.15);
+}
+
+.topbar-logo {
+    font-family: var(--ff-secondary);
+    color: white;
     font-weight: bold;
-    color: white;
+    font-size: 2rem;
+    letter-spacing: var(--spacing1);
+    flex: 1;
     cursor: pointer;
-  }
-  
-  .topbarCenter {
-    flex: 5;
-  }
-  
-  .searchbar {
-    width: 100%;
-    height: 30px;
+}
+
+.topbar-search-wrapper {
+    flex: 2;
+    /* margin: 1rem; */
+}
+
+.topbar-search-bar {
     background-color: white;
-    border-radius: 30px;
+    padding: 0.5rem 0.8rem;
     display: flex;
     align-items: center;
-  }
-  
-  .searchIcon {
-    font-size: 20px !important;
-    margin-left: 10px;
-  }
-  
-  .searchInput {
+    border-radius: 50rem;
+    width: 100%;
+    font-size: 1rem;
+}
+
+.topbar-search-bar input {
     border: none;
-    width: 70%;
-  }
-  
-  .searchInput:focus {
-    outline: none;
-  }
-  
-  .topbarRight {
-    flex: 3;
+    width: 100%;
+    margin: 0;
+    padding-left: 0.3rem;
+}
+
+.topbar-search-bar input:focus {
+    outline: none
+}
+
+.topbar-search-bar input::placeholder {
+    font-size: 1rem;
+    font-family: var(--ff-primary);
+    letter-spacing: var(--spacing1);
+    color: var(--clr-grey-2);
+    font-weight: 500;
+}
+
+.topbar-right {
     display: flex;
+    justify-content: right;
     align-items: center;
-    justify-content: space-around;
-    color: white;
-  }
-  
-  .topbarLink {
-    margin-right: 10px;
-    font-size: 14px;
+    flex: 1;
+}
+
+.topbar-notif {
+    padding: 0.4rem 0.55rem;
+    border-radius: 50rem;
+    background-color: var(--clr-primary-dark);
     cursor: pointer;
-  }
-  
-  .topbarIcons {
-    display: flex;
-  }
-  
-  .topbarIconItem {
-    margin-right: 10px;
-    cursor: pointer;
+    margin-left: 0.3rem;
     position: relative;
-  }
-  
-  .topbarIconBadge {
-    width: 15px;
-    height: 15px;
-    background-color: red;
-    border-radius: 50%;
-    color: white;
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-  }
-  
-  .topbarImg {
-    width: 32px;
-    height: 32px;
+}
+
+.topbar-notif:hover {
+    outline: 0.1rem solid var(--clr-primary-light); 
+}
+
+.topbar-profile-img {
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
-  } */
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-left: 1rem;
+    position: relative;
+}
+
+.topbar-profile-img:hover {
+    outline: 0.1rem solid var(--clr-primary-light);
+}
+
+.topbar-profile-dropdown {
+    position: fixed;
+    right: 0;
+    background-color: white;
+    padding: 0.2rem 0;
+    border-radius: 1rem;
+    box-shadow: 0 1px 2rem rgba(0, 0, 0, 0.121);
+}
+
+.topbar-dropdown-div{
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem;
+    border-radius: 0.8rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.15s linear;
+}
+
+.topbar-dropdown-div:hover {
+    background-color: #7fd8bd48;
+}
+
+.topbar-dropdown-img {    
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.topbar-dropdown-icon {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 1rem;
+}
+
+.friend-requests-div {
+    width: 25rem;
+    max-height: 12rem;
+    /* overflow: scroll; */
+    position: absolute;
+    top: 3.7rem;
+    background-color: white;
+    box-shadow: 0 1px 0.5rem rgba(0, 0, 0, 0.278);
+    border-radius: 1rem;
+    padding: 1rem
+}

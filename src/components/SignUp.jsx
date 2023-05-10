@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// import { ChatEngine } from 'react-chat-engine';
 import { useEffect, useState } from "react";
 import './styles/global.css';
 import "./styles/login.css";
@@ -16,11 +17,36 @@ async function signUpUser(credentials) {
 
         const decodedToken = jwt.decode(data.token);
         console.log(decodedToken);
+
+        const formdata = new FormData();
+        formdata.append('username', credentials.email);
+        formdata.append('secret', 'secret');
+        formdata.append('first_name', credentials.firstName);
+    
+        // getFile('https://res.cloudinary.com/diyzgufu3/image/upload/v1682950746/Posts/WhatsApp_Image_2023-05-01_at_7.17.18_PM_c16moa.jpg')
+        //   .then((avatar) => {
+        //     formdata.append('avatar', avatar, avatar.name);
+        axios.post('https://api.chatengine.io/users/', formdata, {
+            headers: { 'Private-Key': '7f7bd096-bcaa-4ae2-b6af-7dc96a7f389a' },
+        });
+        //   })
+        //   .catch((error) => {
+        //     console.log('Error creating user:', error);
+        //   });
+
     } catch (error) {
         // console.error(error.response.data);
         console.log("errorrrrr");
     }
 }
+
+// const getFile = async (url) => {
+//     const response = await fetch(url);
+//     const data = await response.blob();
+
+//     return new File([data], 'userPhoto.jpg', { type: 'image/jpeg' });
+//   };
+
 
 export default function SignUp(props) {
 
@@ -55,7 +81,7 @@ export default function SignUp(props) {
         // console.log(res);
         // setDisFirstName(res.firstName);
         // setDisLastName(res.lastName);
-        props.onHandleNewsFeed();
+        props.onHandleSetupProfile();
     }
 
     function goToNext() {

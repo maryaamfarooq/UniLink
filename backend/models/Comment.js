@@ -4,10 +4,10 @@ const CommentSchema = new mongoose.Schema(
   {
     createdBy: {
       type: mongoose.Types.ObjectId,
-      ref: 'User',
-      required: [true, 'Please provide user'],
+      ref: "User",
+      required: [true, "Please provide user"],
     },
-    postId:{
+    postId: {
       type: String,
       required: true,
     },
@@ -19,6 +19,14 @@ const CommentSchema = new mongoose.Schema(
     likes: {
       type: Array,
       default: [],
+    },
+    profilePicture: {
+      type: String,
+      max: 500,
+    },
+    username: {
+      type: String,
+      max: 100,
     },
   },
   { timestamps: true }

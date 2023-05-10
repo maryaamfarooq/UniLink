@@ -40,18 +40,16 @@ const updateUser = async (req, res) => {
 
   const getUser = async (req, res) => {
     const userId = req.params.id;
-  try {
-    // const user = userId
-    //   ? await User.findById(userId)
-    //   : await User.findOne({ username: username });
-    // const { password, updatedAt, ...other } = user._doc;
-    //console.log(userId);
     const user = await User.findById(userId);
-    res.status(200).json(user);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-  }
+  
+    const userfriends = [];
+    for (const friendId of user.friends) {
+      const Userfriend = await User.findById(friendId);
+      userfriends.push(Userfriend);
+    }
+  
+    res.status(200).json({ user, userfriends });
+  };
 
   const getFriends = async (req, res) => {
     const user = await User.findById(req.params.id);
@@ -326,6 +324,34 @@ const updateUser = async (req, res) => {
   
     res.send({ friendRequests });
   };
+
+  const showNotifications = async (req, res) => {
+    const currUserId = req.user.userId;
+  
+    const currUser = await User.findById(currUserId);
+  
+    const notifications = await Promise.all(
+      currUser.allNotifications.map(async (notification) => {
+        console.log(notification);
+        const { userId, postId, IsSeen } = notification;
+        const oldIsSeen = IsSeen;
+        const otherUser = await User.findById(userId);
+        await User.updateMany(
+          { "allNotifications.IsSeen": false },
+          { $set: { "allNotifications.$[].IsSeen": true } }
+        );
+        return {
+          firstName: otherUser.firstName,
+          lastName: otherUser.lastName,
+          profilePicture: otherUser.profilePicture,
+          IsSeen: oldIsSeen,
+          postId: postId,
+        };
+      })
+    );
+  
+    res.send({ notifications });
+  };
   
   module.exports = {
   updateUser,
@@ -338,7 +364,8 @@ const updateUser = async (req, res) => {
   sendFriendRequest,
   respondToFriendRequest,
   removeFriend,
-  showRequests
+  showRequests,
+  showNotifications
   }
 
 

@@ -9,9 +9,13 @@ function createNewConversation(connection) {
 }
 
   return (
-    <div className="connect-div" onClick={() => createNewConversation(props.connection._id)}>
+    <div className="connect-div" onClick={props.onHandleMessenger}>
       <img className="connect-img" src={props.connection.profilePicture} />
-      {props.connection.firstName}
+      <div className="connect-info">
+      <div className="connect-name">{props.connection.firstName} {props.connection.lastName}</div>
+      {/* <div>{props.connection.email}</div> */}
+      {/* <div className="connect-email">mfarooq.bscs19seecs@seecs.edu.pk</div> */}
+      </div>
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import Post from '../post/Post'
+import TimelinePost from '../timelinePost/TimelinePost';
 import axios from 'axios';
 import DoneIcon from '@mui/icons-material/Done';
 import AddIcon from '@mui/icons-material/Add';
@@ -24,7 +24,7 @@ export default function ViewUserProfile(props) {
             }
           });
         const userObj = data;
-        setUserInfo(userObj);
+        setUserInfo(userObj.user);
       } catch (error) {
         console.error(error.response.data);
       }
@@ -208,7 +208,7 @@ export default function ViewUserProfile(props) {
             <div>About</div>
           </div>
           {allPosts && allPosts.map((p) => (
-            <Post key={p._id} user={userInfo} post={p} />
+            <TimelinePost key={p._id} user={userInfo} post={p} />
           ))}
         </div>
       </div>

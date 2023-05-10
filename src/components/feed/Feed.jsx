@@ -19,6 +19,7 @@ export default function Feed(props) {
           authorization: `Bearer ${token}`
         }
       });
+      console.log("POSTS: " + data);
       const postsArray = data.friendPosts;
       return postsArray;
     } catch (error) {
@@ -31,21 +32,21 @@ export default function Feed(props) {
     if (i <= 1) {
       async function fetchPosts() {
         const res = await getAllPosts();
-        await setAllPosts(prevPosts => [...prevPosts, ...res]);
+        // await setAllPosts(prevPosts => [...prevPosts, ...res]);
+        await setAllPosts(res);
       }
       fetchPosts()
     }
   }, [])
 
   useEffect(() => {
-    console.log("allPostsssss"+JSON.stringify(allPosts));
   }, [allPosts])
 
   return (
     <div className="feed">
       <div className="feedWrapper"><Shared username={props.username} profilePicture={props.profilePicture}/>
         {allPosts && allPosts.map((p) => (
-          <TimelinePost post={p} />
+          <TimelinePost post={p} key={p._id} />
         ))}
       </div>
     </div>

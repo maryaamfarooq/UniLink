@@ -11,7 +11,7 @@ import ConfirmEmail from './AuthEmail/ConfirmEmail';
 import EnterOTP from './AuthEmail/EnterOTP';
 import UserProfile from './UserProfile/UserProfile';
 import Homepage from './homepage/Homepage';
-import Topbar from './topbar1/Topbar';
+import Topbar from './topbar/Topbar';
 import Sidebar from './sidebar/Sidebar';
 import Messages from './messages/Messages';
 import JobPostings from './JobPostings/JobPostings';
@@ -19,6 +19,7 @@ import AllEventsPostings from './Events/AllEventsPostings';
 import Conversation from './messages/Conversation';
 import Search from './Search/Search';
 import ViewUserProfile from './ViewUserProfile/ViewUserProfile';
+import SetupProfile from './SetupProfile';
 var jwt = require("jsonwebtoken");
 
 export default function StartPage(props) {
@@ -32,18 +33,11 @@ export default function StartPage(props) {
   const [conversationFriend, setConversationFriend] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewUserProfileId, setViewUserProfileId] = useState("");
+  const [userEmail, setUserEmail] = useState("");
 
   useEffect(() => {
     if(localStorage.getItem("token")) goToNewsfeed();
   }, [])
-
-  useEffect(() => {
-    console.log("pp: "+ profilePicture);
-  }, [profilePicture])
-
-  useEffect(() => {
-    console.log("conversationFriend: "+ conversationFriend);
-  }, [conversationFriend])
 
   function goToNewsfeed() {
     const token = localStorage.getItem('token')
@@ -51,7 +45,12 @@ export default function StartPage(props) {
     setUsername(`${decodedToken.firstName} ${decodedToken.lastName}`);
     setUserId(`${decodedToken.userId}`);
     setProfilePicture(`${decodedToken.profilePicture}`);
+    setUserEmail(decodedToken.email);
     setIsLoggedIn(true);
+    setCurrComponent("newsfeed");
+  }
+
+  function goToNewsfeed2() {
     setCurrComponent("newsfeed");
   }
 
@@ -102,9 +101,17 @@ export default function StartPage(props) {
     setCurrComponent("search");
   }
 
+  function goToMessenger() {
+    setCurrComponent("messenger");
+  }
+
   function goToViewUserProfile(userInfo) {
     setViewUserProfileId(userInfo);
     setCurrComponent("viewUserProfile");
+  }
+
+  function goToSetupProfile() {
+    setCurrComponent("setupProfile");
   }
 
   return (
@@ -117,7 +124,8 @@ export default function StartPage(props) {
                 {currComponent === "authEmail" && <ConfirmEmail onHandleLogin={goToLogin} onHandleEnterOTP={goToEnterOTP}></ConfirmEmail>}
                 {currComponent === "authCard" && <AuthCard onHandleChooseAuth={goToChooseAuth} onHandleLogin={goToLogin}></AuthCard>}
                 {currComponent === "enterOTP" && <EnterOTP onHandleLogin={goToLogin} onHandleSignUp={goToSignUp}></EnterOTP>}
-                {currComponent === "signUp" && <SignUp onHandleNewsFeed={goToNewsfeed} onHandleLogin={goToLogin}></SignUp>}
+                {currComponent === "signUp" && <SignUp onHandleNewsFeed={goToNewsfeed} onHandleLogin={goToLogin} onHandleSetupProfile={goToSetupProfile}></SignUp>}
+        {currComponent === "setupProfile" && <SetupProfile onHandleNewsFeed={goToNewsfeed} />}
             </div>
             <div className="right-div">
                 <div className="right-h">
@@ -129,17 +137,23 @@ export default function StartPage(props) {
         </div>
     </div>}
 
-    {isLoggedIn && <><Topbar setSearchQuery={setSearchQuery} profilePicture={profilePicture} onHandleSearch={goToSearch} onHandleLogin={goToLogin} onHandleProfile={goToProfile} onHandleNewsFeed={goToNewsfeed}/><div className="cont">
+    {isLoggedIn && currComponent != "messenger" && <><Topbar setSearchQuery={setSearchQuery} profilePicture={profilePicture} onHandleSearch={goToSearch} onHandleLogin={goToLogin} onHandleProfile={goToProfile} onHandleNewsFeed={goToNewsfeed}/><div className="cont">
         <Sidebar onHandleNewsFeed={goToNewsfeed} onHandleJobs={goToJobs} onHandleLogin={goToLogin} onHandleEvents={goToEvents} />
         {currComponent === "newsfeed" && <Homepage username={username} profilePicture={profilePicture} currComponent={currComponent}></Homepage>}
         {currComponent === "profile" && <UserProfile userId={userId} username={username}></UserProfile>}
         {currComponent === "jobs" && <JobPostings></JobPostings>}
         {currComponent === "events" && <AllEventsPostings />}
-        {currComponent === "conversation" && <Conversation conversationFriend={conversationFriend} />}
+        {currComponent === "conversation" && <Conversation conversationFriend={conversationFriend} userEmail={userEmail}/>}
         {currComponent === "search" && <Search searchQuery={searchQuery} onHandleViewUserProfile={goToViewUserProfile} />}
         {currComponent === "viewUserProfile" && <ViewUserProfile userInfo={viewUserProfileId}/>}
-        <Messages userId={userId} onHandleConversation={goToConversation} setConversationFriend={setConversationFriend}/>
+        <Messages userId={userId} onHandleConversation={goToConversation} setConversationFriend={setConversationFriend} onHandleMessenger={goToMessenger}/>
       </div></>}
+
+    {isLoggedIn && currComponent === "messenger" && <>
+    <Topbar setSearchQuery={setSearchQuery} profilePicture={profilePicture} onHandleSearch={goToSearch} onHandleLogin={goToLogin} onHandleProfile={goToProfile} onHandleNewsFeed={goToNewsfeed}/><div className="cont">
+      <Conversation userEmail={userEmail}/>
+    </div>
+    </>}
 
 {/* {true && <><Topbar onHandleProfile={goToProfile} /><div className="cont">
         <Sidebar onHandleNewsFeed={goToNewsfeed} onHandleJobs={goToJobs} onHandleLogin={goToLogin} />
@@ -150,6 +164,21 @@ export default function StartPage(props) {
       </div></>} */}
 
 {/* <Messenger userId={userId} /> */}
+
+{/* <div className="body">
+        <div className="login-container">
+            <div className="left-div">
+        <SetupProfile onHandleNewsFeed={goToNewsfeed2} />
+            </div>
+            <div className="right-div">
+                <div className="right-h">
+                  <h1>UnıLınk</h1>
+                  <h1 className="right-h-dot">.</h1>
+                  <h1 className="right-h-dot2">.</h1>
+                </div>
+            </div>
+        </div>
+    </div> */}
 
     </>
   )
