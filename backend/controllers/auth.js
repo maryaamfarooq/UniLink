@@ -5,8 +5,15 @@ const { BadRequestError, UnauthenticatedError } = require('../errors')
 const register = async (req, res) => {
   //console.log(req.body);
   //const {email, password} = req.body
+  const userExists = await User.findOne({ email });
+  if (userExists) {
+    throw new BadRequestError("A user is already created with this email");
+  }
+
   const user = await User.create({ ...req.body })
   const token = user.createJWT()
+
+
   //console.log("registered");
   res.status(StatusCodes.CREATED).json({ user: { email: user.email }, token })
   //res.send(req.body);

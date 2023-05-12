@@ -2,6 +2,7 @@ import React, { Component, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './styles/global.css';
 import "./styles/start-page.css";
+import axios from 'axios'; 
 
 import Login from './Login';
 import SignUp from './SignUp';
@@ -34,20 +35,46 @@ export default function StartPage(props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [viewUserProfileId, setViewUserProfileId] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [isNewNotif, setIsNewNotif] = useState(false);
+  const [otp, setOtp] = useState("");
 
   useEffect(() => {
-    if(localStorage.getItem("token")) goToNewsfeed();
+    if(localStorage.getItem("token")) {
+      const token = localStorage.getItem('token')
+      const decodedToken = jwt.decode(token);
+      setUsername(`${decodedToken.firstName} ${decodedToken.lastName}`);
+      setUserId(decodedToken.userId);
+      setUserEmail(decodedToken.email);
+      setIsLoggedIn(true);
+      async function getUser() {
+        try {
+          const {data} = await axios.get(`http://localhost:8080/api/v1/user/${decodedToken.userId}`, {
+            headers:{
+              authorization: `Bearer ${token}`
+            }
+          });
+          const userObj = data;
+          setProfilePicture(userObj.user.profilePicture);
+          // console.log("user: "+JSON.stringify(userObj));
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      getUser();
+      goToNewsfeed()
+    };
   }, [])
 
   function goToNewsfeed() {
+    if(localStorage.getItem("token")) {
     const token = localStorage.getItem('token')
     const decodedToken = jwt.decode(token);
     setUsername(`${decodedToken.firstName} ${decodedToken.lastName}`);
-    setUserId(`${decodedToken.userId}`);
-    setProfilePicture(`${decodedToken.profilePicture}`);
+    setUserId(decodedToken.userId);
     setUserEmail(decodedToken.email);
     setIsLoggedIn(true);
     setCurrComponent("newsfeed");
+    }
   }
 
   function goToNewsfeed2() {
@@ -121,9 +148,9 @@ export default function StartPage(props) {
             <div className="left-div">
                 {currComponent === "login" && <Login setUsername={setUsername} onHandleNewsFeed={goToNewsfeed} onHandleChooseAuth={goToChooseAuth}></Login>}
                 {currComponent === "chooseAuth" && <ChooseAuth onHandleAuthCard={goToAuthCard} onHandleAuthEmail={goToAuthEmail}></ChooseAuth>}
-                {currComponent === "authEmail" && <ConfirmEmail onHandleLogin={goToLogin} onHandleEnterOTP={goToEnterOTP}></ConfirmEmail>}
-                {currComponent === "authCard" && <AuthCard onHandleChooseAuth={goToChooseAuth} onHandleLogin={goToLogin}></AuthCard>}
-                {currComponent === "enterOTP" && <EnterOTP onHandleLogin={goToLogin} onHandleSignUp={goToSignUp}></EnterOTP>}
+                {currComponent === "authEmail" && <ConfirmEmail setOtp={setOtp} onHandleLogin={goToLogin} onHandleEnterOTP={goToEnterOTP}></ConfirmEmail>}
+                {currComponent === "authCard" && <AuthCard onHandleChooseAuth={goToChooseAuth} onHandleSignUp={goToSignUp}></AuthCard>}
+                {currComponent === "enterOTP" && <EnterOTP otp={otp} onHandleLogin={goToLogin} onHandleSignUp={goToSignUp}></EnterOTP>}
                 {currComponent === "signUp" && <SignUp onHandleNewsFeed={goToNewsfeed} onHandleLogin={goToLogin} onHandleSetupProfile={goToSetupProfile}></SignUp>}
         {currComponent === "setupProfile" && <SetupProfile onHandleNewsFeed={goToNewsfeed} />}
             </div>
@@ -137,9 +164,9 @@ export default function StartPage(props) {
         </div>
     </div>}
 
-    {isLoggedIn && currComponent != "messenger" && <><Topbar setSearchQuery={setSearchQuery} profilePicture={profilePicture} onHandleSearch={goToSearch} onHandleLogin={goToLogin} onHandleProfile={goToProfile} onHandleNewsFeed={goToNewsfeed}/><div className="cont">
+    {isLoggedIn && currComponent != "messenger" && <><Topbar onHandleViewUserProfile={goToViewUserProfile} setSearchQuery={setSearchQuery} profilePicture={profilePicture} onHandleSearch={goToSearch} onHandleLogin={goToLogin} onHandleProfile={goToProfile} onHandleNewsFeed={goToNewsfeed}/><div className="cont">
         <Sidebar onHandleNewsFeed={goToNewsfeed} onHandleJobs={goToJobs} onHandleLogin={goToLogin} onHandleEvents={goToEvents} />
-        {currComponent === "newsfeed" && <Homepage username={username} profilePicture={profilePicture} currComponent={currComponent}></Homepage>}
+        {currComponent === "newsfeed" && <Homepage setIsNewNotif={setIsNewNotif} username={username} profilePicture={profilePicture} currComponent={currComponent}></Homepage>}
         {currComponent === "profile" && <UserProfile userId={userId} username={username}></UserProfile>}
         {currComponent === "jobs" && <JobPostings></JobPostings>}
         {currComponent === "events" && <AllEventsPostings />}
@@ -150,7 +177,7 @@ export default function StartPage(props) {
       </div></>}
 
     {isLoggedIn && currComponent === "messenger" && <>
-    <Topbar setSearchQuery={setSearchQuery} profilePicture={profilePicture} onHandleSearch={goToSearch} onHandleLogin={goToLogin} onHandleProfile={goToProfile} onHandleNewsFeed={goToNewsfeed}/><div className="cont">
+    <Topbar setIsNewNotif={setIsNewNotif} setSearchQuery={setSearchQuery} profilePicture={profilePicture} onHandleSearch={goToSearch} onHandleLogin={goToLogin} onHandleProfile={goToProfile} onHandleNewsFeed={goToNewsfeed}/><div className="cont">
       <Conversation userEmail={userEmail}/>
     </div>
     </>}

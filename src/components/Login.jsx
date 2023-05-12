@@ -12,11 +12,13 @@ export default function Login(props) {
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState('');
     const [loginFail, setLoginFail] = useState(false);
+    const [loginStatus, setLoginStatus] = useState(200)
 
     async function loginUser(credentials) {
         try {
             // console.log(credentials);
             const {data} = await axios.post('http://localhost:8080/api/v1/auth/login', credentials);
+            // console.log("DATA:" + data);
             if(data.token) {
                 localStorage.setItem('token', data.token)
                 // const decodedToken = jwt.decode(data.token);
@@ -27,11 +29,12 @@ export default function Login(props) {
                 setLoginFail(false);
                 return true;
             }
-            setLoginFail(true);
             // console.log("bhbnj"+data);
             return false;
         } catch (error) {
-            // console.error(error.response.data);
+            setLoginStatus(error.response.status);
+            setLoginFail(true);
+            // console.error("ERROR: "+error.response.status);
         }
     }
 
@@ -67,7 +70,8 @@ export default function Login(props) {
                     </div>
                     <a href="">Forgot Password?</a>
                 </div>
-                {loginFail && <h4>Invalid login details</h4>}
+                {loginFail && loginStatus === 400 && <h4 className="login-fail">Please fill in your credentials</h4>}
+                {loginFail && loginStatus != 400 && <h4 className="login-fail">Invalid credentials</h4>}
                 <button type="submit" onClick={verifyLogin} className="sign-in-btn">Sign in</button>
             </form>
         </div>

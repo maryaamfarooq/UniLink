@@ -4,9 +4,9 @@ import './request.css'
 import DoneIcon from '@mui/icons-material/Done';
 import AddIcon from '@mui/icons-material/Add';
 
-export default function Request({result}) {
+export default function Request({onClick, result}) {
   return (
-    <div>
+    <div onClick={onClick}>
     <div className="request-result-wrapper">
       <div className="request-result-pp">
         <img className="request-result-img" src={result.profilePicture} />

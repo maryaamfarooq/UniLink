@@ -13,6 +13,8 @@ export default function ViewUserProfile(props) {
     const [openRespondToRequest, setOpenRespondToRequest] = useState(false);
     const [openCancelFriendRequest, setOpenCancelFriendRequest] = useState(false);
     const [currReqStatus, setCurrReqStatus] = useState();
+    const [currView, setCurrView] = useState("posts");
+    const [allFriends, setAllFriends] = useState([]);
     var i = 0;
   
     async function getUser() {    
@@ -25,6 +27,7 @@ export default function ViewUserProfile(props) {
           });
         const userObj = data;
         setUserInfo(userObj.user);
+        setAllFriends(userObj.userfriends)
       } catch (error) {
         console.error(error.response.data);
       }
@@ -43,6 +46,18 @@ export default function ViewUserProfile(props) {
       } catch (error) {
           console.error(error.response.data);
       }
+    }
+
+    function goToPosts() {
+      setCurrView("posts");
+    }
+  
+    function goToFriends() {
+      setCurrView("friends");
+    }
+  
+    function goToAbout() {
+      setCurrView("about");
     }
 
     async function acceptFriendRequest() {
@@ -201,7 +216,7 @@ export default function ViewUserProfile(props) {
             <span className="profileInfoDesc">{userInfo.desc}</span>
             </div>
         </div>
-        <div className="profileBottom">
+        {/* <div className="profileBottom">
           <div className="profileBottomTags">
             <div>Posts</div>
             <div>Friends</div>
@@ -210,7 +225,57 @@ export default function ViewUserProfile(props) {
           {allPosts && allPosts.map((p) => (
             <TimelinePost key={p._id} user={userInfo} post={p} />
           ))}
+        </div> */}
+        <div className="profileBottom">
+        <div className="profileBottomTags">
+          <div className={currView === "posts" ? "clr-green" : ""} onClick={goToPosts}>Posts</div>
+          <div className={currView === "friends" ? "clr-green" : ""} onClick={goToFriends}>Friends</div>
+          <div className={currView === "about" ? "clr-green" : ""} onClick={goToAbout}>About</div>
         </div>
+        {currView === "posts" && allPosts && allPosts.map((p) => (
+          <TimelinePost userInfo={userInfo} post={p} />
+        ))}
+        {currView === "friends" && allFriends.length > 0 && allFriends.map((f) => (
+          <UserFriend result={f} />
+        ))}
+        {currView === "friends" && allFriends.length == 0 && 
+          <div className="user-profile-no-friends">No friends</div>
+        }
+        {currView === "about" && <div>
+          <About userInfo={userInfo}/>
+          </div>}
+      </div>
       </div>
     )
 }
+
+
+function UserFriend({result}) {
+  return (
+    <div className="user-profile-wrapper">
+    <div className="user-profile-pp">
+      <img className="user-profile-img" src={result.profilePicture} />
+    </div>
+    <div className="user-profile-info">
+      <div><span className="user-profile-name">{result.firstName} {result.lastName}</span><span className="profileSeperator user-profile-grey">&middot;</span><span className="user-profile-grey italicize">{result.category}</span></div>
+      <div><span className="user-profile-grey">{result.department}</span><span className="profileSeperator user-profile-grey">&middot;</span><span className="user-profile-grey">{result.batch}</span></div>
+    </div>
+    <div className="user-profile-add">
+      <div className="user-profile-friend user-profile-grey"><DoneIcon sx={{ color: "white"}} /></div>
+    </div>
+  </div>
+  )
+}
+
+function About({userInfo}) {
+  return (
+    <div className="user-about-wrapper">
+      <div className="user-about-div"><span className="user-about-h">Email: </span>{userInfo.email}</div>
+      <div className="user-about-div"><span className="user-about-h">Department: </span>{userInfo.department}</div>
+      <div className="user-about-div"><span className="user-about-h">Batch: </span>{userInfo.batch}</div>
+      {userInfo.city && <div className="user-about-div"><span className="user-about-h">Location: </span>{userInfo.city}</div>}
+      {userInfo.employment && <div className="user-about-div"><span className="user-about-h">Employment: </span>{userInfo.employment}</div>}
+    </div>
+  );
+}
+

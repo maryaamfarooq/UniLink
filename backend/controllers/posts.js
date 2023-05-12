@@ -132,7 +132,7 @@ const getUserPosts = async (req, res) => {
 
     const comments = await Comment.find({ postId: { $in: postIds } });
 
-    const userPosts = unsortedUserPosts.map((post) => {
+    const userPosts = unsortedUserPosts.reverse().map((post) => {
       const postComments = comments.filter(
         (comment) => comment.postId.toString() === post._id.toString()
       );

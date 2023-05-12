@@ -77,3 +77,71 @@
 .view-user-cancel:hover {
     background-color: rgb(229, 229, 229)
 }
+
+.user-about-wrapper {
+    font-family: var(--ff-primary);
+    background-color: var(--clr-grey-4);
+    margin: 1.7rem;
+    padding: 1.7rem;
+    border-radius: 1rem;
+}
+
+.user-about-div:not(:last-child) {
+    margin-bottom: 0.5rem;
+}
+
+.user-about-h {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.user-profile-wrapper {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(239,239,239);
+    border-radius: 1.5rem;
+    padding: 1rem;
+    cursor: pointer;
+    margin: 1rem;
+}
+
+.user-profile-img {
+    width: 3.4rem;
+    height: 3.4rem;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.user-profile-info {
+    flex: 2;
+    justify-self: start;
+    padding-left: 1rem;
+}
+
+.user-profile-add {
+    cursor: pointer;
+}
+
+.user-profile-friend {
+    padding: 1rem 1rem 0.8rem 1rem;
+    border-radius: 50%;
+    background-color: var(--clr-primary);
+}
+
+.user-profile-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.user-profile-grey {
+    color: var(--clr-grey-3);
+    font-size: 0.9rem;
+}
+
+.user-profile-no-friends {
+    font-size: 1.2rem;
+    color: gray;
+    text-align: center;
+    margin-top: 4rem
+}

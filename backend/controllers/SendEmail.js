@@ -1,18 +1,74 @@
-const nodemailer = require('nodemailer');
-const sgMail = require('@sendgrid/mail');
+// const sgMail = require("@sendgrid/mail");
+const nodemailer = require("nodemailer");
+const Mailgen = require('mailgen');
+const User = require('../models/User')
 
+const sendEmail = async (req,res) => {
 
-const sendEmail = async (req, res) => {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  const msg = {
-    to: 'masood.bscs19seecs@seecs.edu.pk', // Change to your recipient
-    from: 'ajwadmasood@hotmail.com', // Change to your verified sender
-    subject: 'One Time Password',
-    text: 'Your six digit OTP is 456823',
-    //html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+  const {email} = req.body;
+  // console.log("email" + email);
+
+  const userExists = await User.findOne({ email });
+  // console.log("userExists" + userExists);
+  if (userExists) {
+    throw new BadRequestError("A user is already created with this email");
+  }
+
+  let config = {
+    service: 'gmail',
+    auth:{
+      user:'unilink.connecting@gmail.com',
+      pass: 'nbzqqtypgqmbzahv'
+    }
+  }
+
+  let transporter = nodemailer.createTransport(config);
+
+  let MailGenerator = new Mailgen({
+    theme: "default",
+    product:{
+      name:"Unilink",
+      link:"https://mailgen.js"
+    }
+  })
+
+  const otp = Math.floor(1000 + Math.random() * 9000);
+
+  let response = {
+    body: {
+      // name: username,
+      intro: `Your One Time Password is ${otp}`,
+      // table: {
+      //   data: [
+      //     {
+      //       item:"NodeMailer Stack book",
+      //       description:"A backend application",
+      //       price: "$10.99",
+      //     }
+      //   ]
+      // },
+      outro: "Happy Connecting!",
+    },
   };
-  const info = await sgMail.send(msg);
-  res.json(info);
+
+  let mail = MailGenerator.generate(response);
+
+  let message = {
+    from: "unilink.connecting@gmail.com",
+    to: email,
+    subject: "OTP",
+    html: mail
+  };
+
+  transporter.sendMail(message).then(()=>{
+    return res.status(201).json({
+      // msg:"you should receive an email"
+      otp:otp
+    })
+  }).catch(error => {
+    return res.status(500).json({error});
+  })
+
 };
 
-module.exports = sendEmail;
+module.exports = { sendEmail };

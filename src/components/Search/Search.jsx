@@ -47,7 +47,7 @@ export default function Search(props) {
             if(department.length > 0) queryParam += `&department=${department}`;
             if(batch.length > 0) queryParam += `&batch=${batch}`;
             if(category.length > 0) queryParam += `&category=${category}`;
-            if(location.length > 0) queryParam += `&location=${location}`;
+            if(location.length > 0) queryParam += `&city=${location}`;
             if(employment.length > 0) queryParam += `&employment=${employment}`;
             // console.log("SEARCH RESULTS: " + queryParam);
             const token = localStorage.getItem("token");
@@ -95,7 +95,7 @@ export default function Search(props) {
                     </select>
                     
                     <select onChange={(e) => setCategory(e.target.value)} className="search-filters-1">
-                        <option>Category</option>
+                        <option value="">Category</option>
                         {newCategoryArr}
                     </select>
                 </div>

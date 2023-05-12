@@ -16,13 +16,13 @@ export default function JobByYou({job}) {
       </div>
       <div className="job-u-app">
         {/* {job.applicantsNo} applicants */}
-        0 applicants
+        20 applicants
       </div>
       <div>
         <div className='job-u-city'>{job.city}</div>
         <div className='job-u-country'>{job.country}</div>
       </div>
-      <div>{job.createdAt}</div>
+      <div className="job-u-date">{job.createdAt.slice(0,10)}</div>
       <button className="job-u-apply">View Applications</button>
     </div>
   )

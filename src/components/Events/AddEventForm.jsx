@@ -9,15 +9,15 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Upload from '../FileUpload';
+import './all-events.css';
 
 export default function AddEventForm(props) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [img, setImg] = useState('');
   const [eventName, setEventName] = useState('');
-  const [hashtags, setHashtags] = useState('');
-  const [organizer, setOrganizer] = useState('');
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
   const [location, setLocation] = useState('');
-  const [desc, setDesc] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -51,10 +51,9 @@ export default function AddEventForm(props) {
     sendEventPost({
       img,
       eventName,
-      hashtags,
-      organizer,
       location,
-      desc,
+      date, 
+      time,
     });
     handleClose();
   };
@@ -83,38 +82,30 @@ export default function AddEventForm(props) {
           />
           <TextField
             margin="dense"
-            id="hashtags"
-            label="Hashtags"
-            type="text"
-            fullWidth
-            onChange={(e) => setHashtags(e.target.value)}
-          />
-          <TextField
-            margin="dense"
-            id="organizer"
-            label="Organizer"
-            type="text"
-            fullWidth
-            onChange={(e) => setOrganizer(e.target.value)}
-          />
-          <TextField
-            margin="dense"
             id="location"
             label="Location"
             type="text"
             fullWidth
             onChange={(e) => setLocation(e.target.value)}
+            required
           />
           <TextField
             margin="dense"
             id="desc"
-            label="Description"
+            label="Date"
             type="text"
             fullWidth
-            onChange={(e) => setDesc(e.target.value)}
+            onChange={(e) => setDate(e.target.value)}
             required
-            multiline
-            rows={4}
+          />
+          <TextField
+            margin="dense"
+            id="desc"
+            label="Time"
+            type="text"
+            fullWidth
+            onChange={(e) => setTime(e.target.value)}
+            required
           />
         </DialogContent>
         <DialogActions>

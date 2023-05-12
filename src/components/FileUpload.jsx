@@ -13,7 +13,7 @@ function Upload(props) {
   };
 
   async function postImage() {
-    console.log(file);
+    // console.log(file);
     const token = localStorage.getItem("token");
     const formData = new FormData();
     formData.append('image',file)
@@ -24,19 +24,19 @@ function Upload(props) {
          'Content-Type':'multipart/form-data'
         }
        });
-       console.log("src: "+src);
+      //  console.log("src: "+src);
       if (src) props.setImg(src);
       else props.setImg("");
-      console.log("open: " +props.open);
+      // console.log("open: " +props.open);
       if(props.setOpen) {props.setOpen();}
     } catch (error) {
-        console.error(error.response.data);
+        console.error(error);
     }
   }
 
   async function handleFormSubmit(event) {
     event.preventDefault();
-    console.log("FILE: " + file);
+    // console.log("FILE: " + file);
     // Send the file to the server using fetch or axios
     await postImage(file);
   };

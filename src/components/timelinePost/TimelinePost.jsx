@@ -12,7 +12,7 @@ import axios from 'axios';
 import { useState } from "react";
 var jwt = require("jsonwebtoken");
 
-export default function TimelinePost({post}) {
+export default function TimelinePost({setIsNewNotif, userInfo, post}) {
 
   const [like,setLike] = useState(post.likes.length)
   const [commentsArr, setCommentsArr] = useState([]);
@@ -32,6 +32,7 @@ export default function TimelinePost({post}) {
       });
       setLike(data.numLikes);
       setIsLiked(data.isLiked);
+      if(setIsNewNotif) setIsNewNotif(prev => !prev);
     } catch (error) {
         console.error(error.response.data);
     }
@@ -80,13 +81,20 @@ function showComments() {
         <div className="postTop">
           <div className="postTopLeft">
             <div className="post-profile-pic">
-                <img
+                {userInfo && <img
                     src={
-                        post.profilePicture
+                      userInfo.profilePicture
                     }
                     alt=""
                     className="post-profile-img"
-                />
+                />}
+                {!userInfo && <img
+                    src={
+                      post.profilePicture
+                    }
+                    alt=""
+                    className="post-profile-img"
+                />}
             </div>
             <div className="post-top-info">
               <span className="postUsername">

@@ -23,6 +23,24 @@
 }
 
 .notif-name {
-    font-weight: 600;
     font-size: 1rem;
+}
+
+.notif-info-div {
+    display: flex;
+}
+
+.notif-post-img {
+    width: 3.4rem;
+    height: 3.4rem;
+    object-fit: cover;
+    margin-left: 0.1rem;
+}
+
+.notif-not-seen {
+    background-color: var(--clr-primary-lighter);
+}
+
+.notif-post-desc {
+    color: gray;
 }

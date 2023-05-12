@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const { StatusCodes } = require('http-status-codes')
 const { BadRequestError, UnauthenticatedError } = require('../errors')
+const Post = require("../models/Post");
 
 const updateUser = async (req, res) => {
     //if (req.body.userId === req.params.id || req.body.isAdmin) {
@@ -137,7 +138,7 @@ const updateUser = async (req, res) => {
     const currUserId = req.user.userId;
     const currUser = await User.findById(req.user.userId);
   
-    const { firstName, department, batch, category, location, employment } = req.query;
+    const { firstName, department, batch, category, city , employment } = req.query;
   
     const queryObject = {};
   
@@ -157,8 +158,8 @@ const updateUser = async (req, res) => {
       queryObject.category = category;
     }
   
-    if (location) {
-      queryObject.location = { $regex: `^${location}`, $options: "i" };
+    if (city) {
+      queryObject.city = { $regex: `^${city}`, $options: "i" };
     }
   
     if (employment) {
@@ -318,6 +319,7 @@ const updateUser = async (req, res) => {
           firstName: otherUser.firstName,
           lastName: otherUser.lastName,
           profilePicture: otherUser.profilePicture,
+          userInfo: otherUser,
         };
       })
     );
@@ -330,27 +332,82 @@ const updateUser = async (req, res) => {
   
     const currUser = await User.findById(currUserId);
   
-    const notifications = await Promise.all(
+    var numIsNotSeen = 0;
+  
+    var notifications = await Promise.all(
       currUser.allNotifications.map(async (notification) => {
         console.log(notification);
         const { userId, postId, IsSeen } = notification;
+        if (!IsSeen) {
+          numIsNotSeen++;
+        }
         const oldIsSeen = IsSeen;
         const otherUser = await User.findById(userId);
-        await User.updateMany(
-          { "allNotifications.IsSeen": false },
-          { $set: { "allNotifications.$[].IsSeen": true } }
-        );
+        const post = await Post.findById(postId);
         return {
           firstName: otherUser.firstName,
           lastName: otherUser.lastName,
           profilePicture: otherUser.profilePicture,
           IsSeen: oldIsSeen,
-          postId: postId,
+          post: post,
         };
       })
     );
   
-    res.send({ notifications });
+    notifications = notifications.reverse();
+  
+    res.send({ notifications, numIsNotSeen });
+  };
+
+  const makeNotificationsSeen = async (req, res) => {
+    const currUserId = req.user.userId;
+  
+    await User.updateOne(
+      { _id: currUserId },
+      {
+        $set: {
+          "allNotifications.$[notification].IsSeen": true,
+        },
+      },
+      {
+        arrayFilters: [
+          {
+            "notification.IsSeen": false
+          }
+        ]
+      }
+    );
+  };
+
+  const completeSignup = async (req, res) => {
+  
+    if (req.body.profilePicture == "") {
+      req.body.profilePicture =
+        "https://res.cloudinary.com/diyzgufu3/image/upload/v1680721429/defaultPic_gtn6nk.jpg";
+    }
+  
+    if (req.body.coverPicture == "") {
+      req.body.coverPicture =
+        "https://e1.pxfuel.com/desktop-wallpaper/934/101/desktop-wallpaper-5-solid-gray-light-grey-plain.jpg";
+    }
+  
+    const currUserId = req.user.userId;
+    const user = await User.findByIdAndUpdate(currUserId, {
+      $set: req.body,
+    });
+    return res.status(200).json("Profile updated");
+  };
+
+  const updateTheUser = async (req, res) => {
+    const currUserId = req.user.userId;
+    const user = await User.findByIdAndUpdate(
+      currUserId,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
+    return res.status(200).json({ user });
   };
   
   module.exports = {
@@ -365,7 +422,10 @@ const updateUser = async (req, res) => {
   respondToFriendRequest,
   removeFriend,
   showRequests,
-  showNotifications
+  showNotifications,
+  makeNotificationsSeen,
+  completeSignup,
+  updateTheUser
   }
 
 

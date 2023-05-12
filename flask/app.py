@@ -26,9 +26,11 @@ def authorize_card():
     _, max_val, _, max_loc = cv2.minMaxLoc(res)
     # check if max similarity is above threshold
     if max_val >= threshold:
-        result = 'authorized'
+        result = '1'
     else:
-        result = 'not authorized'
+        result = '0'
+    
+    # print("running..." + result)
     # return authorized or not authorized response to client-side
     return jsonify({'result': result})
 

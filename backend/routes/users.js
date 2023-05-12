@@ -13,7 +13,10 @@ const {
   respondToFriendRequest,
   removeFriend,
   showRequests,
-  showNotifications
+  showNotifications,
+  makeNotificationsSeen,
+  completeSignup,
+  updateTheUser
 } = require('../controllers/users')
 
 router.route("/:id").put(updateUser).delete(deleteUser)
@@ -28,5 +31,8 @@ router.put("/:id/respondRequest", respondToFriendRequest);
 router.put("/:id/removeFriend", removeFriend);
 router.get("/showRequests/all", showRequests);
 router.get("/showNotifications/all", showNotifications);
+router.put("/makeNotificationsSeen/all", makeNotificationsSeen);
+router.put("/signup/completeSignup", completeSignup);
+router.put("/update/updateTheUser", updateTheUser);
 
 module.exports = router

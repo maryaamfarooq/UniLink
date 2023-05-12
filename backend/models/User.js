@@ -74,6 +74,10 @@ const UserSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    employment: {
+      type: String,
+      max: 100,
+    },
     // relationship: {
     //   type: Number,
     //   enum: [1, 2, 3],

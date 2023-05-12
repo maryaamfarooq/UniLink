@@ -7,7 +7,7 @@ export default function Notifications({notifications}) {
     <div>
         {notifications.length == 0 && <div className="no-notif">No new notifications</div>}
         {notifications.length > 0 && notifications.map((n) => (
-          <Notif notfi={n} />
+          <Notif key={n.post._id} notif={n} />
         ))}
     </div>
   )

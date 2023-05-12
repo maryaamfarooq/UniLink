@@ -9,7 +9,8 @@ export default function AllEventsPostings(props) {
   const [showForm, setShowForm] = useState(false);
   var i = 0;
 
-  const handleAddClick = () => {
+  function handleFormOpen() {
+    console.log("OPEN")
     setShowForm(true);
   };
 
@@ -33,23 +34,27 @@ export default function AllEventsPostings(props) {
       console.error(error.response.data);
     }
   };
+
+  function addNewEvent() {
+
+  }
   
   useEffect(() => {
     i++;
     if (i <= 1) getAllEvents();
   }, []);
 
-  useEffect(() => {
-    console.log(JSON.stringify(allEvents));
-  }, [allEvents]);
+  // useEffect(() => {
+  //   console.log(JSON.stringify(allEvents));
+  // }, [allEvents]);
 
   return (
     <div className="all-events-container">
+    <button onClick={handleFormOpen} className="events-fab">+</button>
       <div className="events-heading">Events</div>
       {allEvents && allEvents.map((e) => (
         <Event key={e._id} event={e} />
       ))}
-      {/* <button className='event-add' onClick={handleAddClick}>Add Event</button> */}
       {showForm && <AddEventForm onClose={handleFormClose} />}
     </div>
   );

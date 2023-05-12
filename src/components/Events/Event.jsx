@@ -11,7 +11,7 @@ const Event = ({event}) => {
   // const [isInterested, setIsInterested] = useState(event.isInterested)
   const [isInterested, setIsInterested] = useState(false)
 
-  function handleInterested() {
+  async function handleInterested() {
     setIsInterested(prev => !prev);
     // send request
   }

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import Tesseract from 'tesseract.js';
 import axios from 'axios';
+import './styles/image-uploader.css'
+import { useEffect } from 'react';
 
-function ImageUploader() {
+function ImageUploader({isAuthorized, setIsAuthorized}) {
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
   const [message, setMessage] = useState('');
@@ -32,7 +34,7 @@ function ImageUploader() {
           .catch(error => console.error(error));
       }
       else {
-        setMessage('not authorized');
+        setIsAuthorized(false);
       }
     } catch (error) {
       console.log(error);
@@ -41,14 +43,18 @@ function ImageUploader() {
 
   }
 
+  useEffect(() => {
+    setIsAuthorized(Number(result) === 1);
+  }, [result])
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <input type="file" accept=".jpg,.jpeg,.png" onChange={handleFileChange} />
         <button type="submit">Upload</button>
       </form>
-      {message && <p>{message}</p>}
-      {result && <p>{result}</p>}
+      {result && !isAuthorized && <p className="card-result0">Unauthorized</p>}
+      {result && isAuthorized && <p className="card-result1">Authorized</p>}
     </div>
   );
 };

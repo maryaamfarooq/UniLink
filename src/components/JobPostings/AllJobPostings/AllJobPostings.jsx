@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {Jobs} from '../dummyJobs.js';
 import Job from '../Job';
 import axios from 'axios';
 

@@ -17,6 +17,7 @@ function saveJob() {
       {/* <img className="job-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/M%C3%BCnster%2C_LVM%2C_B%C3%BCrogeb%C3%A4ude_--_2013_--_5149-51.jpg/1200px-M%C3%BCnster%2C_LVM%2C_B%C3%BCrogeb%C3%A4ude_--_2013_--_5149-51.jpg"></img> */}
       <div className="job-div1">
         <div className="job-title">{job.jobTitle}</div>
+        {/* <div className="job-title">1h</div> */}
         <div className="job-comp">{job.companyName}</div>
         <div className="job-comp">{job.salary}</div>
       </div>
@@ -29,7 +30,8 @@ function saveJob() {
         <div className='job-city'>{job.city}</div>
         <div className='job-country'>{job.country}</div>
       </div>
-      <div className="job-div4">{job.createdAt}</div>
+      <div className="job-div4">{job.createdAt.slice(0,10)}</div>
+      {/* <div className="job-div4">1h</div> */}
       <div className="job-div5"><button className="job-apply">Apply</button></div>
       <div onClick={saveJob} className='job-save'>
         {!isSaved && <BookmarkBorderOutlinedIcon/>}

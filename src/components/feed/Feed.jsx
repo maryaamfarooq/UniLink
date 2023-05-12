@@ -19,7 +19,6 @@ export default function Feed(props) {
           authorization: `Bearer ${token}`
         }
       });
-      console.log("POSTS: " + data);
       const postsArray = data.friendPosts;
       return postsArray;
     } catch (error) {
@@ -46,7 +45,7 @@ export default function Feed(props) {
     <div className="feed">
       <div className="feedWrapper"><Shared username={props.username} profilePicture={props.profilePicture}/>
         {allPosts && allPosts.map((p) => (
-          <TimelinePost post={p} key={p._id} />
+          <TimelinePost setIsNewNotif={props.setIsNewNotif} post={p} key={p._id} />
         ))}
       </div>
     </div>

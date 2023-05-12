@@ -10,7 +10,7 @@ export default function Homepage(props) {
   return (
     <>
       <div className="homeContainer">
-      <Feed username={props.username} profilePicture={props.profilePicture} currComponent={props.currComponent}/>
+      <Feed setIsNewNotif={props.setIsNewNotif} username={props.username} profilePicture={props.profilePicture} currComponent={props.currComponent}/>
       </div>
     </>
   );

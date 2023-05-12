@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useReducer} from 'react';
 import "./topbar.css";
 import axios from 'axios';
 
@@ -11,15 +11,22 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import FriendRequests from '../FriendRequest/FriendRequests';
 import Notifications from '../Notifications/Notifications'
 
+// function reducer(state, action) {
+//     return { isNewNotif: !state.isNewNotif}
+// }
+
 export default function Topbar(props) {
 
-    var i = 0;
+    var i = 0, j = 0;
     const [showProfileDropdown, setShowProfileDropdown] = useState(false)
     const [search, setSearch] = useState("");
     const [isRequest, setIsRequest] = useState(false);
     const [isNotif, setIsNotif] = useState(false);
     const [allRequests, setAllRequests] = useState([]);
     const [allNotifications, setAllNotifications] = useState([])
+    const [unseenNotifNum, setUnseenNotifNum] = useState(0);
+    // const [isNewNotif, setIsNewNotif] = useState(props.setIsNewNotif);
+
 
     const handleShowProfileDropdown = () => {
         setShowProfileDropdown(prev => !prev);
@@ -46,34 +53,42 @@ export default function Topbar(props) {
             await fetchFriendRequests();
           }
           fetchRequests();
+          async function fetchNotif() {
+            await fetchNotifications();
+          }
+          fetchNotif();
         };
     }, [])
 
     async function fetchNotifications() {
-        console.log("NNOTIF:");
         try {
           const token = localStorage.getItem("token");
-          const {data} = await axios.get(`localhost:8080/api/v1/user/showNotifications/all`, {
+          const {data} = await axios.get(`http://localhost:8080/api/v1/user/showNotifications/all`, {
               headers:{
                 authorization: `Bearer ${token}`
               }
             });
-            console.log("NNOTIF:"+data);
             setAllNotifications(data.notifications);
+            setUnseenNotifNum(data.numIsNotSeen);
         } catch (error) {
-            console.error(error.response.data);
+            console.error(error);
         }
       }
-  
-      useEffect(() => {
-          i++;
-          if (i <= 1) {
-            async function fetchNotif() {
-              await fetchNotifications();
-            }
-            fetchNotif();
-          };
-      }, [])
+
+      async function seenAllNotifications() {
+        console.log("seen");
+        setUnseenNotifNum(0);
+        try {
+          const token = localStorage.getItem("token");
+          const {data} = await axios.put(`http://localhost:8080/api/v1/user/makeNotificationsSeen/all`, null, {
+              headers:{
+                authorization: `Bearer ${token}`
+              }
+            });
+        } catch (error) {
+            console.error(error);
+        }
+      }
 
     function setSearchFunc(searchQ) {
         if (searchQ.length > 0) {
@@ -84,6 +99,11 @@ export default function Topbar(props) {
         else {
             props.onHandleNewsFeed();
         }
+    }
+
+    async function setNotif() {
+        setIsNotif(prev => !prev)
+        seenAllNotifications();
     }
 
   return (
@@ -101,8 +121,9 @@ export default function Topbar(props) {
             <div onClick={() => setIsRequest(prev => !prev)} className="topbar-notif">
                 <PersonIcon sx={{ color: "white"}} />
             </div>
-            {isRequest && <div className="friend-requests-div"><FriendRequests requests={allRequests} /></div>}
-            <div onClick={() => setIsNotif(prev => !prev)} className="topbar-notif">
+            {isRequest && <div className="friend-requests-div"><FriendRequests onHandleViewUserProfile={props.onHandleViewUserProfile} requests={allRequests} /></div>}
+            <div onClick={setNotif} className="topbar-notif">
+                {unseenNotifNum > 0 && <span className="unseen-notif-num">{unseenNotifNum}</span>}
                 <NotificationsIcon sx={{ color: "white"}} />
             </div>
             {isNotif && <div className="friend-requests-div"><Notifications notifications={allNotifications} /></div>}

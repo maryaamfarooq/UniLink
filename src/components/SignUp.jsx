@@ -8,38 +8,6 @@ import axios from 'axios';
 import EnterOTP from './AuthEmail/EnterOTP';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 var jwt = require("jsonwebtoken");
-
-async function signUpUser(credentials) {
-    try {
-        console.log(credentials);
-        const {data} = await axios.post('http://localhost:8080/api/v1/auth/register', credentials);
-        localStorage.setItem('token', data.token)
-
-        const decodedToken = jwt.decode(data.token);
-        console.log(decodedToken);
-
-        const formdata = new FormData();
-        formdata.append('username', credentials.email);
-        formdata.append('secret', 'secret');
-        formdata.append('first_name', credentials.firstName);
-    
-        // getFile('https://res.cloudinary.com/diyzgufu3/image/upload/v1682950746/Posts/WhatsApp_Image_2023-05-01_at_7.17.18_PM_c16moa.jpg')
-        //   .then((avatar) => {
-        //     formdata.append('avatar', avatar, avatar.name);
-        axios.post('https://api.chatengine.io/users/', formdata, {
-            headers: { 'Private-Key': '7f7bd096-bcaa-4ae2-b6af-7dc96a7f389a' },
-        });
-        //   })
-        //   .catch((error) => {
-        //     console.log('Error creating user:', error);
-        //   });
-
-    } catch (error) {
-        // console.error(error.response.data);
-        console.log("errorrrrr");
-    }
-}
-
 // const getFile = async (url) => {
 //     const response = await fetch(url);
 //     const data = await response.blob();
@@ -59,12 +27,13 @@ export default function SignUp(props) {
     const [lastName, setLastName] = useState("");
     const [department, setDepartment] = useState("");
     const [batch, setBatch] = useState("");
+    const [invalid, setInvalid] = useState(false);
 
     const [disFirstName, setDisFirstName] = useState("");
     const [disLastName, setDisLastName] = useState("");
 
     var batchArr = Array.from(Array().keys())
-    var departmentArr = ["SEECS (School of Electrical Engineering and Computer Science)", "SMME", "SADA"];
+    var departmentArr = ['SEECS (School of Electrical Engineering and Computer Science)', 'SMME (School of Mechanical and Manufacturing Engineering)', 'NICE (Nust Institute of Civil Engineering', 'SADA (School of Art Design and Architecture', 'S3H (School of Social Sciences and Humanities)', 'SCME (School of Chemical and Materials Engineering)', 'NBS (Nust Business School)', 'ASAB (Atta Ur Rehman School of Applied Biosciences)', 'NSTP (National Science and Technology Park)', 'RIMMS (Research Institute for Microwave and Milimeter-Wave Studies)', 'IAEC', 'SNS (School of Natural Sciences)', 'IGIS (Institue of Geographical Information Systems)'];
     var newDepartmentArr = departmentArr.map(dep => <option key={dep} value={dep}>{dep}</option>);
 
     async function handleSubmit(event) {
@@ -82,6 +51,37 @@ export default function SignUp(props) {
         // setDisFirstName(res.firstName);
         // setDisLastName(res.lastName);
         props.onHandleSetupProfile();
+    }
+
+    async function signUpUser(credentials) {
+        try {
+            if(credentials.email.length < 0 && credentials.password.length < 0 && credentials.firstName.length < 0 && credentials.lastName.length < 0 && credentials.department.length < 0 && credentials.batch.length < 0 && Number(credentials.batch) < 1995 && Number(credentials.batch) > 2028) {setInvalid(true)}
+            const {data} = await axios.post('http://localhost:8080/api/v1/auth/register', credentials);
+            localStorage.setItem('token', data.token)
+    
+            const decodedToken = jwt.decode(data.token);
+            console.log(decodedToken);
+    
+            const formdata = new FormData();
+            formdata.append('username', credentials.email);
+            formdata.append('secret', 'secret');
+            formdata.append('first_name', credentials.firstName);
+        
+            // getFile('https://res.cloudinary.com/diyzgufu3/image/upload/v1682950746/Posts/WhatsApp_Image_2023-05-01_at_7.17.18_PM_c16moa.jpg')
+            //   .then((avatar) => {
+            //     formdata.append('avatar', avatar, avatar.name);
+            axios.post('https://api.chatengine.io/users/', formdata, {
+                headers: { 'Private-Key': '7f7bd096-bcaa-4ae2-b6af-7dc96a7f389a' },
+            });
+            //   })
+            //   .catch((error) => {
+            //     console.log('Error creating user:', error);
+            //   });
+    
+        } catch (error) {
+            // console.error(error.response.data);
+            console.log("errorrrrr");
+        }
     }
 
     function goToNext() {
@@ -128,7 +128,7 @@ export default function SignUp(props) {
                         <label htmlFor="department" className="email-label">Department</label>
                         {/* <input onChange={(e) => setDepartment(e.target.value)} value={department} type="text" className="pass-inp" name="department"></input> */}
                         <select onChange={(e) => setDepartment(e.target.value)} className="pass-inp">
-                            <option selected>Select Department</option>
+                            <option defaultValue>Select Department</option>
                             {newDepartmentArr};
                         </select>
                     </div>
@@ -136,6 +136,7 @@ export default function SignUp(props) {
                         <label htmlFor="batch" className="email-label">Batch</label>
                         <input onChange={(e) => setBatch(e.target.value)} value={batch} type="number" className="pass-inp" name="batch"></input>
                     </div>
+                    {invalid && <div className="error-msg">Invalid info</div>}
                     <button type="submit" className="sign-in-btn">Sign up</button>
                     </>
                 }

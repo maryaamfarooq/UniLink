@@ -2,7 +2,12 @@ import React, {useState, useEffect} from 'react'
 import TimelinePost from '../timelinePost/TimelinePost';
 import axios from 'axios'; 
 import DoneIcon from '@mui/icons-material/Done';
+import EditIcon from '@mui/icons-material/Edit';
+import Dialog from '@mui/material/Dialog';
+import Button from '@mui/material/Button';
+import DialogContent from '@mui/material/DialogContent';
 import './userProfile.css'
+import Upload from '../FileUpload';
 
 export default function UserProfile(props) {
 
@@ -11,7 +16,27 @@ export default function UserProfile(props) {
   const [currView, setCurrView] = useState("posts");
   const [allFriends, setAllFriends] = useState([]);
   const [aboutInfo, setAboutInfo] = useState([]);
+  const [newPp, setNewPp] = useState("");
+  const [newCp, setNewCp] = useState("");
+  const [openCover, setOpenCover] = useState(false);
+  const [openPp, setOpenPp] = useState(false);
   var i = 0;
+
+  const handleClickOpenCover = () => {
+    setOpenCover(true);
+  };
+
+  const handleClickOpenPp = () => {
+    setOpenPp(true);
+  };
+
+  const handleCloseCover = () => {
+    setOpenCover(false);
+  };
+
+  const handleClosePp = () => {
+    setOpenPp(false);
+  };
 
   async function getUser() {    
     try {
@@ -43,10 +68,6 @@ export default function UserProfile(props) {
     } catch (error) {
         console.error(error.response.data);
     }
-  }
-
-  async function getAboutInfo() {
-    
   }
 
   function goToPosts() {
@@ -83,9 +104,47 @@ export default function UserProfile(props) {
     };
   }, [])
 
-  // useEffect(() => {
-  //   console.log("userrrrr: "+JSON.stringify(userInfo));
-  // }, [userInfo]);
+  async function changeProfilePicture() {
+    console.log("PP" + newPp);
+    if(newPp.length > 0) {
+      try {
+      const token = localStorage.getItem("token");
+      const req = {
+        profilePicture: newPp
+      }
+      const {data} = await axios.put(`http://localhost:8080/api/v1/user/update/updateTheUser`, req, {
+        headers:{
+          authorization: `Bearer ${token}`
+        }
+      });
+      setNewPp("");
+      handleClosePp();
+    } catch (error) {
+      console.error(error);
+    }
+    }
+  }
+
+  async function changeCoverPicture() {    
+    if(newCp.length > 0) {
+    try {
+    const token = localStorage.getItem("token");
+    const req = {
+      coverPicture: newCp
+    }
+    console.log("REQ:" + req);
+    const {data} = await axios.put(`http://localhost:8080/api/v1/user/update/updateTheUser`, req, {
+      headers:{
+        authorization: `Bearer ${token}`
+      }
+    });
+    setNewCp("");
+    handleCloseCover()
+  } catch (error) {
+    console.error(error);
+  }
+  }
+  }
 
   return (
     <div className="profile">
@@ -95,14 +154,30 @@ export default function UserProfile(props) {
           src={userInfo.coverPicture}
           alt=""
         />
+        <div onClick={handleClickOpenCover} className="profile-back-arrow-div"><div className="profile-back-arrow-div2"><EditIcon htmlColor="#7FD8BE" /></div></div>
+        <Dialog open={openCover} onClose={handleCloseCover}>
+            <DialogContent>
+            <Upload open={openCover} setImg={setNewCp} />
+            {newCp.length <= 0? <Button disabled>Change</Button> : <Button onClick={changeCoverPicture}>Change</Button>}
+            </DialogContent>
+        </Dialog>
       </div>
       <div className="profileInfo">
-          <img
+          <div className="profile-img-div">
+            <img
             className="profileUserImg"
             src={userInfo.profilePicture}
             alt=""
           />
-          <div  className="profileDetails">
+          <div onClick={handleClickOpenPp} className="profile-back-arrow-div"><div className="profile-back-arrow-div2"><EditIcon htmlColor="#7FD8BE" /></div></div>
+          <Dialog open={openPp} onClose={handleClosePp}>
+            <DialogContent>
+            <Upload open={openPp} setImg={setNewPp} />
+            {newPp.length <= 0? <Button disabled>Change</Button>: <Button  onClick={changeProfilePicture}>Change</Button>}
+            </DialogContent>
+        </Dialog>
+          </div>
+          <div className="profileDetails">
           <span className="profileName"><h4 className="profileInfoName">{props.username}</h4><span className="profileSeperator">&middot;</span><span className="userType">{props.userType}</span></span>
           <span className="profileBatch"><span>{userInfo.department}</span><span className="profileSeperator">&middot;</span><span>{userInfo.batch}</span></span>
           <span className="profileInfoDesc">{userInfo.desc}</span>
@@ -115,7 +190,7 @@ export default function UserProfile(props) {
           <div className={currView === "about" ? "clr-green" : ""} onClick={goToAbout}>About</div>
         </div>
         {currView === "posts" && allPosts && allPosts.map((p) => (
-          <TimelinePost user={userInfo} post={p} />
+          <TimelinePost userInfo={userInfo} post={p} />
         ))}
         {currView === "friends" && allFriends.length > 0 && allFriends.map((f) => (
           <UserFriend result={f} />
@@ -123,7 +198,9 @@ export default function UserProfile(props) {
         {currView === "friends" && allFriends.length == 0 && 
           <div className="user-profile-no-friends">No friends</div>
         }
-        {currView === "about" && <div></div>}
+        {currView === "about" && <div>
+          <About userInfo={userInfo}/>
+          </div>}
       </div>
     </div>
   )
@@ -144,4 +221,16 @@ function UserFriend({result}) {
     </div>
   </div>
   )
+}
+
+function About({userInfo}) {
+  return (
+    <div className="user-about-wrapper">
+      <div className="user-about-div"><span className="user-about-h">Email: </span>{userInfo.email}</div>
+      <div className="user-about-div"><span className="user-about-h">Department: </span>{userInfo.department}</div>
+      <div className="user-about-div"><span className="user-about-h">Batch: </span>{userInfo.batch}</div>
+      {userInfo.city && <div className="user-about-div"><span className="user-about-h">Location: </span>{userInfo.city}</div>}
+      {userInfo.employment && <div className="user-about-div"><span className="user-about-h">Employment: </span>{userInfo.employment}</div>}
+    </div>
+  );
 }

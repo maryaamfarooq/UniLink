@@ -38,3 +38,9 @@
 .signup-back-arrow-div2:hover {
     background-color: var(--clr-primary-lighter);
 }
+
+.error-msg {
+    color:red;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}

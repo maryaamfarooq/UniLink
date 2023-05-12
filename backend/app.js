@@ -38,6 +38,7 @@ const eventRouter = require('./routes/events');
 const conversationRouter = require('./routes/conversations');
 const messageRouter = require('./routes/messages');
 const commentRouter = require("./routes/comment");
+const emailRouter = require('./routes/email');
 
 app.use(fileUpload({ useTempFiles: true }));
 
@@ -62,6 +63,7 @@ app.use('/api/v1/event', authenticateUser, eventRouter);
 app.use('/api/v1/conv', authenticateUser, conversationRouter);
 app.use('/api/v1/message', authenticateUser, messageRouter);
 app.use("/api/v1/comment", authenticateUser, commentRouter);
+app.use('/api/v1/email', emailRouter);
 
 //process.env.PORT
 const port = 8080;

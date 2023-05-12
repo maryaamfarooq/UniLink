@@ -1,9 +1,14 @@
 .job-u-container {
-    display: flex;
+    /* display: flex;
     justify-content: space-around;
+    align-items: center; */
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr 2fr 2fr 1fr 1fr 2fr;
+    /* place-items: center; */
     align-items: center;
     cursor: pointer;
-    padding: 1rem 0;
+    padding: 1rem 1rem;
     font-family: var(--ff-primary);
     transition: all 0.15s linear;
 }
@@ -52,4 +57,9 @@
 
 .job-u-apply:hover {
     box-shadow: 0 0 2rem #a2f5e1;
+}
+
+.job-u-date {
+    color: gray;
+    font-size: 0.75rem
 }
