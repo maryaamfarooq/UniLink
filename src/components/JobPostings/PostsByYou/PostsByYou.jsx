@@ -54,18 +54,27 @@ export default function PostsByYou() {
     async function postJob(e) {
       handleClose();
       e.preventDefault();
+      var keywordArr = keywords + '';
+      keywordArr = keywordArr.split(',');
+      // console.log("keywordArr" + keywordArr);
       var res = await sendJobPost({
         image,
         jobTitle,
         companyName,
         jobDesc,
-        keywords,
+        keywordArr,
         salary,
         city,
         country,
         contact,
       });
     }
+
+    // useEffect(() => {
+    //   var keywordArr = keywords + '';
+    //   keywordArr = keywordArr.split(',');
+    //   console.log("keywordArr: " + typeof keywordArr + "  " + keywordArr);
+    // }, [keywords])
 
     async function getAllJobs() {
       try {
@@ -154,7 +163,7 @@ export default function PostsByYou() {
           autoFocus
           margin="dense"
           id="keywords"
-          label="Keywords"
+          label="Keywords (comma separated)"
           type="email"
           fullWidth
           variant="standard"

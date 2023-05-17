@@ -53,7 +53,12 @@ const UserSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    recommendedUsers: [{ type: Schema.Types.ObjectId, ref: "User" }],
     friendRequests: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    interests: {
+      type: Array,
+      default: [],
+    },
     isAdmin: {
       type: Boolean,
       default: false,

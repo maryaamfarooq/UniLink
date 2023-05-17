@@ -16,10 +16,12 @@ const {
   showNotifications,
   makeNotificationsSeen,
   completeSignup,
-  updateTheUser
+  updateTheUser,
+  recommendUsers,
+  showRecommendedUsers,
 } = require('../controllers/users')
 
-router.route("/:id").put(updateUser).delete(deleteUser)
+router.route("/updateUser").put(updateUser)
 router.get('/:id', getUser)
 router.get("/friends/:userId", getFriends)
 router.put("/:id/follow", followUser)
@@ -34,5 +36,7 @@ router.get("/showNotifications/all", showNotifications);
 router.put("/makeNotificationsSeen/all", makeNotificationsSeen);
 router.put("/signup/completeSignup", completeSignup);
 router.put("/update/updateTheUser", updateTheUser);
+router.get("/recommend/users", recommendUsers);
+router.get("/showRecommend/users", showRecommendedUsers);
 
 module.exports = router

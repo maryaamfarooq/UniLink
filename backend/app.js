@@ -39,6 +39,7 @@ const conversationRouter = require('./routes/conversations');
 const messageRouter = require('./routes/messages');
 const commentRouter = require("./routes/comment");
 const emailRouter = require('./routes/email');
+const applicationRouter = require("./routes/applications");
 
 app.use(fileUpload({ useTempFiles: true }));
 
@@ -64,6 +65,7 @@ app.use('/api/v1/conv', authenticateUser, conversationRouter);
 app.use('/api/v1/message', authenticateUser, messageRouter);
 app.use("/api/v1/comment", authenticateUser, commentRouter);
 app.use('/api/v1/email', emailRouter);
+app.use("/api/v1/application", authenticateUser, applicationRouter);
 
 //process.env.PORT
 const port = 8080;

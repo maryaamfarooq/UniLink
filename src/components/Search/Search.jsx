@@ -27,6 +27,7 @@ export default function Search(props) {
     const [expandFilters, setExpandFilters] = useState(false);
 
     useEffect(() => {
+        console.log("searchhh");
         const newBatchArray = [];
         for (let i = 1995; i <= 2027; i++) {
           newBatchArray.push(<option key={i} value={i}>{i}</option>);
@@ -56,7 +57,7 @@ export default function Search(props) {
                   authorization: `Bearer ${token}`
                 }
               });
-            // console.log("SEARCH RESULTS: " + JSON.stringify(data));
+            console.log("SEARCH RESULTS: " + JSON.stringify(data));
             setAllSearchResults(data.result);
         } catch (error) {
             // console.error(error.response.data);ß

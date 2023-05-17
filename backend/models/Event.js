@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const EventSchema = new mongoose.Schema(
   {
@@ -7,6 +8,19 @@ const EventSchema = new mongoose.Schema(
       ref: 'User',
       required: [true, 'Please provide user'],
     },
+    date: {
+      type: String,
+      max: 100,
+    },
+    numInterested:{
+      type: Number,
+      default: 0
+    },
+    time: {
+      type: String,
+      max: 100,
+    },
+    interested: [{ type: Schema.Types.ObjectId, ref: "User" }],
     eventName: {
       type: String,
       max: 100,
@@ -16,21 +30,23 @@ const EventSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    organizer: {
-      type: String,
-      required: true,
-    },
-    desc: {
-      type: String,
-      max: 500,
-    },
+    // organizer: {
+    //   type: String,
+    // },
+    // desc: {
+    //   type: String,
+    //   max: 500,
+    // },
     img: {
       type: String,
       default: "",
     },
-    hashtags: {
-      type: Array,
-      default: [],
+    // hashtags: {
+    //   type: Array,
+    //   default: [],
+    // },
+    isInterested:{
+      type: Boolean
     },
   },
   { timestamps: true }

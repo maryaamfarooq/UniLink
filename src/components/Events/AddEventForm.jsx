@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import Button from '@mui/material/Button';
@@ -19,14 +18,6 @@ export default function AddEventForm(props) {
   const [time, setTime] = useState("");
   const [location, setLocation] = useState('');
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   async function sendEventPost(eventDetails) {
     try {
       const token = localStorage.getItem('token');
@@ -40,7 +31,8 @@ export default function AddEventForm(props) {
         }
       );
       console.log(data);
-      props.addNewEvent(data);
+      // props.addNewEvent(data);
+      props.getAllEvents();
     } catch (error) {
       console.error(error.response.data);
     }
@@ -55,7 +47,7 @@ export default function AddEventForm(props) {
       date, 
       time,
     });
-    handleClose();
+    props.onClose();
   };
 
   return (
@@ -63,7 +55,7 @@ export default function AddEventForm(props) {
       {/* <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Add Event
       </Button> */}
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={props.onClose}>
         <DialogTitle>Add New Event</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -91,25 +83,23 @@ export default function AddEventForm(props) {
           />
           <TextField
             margin="dense"
-            id="desc"
+            id="date"
             label="Date"
             type="text"
             fullWidth
             onChange={(e) => setDate(e.target.value)}
-            required
           />
           <TextField
             margin="dense"
-            id="desc"
+            id="time"
             label="Time"
             type="text"
             fullWidth
             onChange={(e) => setTime(e.target.value)}
-            required
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={props.onClose}>Cancel</Button>
           <Button onClick={handleAddEvent}>Add Event</Button>
         </DialogActions>
       </Dialog>

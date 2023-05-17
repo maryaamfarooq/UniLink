@@ -10,11 +10,11 @@ export default function AllEventsPostings(props) {
   var i = 0;
 
   function handleFormOpen() {
-    console.log("OPEN")
     setShowForm(true);
   };
 
   const handleFormClose = () => {
+    console.log("closed");
     setShowForm(false);
   };
 
@@ -27,16 +27,29 @@ export default function AllEventsPostings(props) {
         }
       });
       const eventsArray = data.events;
-      setAllEvents(prevEvents => [...prevEvents, ...eventsArray]);
+      setAllEvents(eventsArray);
       console.log(JSON.stringify(allEvents));
 
     } catch (error) {
-      console.error(error.response.data);
+      console.error(error);
     }
   };
 
-  function addNewEvent() {
+  async function addNewEvent() {    
+  //   try {
+  //   const token = localStorage.getItem("token");
+  //   const { data } = await axios.get('http://localhost:8080/api/v1/event/', {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`
+  //     }
+  //   });
+  //   const eventsArray = data.events;
+  //   setAllEvents(prevEvents => [...prevEvents, ...eventsArray]);
+  //   console.log(JSON.stringify(allEvents));
 
+  // } catch (error) {
+  //   console.error(error.response.data);
+  // }
   }
   
   useEffect(() => {
@@ -55,7 +68,7 @@ export default function AllEventsPostings(props) {
       {allEvents && allEvents.map((e) => (
         <Event key={e._id} event={e} />
       ))}
-      {showForm && <AddEventForm onClose={handleFormClose} />}
+      {showForm && <AddEventForm getAllEvents={getAllEvents} onClose={handleFormClose} />}
     </div>
   );
 }

@@ -2,29 +2,29 @@ const User = require('../models/User')
 const { StatusCodes } = require('http-status-codes')
 const { BadRequestError, UnauthenticatedError } = require('../errors')
 const Post = require("../models/Post");
+const bcrypt = require("bcryptjs");
 
 const updateUser = async (req, res) => {
-    //if (req.body.userId === req.params.id || req.body.isAdmin) {
-        if (req.body.password) { 
-          try {
-            const salt = await bcrypt.genSalt(10);
-            req.body.password = await bcrypt.hash(req.body.password, salt);
-          } catch (err) {
-            return res.status(500).json(err);
-          }
-        }
-        try {
-          const user = await User.findByIdAndUpdate(req.params.id, {
-            $set: req.body,
-          });
-          res.status(200).json("Account has been updated");
-        } catch (err) {
-          return res.status(500).json(err);
-        }
-      // } else {
-      //   return res.status(403).json("You can update only your account!");
-      // }
+  console.log("hello")
+  const user = await User.findById(req.user.userId);
+  if (req.body.newPassword) {
+    const isPasswordCorrect = await user.comparePassword(req.body.currentPassword);
+    if(isPasswordCorrect){
+      const salt = await bcrypt.genSalt(10);
+      req.body.newPassword = await bcrypt.hash(req.body.newPassword, salt);
+    }
+    else {
+      return res.status(403).json({ updatedUser });
+    }
   }
+
+  req.body.password = req.body.newPassword;
+
+  const updatedUser = await User.findByIdAndUpdate(req.user.userId, {
+    $set: req.body,
+  });
+  return res.status(200).json({ updatedUser });
+};
 
   const deleteUser = async (req, res) => {
     //if (req.body.userId === req.params.id || req.body.isAdmin) {
@@ -409,6 +409,76 @@ const updateUser = async (req, res) => {
     );
     return res.status(200).json({ user });
   };
+
+  const recommendUsers = async (req, res) => {
+    const currUserId = req.user.userId;
+    const currUser = await User.findById(currUserId);
+  
+    const { department, batch } = currUser;
+    const interests = currUser.interests; // Assuming `interests` is an array of strings
+  
+    console.log(currUser.firstName);
+  
+    const allUsers = await User.find({
+      $and: [
+        {
+          $or: [
+            { department: department },
+            { batch: batch },
+            { interests: { $in: interests } },
+          ],
+        },
+        { _id: { $nin: currUser.friends } }, // Exclude friends from recommended users
+        { _id: { $ne: currUserId } },
+      ],
+    });
+  
+    const recommendedUsers = allUsers.map((user) => {
+      const userId = user._id;
+      console.log(userId);
+      // Define the weights for department, batch, and interests
+      const weights = {
+        department: 0.5,
+        batch: 0.3,
+        interests: 0.2,
+      };
+  
+      // Calculate the weighted score
+      const score =
+        weights.department * (user.department === department ? 1 : 0) +
+        weights.batch * (user.batch === batch ? 1 : 0) +
+        weights.interests *
+          (user.interests.filter((interest) => interests.includes(interest))
+            .length /
+            interests.length);
+  
+      return userId;
+      // return { userId, score };
+    });
+  
+    // Sort recommendedUsers based on score in descending order
+    recommendedUsers.sort((a, b) => b.score - a.score);
+  
+    await User.updateOne(
+      { _id: currUserId },
+      { recommendedUsers: recommendedUsers }
+    );
+  
+    console.log(recommendedUsers);
+    res.status(StatusCodes.OK).json({ recommendedUsers });
+  };
+
+  const showRecommendedUsers = async (req, res) => {
+    const user = await User.findById(req.user.userId);
+    const allRecommendedUsers = await Promise.all(
+    user.recommendedUsers.map(async(userId)=>{
+      const user = await User.findById(userId);
+      return user;
+    })
+    )
+    const recommendedUsers = allRecommendedUsers.slice(0,3);
+    res.status(StatusCodes.OK).json({ recommendedUsers });
+  };
   
   module.exports = {
   updateUser,
@@ -425,10 +495,7 @@ const updateUser = async (req, res) => {
   showNotifications,
   makeNotificationsSeen,
   completeSignup,
-  updateTheUser
+  updateTheUser,
+  recommendUsers,
+  showRecommendedUsers,
   }
-
-
-
-
-

@@ -1,9 +1,47 @@
 import React, { useState } from 'react'
-import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import JobApplication from './JobApplication';
+import axios from 'axios'; 
 import './job-by-you.css'
 
 export default function JobByYou({job}) {
+
+  const [open, setOpen] = useState(false);
+  // const [allApplications, setAllApplications] = useState([
+  //   {
+  //     name: "Maryam",
+  //     contact: "0316-5816865",
+  //     resume: "https://mrsmeganparrish.weebly.com/uploads/3/8/0/5/38056115/the_kite_runner.pdf"
+  //   }
+  // ])  
+  const [allApplications, setAllApplications] = useState([])
+
+  function handleOpen() {
+    setOpen(true);
+  }
+  function handleClose() {
+    setOpen(false);
+  }
+
+  async function getApplications() {
+    handleOpen();
+    const token = localStorage.getItem("token");
+    try {
+      const {data} = await axios.get(`http://localhost:8080/api/v1/application/${job._id}/viewApplicants`, {
+        headers:{
+          authorization: `Bearer ${token}`,
+        }
+       });
+       setAllApplications(data.applications);
+    } catch (error) {
+        console.error(error);
+    }
+  }
 
   return (
     <div className="job-u-container">
@@ -23,7 +61,20 @@ export default function JobByYou({job}) {
         <div className='job-u-country'>{job.country}</div>
       </div>
       <div className="job-u-date">{job.createdAt.slice(0,10)}</div>
-      <button className="job-u-apply">View Applications</button>
+      <button onClick={getApplications} className="job-u-apply">View Applications</button>
+
+      <Dialog open={open} handleClose={handleClose}>
+        <DialogTitle>Applications</DialogTitle>
+        <DialogContent>
+        {allApplications && allApplications.map((p) => (
+          <JobApplication application={p} />
+        ))}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
+
     </div>
   )
 }

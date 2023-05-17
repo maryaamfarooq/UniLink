@@ -21,6 +21,7 @@ import Conversation from './messages/Conversation';
 import Search from './Search/Search';
 import ViewUserProfile from './ViewUserProfile/ViewUserProfile';
 import SetupProfile from './SetupProfile';
+import Settings from './Settings/Settings';
 var jwt = require("jsonwebtoken");
 
 export default function StartPage(props) {
@@ -30,6 +31,7 @@ export default function StartPage(props) {
 
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState();
+  const [userObj, setUserObj] = useState();
   const [profilePicture, setProfilePicture] = useState("");
   const [conversationFriend, setConversationFriend] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -38,28 +40,52 @@ export default function StartPage(props) {
   const [isNewNotif, setIsNewNotif] = useState(false);
   const [otp, setOtp] = useState("");
 
+  async function recommendUsers() {
+    try {
+        const token = localStorage.getItem('token')
+        const {data} = await axios.get('http://localhost:8080/api/v1/user/recommend/users', {
+          headers:{
+            authorization: `Bearer ${token}`
+          }
+        }
+        );
+    } catch (error) {
+        console.error("ERROR: "+error);
+    }
+}
+
+  async function getUser() {    
+    if(localStorage.getItem("token")) {
+    const token = localStorage.getItem('token')
+    const decodedToken = jwt.decode(token);
+    setUsername(`${decodedToken.firstName} ${decodedToken.lastName}`);
+    setUserId(decodedToken.userId);
+    setUserEmail(decodedToken.email);
+    try {
+      const {data} = await axios.get(`http://localhost:8080/api/v1/user/${decodedToken.userId}`, {
+        headers:{
+          authorization: `Bearer ${token}`
+        }
+      });
+      const userObj = data;
+      setUserObj(userObj.user);
+      setProfilePicture(userObj.user.profilePicture);
+      // console.log("user: "+JSON.stringify(userObj));
+    } catch (error) {
+      console.error(error);
+    }
+    recommendUsers();
+  }
+  }
+
   useEffect(() => {
     if(localStorage.getItem("token")) {
-      const token = localStorage.getItem('token')
-      const decodedToken = jwt.decode(token);
-      setUsername(`${decodedToken.firstName} ${decodedToken.lastName}`);
-      setUserId(decodedToken.userId);
-      setUserEmail(decodedToken.email);
+      // const token = localStorage.getItem('token')
+      // const decodedToken = jwt.decode(token);
+      // setUsername(`${decodedToken.firstName} ${decodedToken.lastName}`);
+      // setUserId(decodedToken.userId);
+      // setUserEmail(decodedToken.email);
       setIsLoggedIn(true);
-      async function getUser() {
-        try {
-          const {data} = await axios.get(`http://localhost:8080/api/v1/user/${decodedToken.userId}`, {
-            headers:{
-              authorization: `Bearer ${token}`
-            }
-          });
-          const userObj = data;
-          setProfilePicture(userObj.user.profilePicture);
-          // console.log("user: "+JSON.stringify(userObj));
-        } catch (error) {
-          console.error(error);
-        }
-      }
       getUser();
       goToNewsfeed()
     };
@@ -67,22 +93,20 @@ export default function StartPage(props) {
 
   function goToNewsfeed() {
     if(localStorage.getItem("token")) {
-    const token = localStorage.getItem('token')
-    const decodedToken = jwt.decode(token);
-    setUsername(`${decodedToken.firstName} ${decodedToken.lastName}`);
-    setUserId(decodedToken.userId);
-    setUserEmail(decodedToken.email);
+      getUser();
+    // const token = localStorage.getItem('token')
+    // const decodedToken = jwt.decode(token);
+    // setUsername(`${decodedToken.firstName} ${decodedToken.lastName}`);
+    // setUserId(decodedToken.userId);
+    // setUserEmail(decodedToken.email);
     setIsLoggedIn(true);
     setCurrComponent("newsfeed");
     }
   }
 
-  function goToNewsfeed2() {
-    setCurrComponent("newsfeed");
-  }
-
   function goToLogin() {
     localStorage.setItem("token", "");
+    setProfilePicture("");
     setCurrComponent("login");
     setIsLoggedIn(false);
   }
@@ -132,7 +156,12 @@ export default function StartPage(props) {
     setCurrComponent("messenger");
   }
 
+  function goToSettings() {
+    setCurrComponent("settings");
+  }
+
   function goToViewUserProfile(userInfo) {
+    setViewUserProfileId("");
     setViewUserProfileId(userInfo);
     setCurrComponent("viewUserProfile");
   }
@@ -164,8 +193,8 @@ export default function StartPage(props) {
         </div>
     </div>}
 
-    {isLoggedIn && currComponent != "messenger" && <><Topbar onHandleViewUserProfile={goToViewUserProfile} setSearchQuery={setSearchQuery} profilePicture={profilePicture} onHandleSearch={goToSearch} onHandleLogin={goToLogin} onHandleProfile={goToProfile} onHandleNewsFeed={goToNewsfeed}/><div className="cont">
-        <Sidebar onHandleNewsFeed={goToNewsfeed} onHandleJobs={goToJobs} onHandleLogin={goToLogin} onHandleEvents={goToEvents} />
+    {isLoggedIn && currComponent != "messenger" && <><Topbar onHandleSettings={goToSettings} onHandleViewUserProfile={goToViewUserProfile} setSearchQuery={setSearchQuery} profilePicture={profilePicture} onHandleSearch={goToSearch} onHandleLogin={goToLogin} onHandleProfile={goToProfile} onHandleNewsFeed={goToNewsfeed}/><div className="cont">
+        <Sidebar onHandleViewUserProfile={goToViewUserProfile}  onHandleNewsFeed={goToNewsfeed} onHandleJobs={goToJobs} onHandleLogin={goToLogin} onHandleEvents={goToEvents} />
         {currComponent === "newsfeed" && <Homepage setIsNewNotif={setIsNewNotif} username={username} profilePicture={profilePicture} currComponent={currComponent}></Homepage>}
         {currComponent === "profile" && <UserProfile userId={userId} username={username}></UserProfile>}
         {currComponent === "jobs" && <JobPostings></JobPostings>}
@@ -173,6 +202,7 @@ export default function StartPage(props) {
         {currComponent === "conversation" && <Conversation conversationFriend={conversationFriend} userEmail={userEmail}/>}
         {currComponent === "search" && <Search searchQuery={searchQuery} onHandleViewUserProfile={goToViewUserProfile} />}
         {currComponent === "viewUserProfile" && <ViewUserProfile userInfo={viewUserProfileId}/>}
+        {currComponent === "settings" && <Settings userObj={userObj}/>}
         <Messages userId={userId} onHandleConversation={goToConversation} setConversationFriend={setConversationFriend} onHandleMessenger={goToMessenger}/>
       </div></>}
 

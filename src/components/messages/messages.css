@@ -2,7 +2,7 @@
     flex: 2;
     height: 100vh;
     position: sticky;
-    top: 4rem;
+    top: 0rem;
     border-left: var(--border1);
 }
 
@@ -38,4 +38,10 @@
 
 .message-back-arrow-div2:hover {
     background-color: var(--clr-primary-lighter);
+}
+
+.no-connect {
+    text-align: center;
+    color: gray;
+    margin-top: 1rem;
 }

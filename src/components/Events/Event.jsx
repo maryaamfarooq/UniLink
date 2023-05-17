@@ -4,50 +4,52 @@ import AddEventForm from './AddEventForm';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import ReplyIcon from '@mui/icons-material/Reply';
+import axios from 'axios';
 import './event.css';
+import { useEffect } from 'react';
 
 const Event = ({event}) => {
 
   // const [isInterested, setIsInterested] = useState(event.isInterested)
-  const [isInterested, setIsInterested] = useState(false)
+  const [isInterested, setIsInterested] = useState(event.isInterested)
+  const [numInterested, setNumInterested] = useState(event.numInterested);
+
+  useEffect(() => {
+    setNumInterested(event.numInterested)
+    setIsInterested(event.isInterested)
+  }, [event])
 
   async function handleInterested() {
+    setNumInterested(prev => isInterested? prev-1 : prev+1);
     setIsInterested(prev => !prev);
     // send request
+    try {
+      const token = localStorage.getItem("token");
+      const { data } = await axios.put(`http://localhost:8080/api/v1/event/${event._id}/interestedEvent`, null, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      // setIsInterested(data.isInterested);
+    } catch (error) {
+      console.error(error.response.data);
+    }
   }
 
   return (
     <div className="event-container">
-    {/* <img className="event-img" src={event.img} alt="event"></img>
-    <div>
-      <div className="event-title">{event.eventName}</div>
-    </div>
-    <div>
-    {event.hashtags && event.hashtags.map((k, index) => (
-<div key={index} className="event-keyword">{k}</div>
-))}
-
-    </div>
-    <div>
-      <div className='event-city'>{event.location}</div>
-      <div className='event-city'>{event.organizer}</div>
-    </div>
-    <div>{event.createdAt}</div> */}
-
       <div className="event-div1">
         <img className="event-img" src={event.img} alt="event" />
       </div>
 
       <div className="event-div2">
         <div className="event-title">{event.eventName}</div>
-        {/* <div>{event.date} AT {event.time}</div> */}
-        <div>23 July, 2023 AT 2:00PM</div>
+        {event.date && <div>{event.date} {event.time && <span>AT {event.time}</span>}</div>}
         <div className='event-city'>{event.location}</div>
       </div>
 
       <div className="event-div3" onClick={handleInterested}>
-        {/* {event.interestedCount} */}
-        3 interested
+        {numInterested} interested
         {!isInterested && <StarBorderIcon className="event-div3-star" size="large" htmlColor="#7FD8BE" />}
         {isInterested && <StarIcon className="event-div3-star" size="small" htmlColor="#7FD8BE" />}
       </div>

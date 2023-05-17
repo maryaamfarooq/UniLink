@@ -1,0 +1,146 @@
+.settings-wrapper {
+    flex: 6;
+    /* padding: 2rem; */
+}
+
+.settings-div {
+    padding: 2.5rem;
+}
+
+.settings-div-2 {
+    background-color: var(--clr-grey-4);
+    margin-top: 2rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.108);
+}
+
+.settings-name-div {
+    display: flex;
+    align-items: center;
+    border-bottom: 0.1rem solid rgb(223, 223, 223);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.settings-heading {
+    font-weight: 600;
+    font-size: 2rem;
+}
+
+.settings-name {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.settings-pp {
+    width: 4.4rem;
+    height: 4.4rem;
+    border-radius: 50%;
+    border: 0.2rem solid var(--clr-primary);
+    cursor: pointer;
+    margin-right: 1rem;
+}
+
+.settings-email-div {
+    margin-bottom: 1rem;
+}
+
+.settings-email-div,  .settings-pass-div{
+    padding: 0.8rem;
+    background-color: rgb(223, 223, 223);
+    border-radius: 1rem;
+}
+
+.settings-pass-div {
+    display: flex;
+    align-items: center;
+}
+
+.settings-subheading {
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
+
+.settings-pass-edit-icon {
+    padding: 0.4rem;
+    padding-bottom: 0.2rem;
+    background-color: rgb(146, 146, 146);
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    border: 0.15rem solid transparent;
+}
+
+.settings-pass-edit-icon:hover {
+    border: 0.15rem solid rgb(255, 255, 255);
+}
+
+.settings-update-pass-div {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+}
+
+.settings-update-btn-div {
+    display: flex;
+}
+
+.settings-update-inp {
+    margin-bottom: 0.2rem;    
+    border: #E3E3E3 solid 0.15rem;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.9rem;
+    transition: all 0.15s;
+    margin-bottom: 0.5rem;
+    border-radius: var(--radius1);
+}
+
+.settings-update-inp:hover, .settings-update-inp:focus {
+    outline: none;
+    border: var(--clr-primary) solid 0.15rem;
+}
+
+.settings-update-btn {
+    background-color: var(--clr-primary-dark);
+    color: white;
+    /* border: none; */
+    cursor: pointer;
+    margin-right: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    border: 0.1rem solid transparent;
+    transition: all 0.15s linear;
+}
+
+.settings-update-btn:hover {
+    border: 0.1rem solid rgb(255, 255, 255);
+}
+
+.settings-cancel-btn {
+    background-color: transparent;
+    text-decoration: underline;
+    color: var(--clr-primary-dark);
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    transition: all 0.15s linear;
+}
+
+.settings-cancel-btn:hover {
+    background-color: var(--clr-primary-dark);
+    color: white;
+    font-weight: 400;
+}
+
+.error-msg {
+    color: red;
+    margin-top: 0.5rem;
+}
+
+.error-msg {
+    color: green;
+    margin-top: 0.5rem;
+}

@@ -106,6 +106,14 @@ export default function Topbar(props) {
         seenAllNotifications();
     }
 
+    function goToSettings() {
+      props.onHandleSettings();
+    }
+
+    function logOut() {
+      localStorage.setItem("token", "");
+    }
+
   return (
     <div className="topbar-container">
         <div onClick={props.onHandleNewsFeed} className="topbar-logo">
@@ -144,12 +152,12 @@ export default function Topbar(props) {
                         <HelpRoundedIcon style={{ color: '#7FD8BE' }} className="topbar-dropdown-icon"/>
                         Help
                     </div>
-                    <div className='topbar-dropdown-div'>
+                    <div onClick={goToSettings} className='topbar-dropdown-div'>
                         <SettingsIcon style={{ color: '#7FD8BE' }} className="topbar-dropdown-icon"/>
                         Settings
                     </div>
                     <div onClick={props.onHandleLogin} className='topbar-dropdown-div'>
-                        <LogoutIcon style={{ color: '#7FD8BE' }} className="topbar-dropdown-icon"/>
+                        <LogoutIcon onClick={logOut} style={{ color: '#7FD8BE' }} className="topbar-dropdown-icon"/>
                         Log out
                     </div>
                 </div>}

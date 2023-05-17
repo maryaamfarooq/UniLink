@@ -1,0 +1,29 @@
+.job-app-div {
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+    background-color: var(--clr-grey-1);
+    overflow-wrap: break-word;
+    border-radius: 0.5rem;
+    min-width: 30rem;
+}
+
+.job-app-name {
+    font-weight: 600;
+}
+
+.job-app-contact {
+
+}
+
+.job-app-resume {
+
+}
+
+.job-app-resume-btn {
+    margin: 0.5rem;
+}
+
+a, a:hover, a:focus, a:active {
+    text-decoration: none;
+    color: inherit;
+}

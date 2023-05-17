@@ -89,7 +89,7 @@ export default function Messages(props) {
         {allConnections && allConnections.map((c) => (
           <Connection key={c._id} connection={c} onHandleMessenger={props.onHandleMessenger} createNewConversation={createNewConversation} />
         ))}
-        {allConnections.length == 0 && <div>No connections</div>}
+        {allConnections.length == 0 && <div className="no-connect">No connections</div>}
       </div>
     </div>
 

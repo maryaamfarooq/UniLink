@@ -4,8 +4,9 @@
     height: 100vh;
     /* overflow-y: scroll; */
     position: sticky;
-    top: 0;
+    top: 0rem;
     border-right: var(--border1);
+    /* margin-top: 4rem; */
   }
   
   /* ::-webkit-scrollbar {
@@ -23,7 +24,7 @@
   }
   
   .sidebarList {
-    padding: 1.5rem 0rem;
+    padding: 0.5rem 0rem;
     margin: 1rem 0;
     list-style: none;
   }
@@ -92,3 +93,36 @@
   .sidebarListItemText:hover {
     color: var(--clr-primary-dark);
   }
+
+.no-new-r {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  color: gray;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.sidebarRecUsers{
+  overflow: auto;
+  max-height: 20rem;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebarRecUsers li {
+  /* margin: 1rem 0; */
+  cursor: pointer;
+  transition: all 0.15s linear;
+}
+
+.recsHeading {
+  text-align: center;
+  letter-spacing: var(--spacing1);
+  margin-bottom: 1rem;
+}
+
+.recsTrendsWrapper {
+  padding: 1.5rem 0rem;
+  padding-bottom: 1rem;
+  /* border-bottom: var(--border1); */
+}

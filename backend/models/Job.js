@@ -44,6 +44,10 @@ const JobSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    applications: {
+      type: Array,
+      default: [],
+    },
     // likes: {
     //   type: Array,
     //   default: [],
